@@ -34,13 +34,13 @@ if (!prefersReduced) {
 })();
 
 const HEADER_OFFSET = 84; // clear the fixed header so section tops aren't hidden
-const scrollTo = (target) => {
+const scrollTo = (target, offset = HEADER_OFFSET) => {
   const el = typeof target === 'string' ? document.querySelector(target) : target;
   if (!el) return;
   if (lenis) {
-    lenis.scrollTo(el, { offset: -HEADER_OFFSET, duration: 1.3 });
+    lenis.scrollTo(el, { offset: -offset, duration: 1.3 });
   } else {
-    const top = el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
     window.scrollTo({ top, behavior: prefersReduced ? 'auto' : 'smooth' });
   }
 };
@@ -54,8 +54,13 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => {
     if (!el) return;
     e.preventDefault();
     closeMenu();
-    scrollTo(el);
-    history.replaceState(null, '', id);
+    // data-offset: páginas sem cabeçalho fixo pedem um deslocamento menor
+    scrollTo(el, a.dataset.offset !== undefined ? Number(a.dataset.offset) : HEADER_OFFSET);
+    // leva o foco junto, para teclado e leitor de tela continuarem dali
+    if (!el.matches('a, button, input, select, textarea, [tabindex]')) el.setAttribute('tabindex', '-1');
+    el.focus({ preventScroll: true });
+    // data-no-hash: não suja o endereço que a pessoa pode copiar e mandar
+    if (!('noHash' in a.dataset)) history.replaceState(null, '', id);
   });
 });
 
@@ -138,6 +143,8 @@ if (prefersReduced || !lenis) {
       }
     });
   }, 2500);
+  // acordeão abriu ou fechou: a altura da página mudou, recalcula os gatilhos
+  document.addEventListener('toggle', () => requestAnimationFrame(() => ScrollTrigger.refresh()), true);
 }
 
 /* ------------------------------------------------------------------ */

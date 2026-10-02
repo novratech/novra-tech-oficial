@@ -8,12 +8,18 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  image?: string;
+  intro?: boolean;
 }
 const {
   title = 'NOVRA — Sistemas inteligentes para a próxima era',
   description = 'A NOVRA desenvolve soluções em tecnologia, IA, automação, cloud e sistemas digitais para empresas que buscam performance, segurança e escala.',
   noindex = false,
+  image = '/brand/novra-icon-512.png',
+  intro = true,
 } = Astro.props;
+// og:image precisa de endereço completo; relativo, o WhatsApp ignora
+const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
 ---
 <!doctype html>
@@ -49,7 +55,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : As
     <meta property="og:site_name" content="NOVRA" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/brand/novra-icon-512.png" />
+    <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
 
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -71,12 +77,14 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : As
     <a href="#main" class="skip-link">Pular para o conteúdo</a>
 
     <!-- Preloader de marca (auto-sai via animação CSS; JS só marca a sessão) -->
-    <div class="intro" id="intro" aria-hidden="true">
-      <div class="intro__mark">
-        <img src="/brand/novra-icon-512.png" alt="" width="72" height="72" />
-        <span class="intro__line"></span>
+    {intro && (
+      <div class="intro" id="intro" aria-hidden="true">
+        <div class="intro__mark">
+          <img src="/brand/novra-icon-512.png" alt="" width="72" height="72" />
+          <span class="intro__line"></span>
+        </div>
       </div>
-    </div>
+    )}
 
     <!-- Ambient background -->
     <div class="bg-canvas" aria-hidden="true">

@@ -299,8 +299,11 @@ h1, h2, h3, h4, h5 {
   transition: opacity 0.5s var(--ease-out);
   pointer-events: none;
 }
-.card:hover { border-color: var(--border-brand); transform: translateY(-4px); }
-.card:hover::before { opacity: 1; }
+/* hover só onde existe mouse: no toque, o cartão não fica "preso" levantado */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { border-color: var(--border-brand); transform: translateY(-4px); }
+  .card:hover::before { opacity: 1; }
+}
 
 /* hairline top accent */
 .card-accent::after {
@@ -313,7 +316,7 @@ h1, h2, h3, h4, h5 {
   transition: opacity 0.5s var(--ease-out);
   border-radius: var(--r-lg) var(--r-lg) 0 0;
 }
-.card-accent:hover::after { opacity: 1; }
+@media (hover: hover) and (pointer: fine) { .card-accent:hover::after { opacity: 1; } }
 
 /* ---------- Badges / chips ---------- */
 .chip {
@@ -400,7 +403,9 @@ html.gsap [data-reveal] { transition: none; }
 }
 
 /* ---------- Accessibility ---------- */
-:focus-visible { outline: 2px solid var(--cyan-400); outline-offset: 3px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--cyan-400); outline-offset: 3px; }
+/* arredonda o contorno só de quem não tem raio próprio (botão pílula continua pílula) */
+:where(:focus-visible) { border-radius: 4px; }
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
@@ -451,9 +456,11 @@ html.gsap [data-reveal] { transition: none; }
   transition: opacity 0.5s var(--ease-out);
   pointer-events: none;
 }
-.card:hover > .card-halo {
-  opacity: 1;
-  animation: halo-spin 3.4s linear infinite;
+@media (hover: hover) and (pointer: fine) {
+  .card:hover > .card-halo {
+    opacity: 1;
+    animation: halo-spin 3.4s linear infinite;
+  }
 }
 @keyframes halo-spin {
   to { --halo-ang: 360deg; }

@@ -1,252 +1,310 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
 
 const WHATSAPP = '5511998002960';
 const WHATSAPP_FMT = '(11) 99800-2960';
 const WA_TEXT = encodeURIComponent('Olá, sou da Kira Odontologia e quero falar sobre a proposta.');
 const waLink = `https://wa.me/${WHATSAPP}?text=${WA_TEXT}`;
 
-const EMITIDA = '01 de outubro de 2026';
+const EMITIDA = '01/10/2026';
 const VALIDA_ATE = '08/10/2026';
+
+// glifo do WhatsApp (o Icon.astro não tem marcas)
+const WA_PATH =
+  'M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12.05 21.78h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.41';
 
 const entregas = [
   {
-    n: '01',
-    titulo: 'Página principal',
-    preco: 'R$ 2.000',
-    resumo:
-      'A página que recebe quem chega pelo Google, quem clica na bio e quem recebeu o link de uma amiga. Refeita do começo, no mesmo endereço de hoje, com os textos escritos por nós.',
-    destaques: [
-      'Topo com uma frase, botão de WhatsApp e rota',
-      'Um espaço próprio para cada tratamento',
-      'Equipe com foto, nome, formação e CRO',
+    icon: 'devices', titulo: 'Página principal', preco: 'R$ 2.000',
+    prova: { tipo: 'browser', img: 'akaki-galeria.webp', w: 1440, h: 668, url: 'https://akaki.odo.br/', label: 'akaki.odo.br', pos: 'left top' },
+    pontos: ['Um bloco para cada tratamento', 'Equipe com foto, nome e CRO', 'WhatsApp e rota em um toque'],
+    mais: [
+      'Topo com uma frase',
       'A clínica por dentro, com fotos reais',
-    ],
-    tudo: [
-      'Topo de apresentação com WhatsApp de mensagem já escrita e botão de rota',
-      'Um bloco por tratamento, ligado à página daquele tratamento que já existe',
-      'Seção de equipe com foto, nome, formação e CRO de cada profissional',
-      'Seção da clínica por dentro, com fotos reais no lugar da imagem gerada por computador',
-      'Seção de perguntas frequentes',
-      'Seção de localização, horário e estacionamento',
-      'Botão de WhatsApp fixo em todas as páginas',
-      'Formulário enxuto, com aviso de privacidade. Não pergunta sintoma nem histórico, porque informação de saúde é dado sensível pela LGPD',
-      'Página de política de privacidade e aviso de cookies',
-      'Rodapé com os dados obrigatórios do Conselho em campo editável',
-      'Nome correto da clínica no Google e na aba do navegador',
-      'Prévia com foto, nome e descrição ao compartilhar o link',
-      'Ficha de negócio local que o Google lê e a paciente não vê',
-      'Endereços antigos continuando a funcionar',
-      'Medição de visitas do site, para vocês acompanharem',
-      'Textos escritos pela NOVRA, com duas rodadas de ajuste incluídas',
-      'Tratamento e organização de até 40 fotos que vocês já tiverem',
+      'Perguntas frequentes, mapa, horário e estacionamento',
+      'Formulário enxuto, que não pergunta sintoma nem histórico',
+      'Nome certo no Google e prévia com foto ao compartilhar',
+      'Links antigos continuam abrindo',
+      'Textos escritos pela NOVRA, com duas rodadas de ajuste',
     ],
   },
   {
-    n: '02',
-    titulo: 'Blog',
-    preco: 'R$ 1.500',
-    resumo:
-      'O post do Instagram some em dois dias. O artigo continua aparecendo meses depois, toda vez que alguém digita aquela dúvida no Google. Aqui não é criar um blog: é retomar o que já existe.',
-    destaques: [
-      'Os 10 artigos atuais aproveitados e reorganizados',
-      'Endereço curto e fácil de divulgar',
-      'Pauta inicial sugerida, dentro da norma',
-      'Vocês publicam sozinhas depois',
-    ],
-    tudo: [
-      'Blog reorganizado dentro do novo visual, com listagem por assunto',
-      'Endereço curto e fácil de divulgar; o antigo passa a levar para o novo',
-      'Os 10 artigos atuais levados para o site novo, com títulos e endereços arrumados',
-      'Pauta inicial sugerida, com o ângulo “o que faz o preço variar”, já que o Conselho proíbe divulgar valor',
-      'Diretriz editorial em uma página, incluindo a assinatura obrigatória por dentista com nome e registro',
-      'Modelo de artigo já formatado',
-      'Vídeo curto gravado ensinando a publicar',
+    icon: 'search', titulo: 'Blog', preco: 'R$ 1.500',
+    prova: { tipo: 'browser', img: 'akaki-blog.webp', w: 1600, h: 1000, url: 'https://www.akaki.odo.br/blog/', label: 'akaki.odo.br/blog', pos: 'center top' },
+    pontos: ['Os 10 artigos atuais reorganizados', 'Temas prontos, dentro das regras do CFO', 'A própria equipe publica'],
+    mais: [
+      'Visual novo, com listagem por assunto',
+      'Link curto, e o antigo leva para o novo',
+      'Lista de temas para os próximos artigos',
+      'Todo artigo assinado por dentista, com CRO',
+      'Modelo de artigo pronto e vídeo ensinando a publicar',
     ],
   },
   {
-    n: '03',
-    titulo: 'Página de links da bio',
-    preco: 'R$ 800',
-    resumo:
-      'O primeiro lugar onde cai quem viu um post e se interessou. Vocês já têm uma, e ela é a parte mais recente do site. É a peça que mais trabalha no dia a dia e precisa ser a mais rápida das três.',
-    destaques: [
-      'No endereço da clínica, não no de outra empresa',
-      'Com a cara da marca, não um modelo genérico',
-      'Mede qual botão as pessoas apertam',
-      'Vocês editam sozinhas',
-    ],
-    tudo: [
-      'Página de links no endereço da própria clínica, dentro de kiraodontologia.com.br',
-      'Visual igual ao da clínica: mesmas cores, tipografia e fotos',
-      'Botões principais já montados, com mensagem de WhatsApp pronta',
-      'Contagem de cliques por botão, somada e sem identificar ninguém',
-      'Edição pela própria equipe, sem abrir chamado com ninguém',
-      'Construída leve, para abrir rápido no celular',
-      'Vídeo curto gravado ensinando a atualizar a bio',
+    icon: 'menu', titulo: 'Links da bio', preco: 'R$ 800',
+    prova: { tipo: 'phone', img: 'akaki-bio-recorte.webp', w: 860, h: 1225, url: 'https://link.bio.akaki.odo.br/', label: 'link.bio.akaki.odo.br', pos: 'center top' },
+    pontos: ['Com fotos e marca da própria Kira', 'Dentro do site da Kira', 'Vocês veem o botão mais clicado'],
+    mais: [
+      'Mesmas cores, tipografia e fotos do site novo',
+      'WhatsApp com mensagem pronta, rota e principais tratamentos',
+      'Contagem de cliques sem identificar ninguém',
+      'Edição pela própria equipe, sem depender de ninguém',
+      'Leve, para abrir rápido no celular',
     ],
   },
 ];
 
 const placar = [
-  { num: '1', label: 'palavra no nome do seu site no Google', detalhe: 'O título é literalmente “Kira”. Sem odontologia, sem São Paulo, sem implante.' },
-  { num: '0', label: 'prévia quando mandam seu link no WhatsApp', detalhe: 'Nenhuma foto, nenhum nome, nenhuma descrição. Chega um link azul seco.' },
-  { count: 1.5, decimals: 1, suffix: ' MB', fallback: '1,5 MB', label: 'a imagem mais pesada da página inicial', detalhe: 'Sozinha, mais que a página inteira deveria pesar. E o nome do arquivo indica que ela foi gerada por computador.' },
-  { count: 132, suffix: '', fallback: '132', label: 'dias sem um artigo novo no blog', detalhe: 'Os 10 artigos foram publicados todos no mesmo dia, 22 de maio de 2026.' },
+  { valor: '1', label: 'palavra no título do Google' },
+  { valor: '0', label: 'fotos no link enviado pelo WhatsApp' },
+  { count: 1.5, decimals: 1, suffix: ' MB', fallback: '1,5 MB', label: 'numa imagem gerada por IA, na página inicial' },
+  { count: 132, decimals: 0, suffix: '', fallback: '132', label: 'dias sem artigo novo no blog' },
 ];
 
-const cases = [
-  { img: 'akaki-site.webp', titulo: 'Página principal', desc: 'Topo com uma frase, agendamento e menu por tratamento.', url: 'https://akaki.odo.br/', label: 'akaki.odo.br', w: 1600, h: 1000 },
-  { img: 'akaki-blog.webp', titulo: 'Blog', desc: 'Busca, filtro por assunto e artigos ligados aos tratamentos.', url: 'https://www.akaki.odo.br/blog/', label: 'akaki.odo.br/blog', w: 1600, h: 1000 },
-  { img: 'akaki-bio.webp', titulo: 'Links da bio', desc: 'No domínio da clínica, com a identidade da marca.', url: 'https://link.bio.akaki.odo.br/', label: 'link.bio.akaki.odo.br', w: 860, h: 2130 },
+// etapas do calendário: cada dia útil pintado pela etapa
+const etapas = [
+  { cls: 'e1', dias: 'Dia 1', titulo: 'Conversa de 1 hora', sub: 'Vocês mandam fotos e acessos' },
+  { cls: 'e2', dias: 'Dias 2 a 4', titulo: 'Desenho e textos', sub: 'A NOVRA escreve tudo' },
+  { cls: 'e3', dias: 'Dia 5', titulo: 'Sua aprovação', sub: 'Primeira rodada de ajustes' },
+  { cls: 'e4', dias: 'Dias 6 a 8', titulo: 'Construção', sub: 'As três peças montadas' },
+  { cls: 'e5', dias: 'Dias 9 e 10', titulo: 'No ar', sub: 'Aprovação final e publicação' },
+];
+const diaEtapa = ['e1', 'e2', 'e2', 'e2', 'e3', 'e4', 'e4', 'e4', 'e5', 'e5'];
+const semana = ['S', 'T', 'Q', 'Q', 'S'];
+
+const passos = [
+  { icon: 'check', titulo: 'Aprovar por escrito', sub: 'R$ 3.784 à vista' },
+  { icon: 'mail', titulo: 'Enviar o material', sub: 'Fotos, equipe e acessos' },
+  { icon: 'clock', titulo: 'Conversa de 1 hora', sub: 'Presencial ou online' },
 ];
 ---
 
 <Base
   title="Proposta · Kira Odontologia · NOVRA"
-  description="Proposta da NOVRA para refazer a página principal, o blog e a página de links da bio da Kira Odontologia."
+  description="Página principal, blog e bio novos para a Kira Odontologia. No ar em 2 semanas."
   noindex={true}
+  image="/proposta/kira/og.jpg"
+  intro={false}
 >
-  <header class="phead">
-    <div class="container phead__in">
-      <a href="/" class="phead__logo" aria-label="NOVRA">
-        <img src="/brand/novra-logo-ui.png" alt="NOVRA" width="760" height="203" />
+  <header class="kh">
+    <div class="container kh__in">
+      <a href="/" class="kh__logo" aria-label="NOVRA">
+        <img src="/brand/novra-logo-ui.png" alt="NOVRA" width="1041" height="308" />
       </a>
-      <p class="phead__meta">Proposta comercial · {EMITIDA}</p>
+      <span class="kh__x" aria-hidden="true">×</span>
+      <span class="kh__cli">Kira Odontologia</span>
     </div>
   </header>
 
   <main id="main">
 
-    <!-- ============ HERO ============ -->
-    <section class="section phero">
-      <span class="glow-orb phero__orb-a" aria-hidden="true"></span>
-      <span class="glow-orb phero__orb-b" aria-hidden="true"></span>
-
-      <div class="container phero__in">
-        <div class="phero__copy">
-          <span class="eyebrow" data-reveal>Para Kira Odontologia · Jardim Paulista · SP</span>
-          <h1 class="h1 balance phero__title" data-reveal style="--reveal-delay: 90ms">
-            No Google, o seu site hoje<br />se chama só <span class="text-gold">“Kira”</span>.
-          </h1>
-          <p class="lead pretty phero__lead" data-reveal style="--reveal-delay: 180ms">
-            Proposta para refazer a página principal, o blog e a página de links da bio,
-            como um projeto só, e dentro das regras de divulgação da odontologia.
-          </p>
-
-          <div class="phero__actions" data-reveal style="--reveal-delay: 260ms">
-            <a href="#investimento" class="btn btn-primary btn-lg" data-magnetic>
-              Ver a proposta
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <!-- ===== TOPO ===== -->
+    <section class="k-hero">
+      <span class="k-glow" aria-hidden="true"><span class="glow-orb k-hero__orb"></span></span>
+      <div class="container k-hero__grid">
+        <div class="k-hero__copy">
+          <span class="eyebrow k-hero__eb" data-reveal>Proposta · {EMITIDA}</span>
+          <h1 class="k-hero__h balance" data-reveal>No Google, o seu site se chama só <span class="text-gold">“Kira”</span>.</h1>
+          <p class="k-hero__lead pretty" data-reveal>Página principal, blog e bio novos, com o nome, a equipe e as fotos de vocês.</p>
+          <ul class="k-chips" data-reveal>
+            <li><Icon name="layers" size={16} /> 3 entregas</li>
+            <li><Icon name="clock" size={16} /> 2 semanas</li>
+            <li><Icon name="check" size={16} /> Vale até 08/10</li>
+          </ul>
+          <div class="k-hero__cta" data-reveal>
+            <a href="#entregas" class="btn btn-primary btn-lg" data-magnetic data-offset="16" data-no-hash>
+              Ver entregas e valor <Icon name="arrow-down" />
             </a>
             <a href={waLink} target="_blank" rel="noopener" class="btn btn-ghost btn-lg" data-magnetic>Falar no WhatsApp</a>
           </div>
         </div>
 
-        <!-- prova visual: como a clínica aparece no Google hoje -->
-        <div class="serp" data-reveal style="--reveal-delay: 340ms" aria-label="Simulação de como o site da clínica aparece hoje numa busca do Google">
-          <div class="serp__chrome" aria-hidden="true">
-            <span class="serp__dot"></span><span class="serp__dot"></span><span class="serp__dot"></span>
-            <span class="serp__tab">Kira</span>
+        <!-- Google: hoje x depois -->
+        <div class="ba serp-ba" data-ba data-state="hoje" data-reveal>
+          <div class="ba-tabs" role="group" aria-label="Como a clínica aparece no Google">
+            <button type="button" class="ba-tab" data-ba-btn="hoje" aria-pressed="true">Hoje</button>
+            <button type="button" class="ba-tab" data-ba-btn="depois" aria-pressed="false">Com a NOVRA</button>
           </div>
-          <div class="serp__body">
-            <p class="serp__url">kiraodontologia.com.br</p>
-            <p class="serp__title">Kira</p>
-            <p class="serp__desc"><span class="serp__missing">sem descrição</span></p>
-            <hr class="hairline" />
-            <p class="serp__note">
-              É assim que a clínica se apresenta a quem ainda não conhece vocês.
-            </p>
+          <div class="g-frame" data-ba-frame>
+            <div class="g-chrome" aria-hidden="true">
+              <i></i><i></i><i></i>
+              <span class="g-tab ba-stack"><span class="ba-hoje">Kira</span><span class="ba-depois">Kira Odontologia</span></span>
+            </div>
+            <div class="g-body ba-stack">
+              <div class="g-res ba-hoje">
+                <div class="g-site">
+                  <img class="g-fav" src="/proposta/kira/kira-icone.webp" alt="" width="72" height="72" />
+                  <span><b>kiraodontologia.com.br</b><small>https://kiraodontologia.com.br</small></span>
+                </div>
+                <p class="g-title">Kira</p>
+                <p class="g-miss">Texto escolhido pelo Google, não pela clínica.</p>
+              </div>
+              <div class="g-res ba-depois">
+                <div class="g-site">
+                  <img class="g-fav" src="/proposta/kira/kira-icone.webp" alt="" width="72" height="72" />
+                  <span><b>Kira Odontologia</b><small>https://kiraodontologia.com.br</small></span>
+                </div>
+                <p class="g-title" data-type="Kira Odontologia · Implantes e estética no Jardim Paulista">Kira Odontologia · Implantes e estética no Jardim Paulista</p>
+                <p class="g-desc">Clínica odontológica no Jardim Paulista, perto da Av. Paulista. Implantes, facetas e Invisalign. Agende pelo WhatsApp.</p>
+              </div>
+            </div>
           </div>
+          <p class="ba-hint">Toque na tela para comparar</p>
         </div>
-      </div>
-
-      <div class="container">
-        <dl class="facts" data-reveal style="--reveal-delay: 420ms">
-          <div class="facts__i"><dt>Escopo</dt><dd>3 entregas</dd><span>Principal · Blog · Bio</span></div>
-          <div class="facts__i"><dt>Prazo</dt><dd>2 semanas</dd><span>a partir do material</span></div>
-          <div class="facts__i"><dt>Validade</dt><dd>{VALIDA_ATE}</dd><span>7 dias</span></div>
-        </dl>
       </div>
     </section>
 
-    <!-- ============ DIAGNÓSTICO ============ -->
-    <section class="section pdiag">
+    <!-- ===== DIAGNÓSTICO ===== -->
+    <section class="k-sec k-hoje">
       <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="eyebrow">O que está no ar hoje</span>
+        <div class="k-head" data-reveal>
+          <span class="eyebrow">Diagnóstico</span>
           <span class="signature-line signature-line--sm head-sig" aria-hidden="true"></span>
-          <h2 class="h2 balance">Quatro coisas objetivas. Dá para <span class="text-gradient">conferir agora.</span></h2>
-          <p class="lead pretty">
-            Nada aqui é opinião de gosto, e nada aqui é crítica a quem fez o site antes.
-            Foi tudo verificado direto no site no ar em 1º de outubro de 2026.
-          </p>
+          <h2 class="k-h2 balance">O que a paciente vê <span class="text-gradient">antes de marcar.</span></h2>
         </div>
 
-        <ul class="placar">
-          {placar.map((p, i) => (
-            <li class="placar__i card card-accent" data-reveal style={`--reveal-delay: ${i * 90}ms`}>
-              <i class="card-halo" aria-hidden="true"></i>
-              <p class="placar__num text-silver">
+        <div class="hoje__vis">
+          <figure class="hoje__fig" data-reveal>
+            <figcaption class="k-cap"><b>Página Sobre</b> hoje. <span class="text-gold">Nomes reais no dia 1, por cortesia.</span></figcaption>
+            <div class="phone">
+              <span class="phone__notch" aria-hidden="true"></span>
+              <div class="phone__screen ph-sobre">
+                <p class="phone__url" aria-hidden="true">kiraodontologia.com.br/sobre</p>
+                <div class="ph-cards" role="img" aria-label="Página Sobre da Kira no celular: quatro cartões de equipe com quadrado cinza no lugar da foto e o texto Nome Sobrenome, Cargo.">
+                  {[1, 2, 3, 4].map(() => (
+                    <div class="ph-card" aria-hidden="true"><span></span><b>Nome Sobrenome</b><small>Cargo</small></div>
+                  ))}
+                </div>
+              </div>
+              <span class="phone__tag"><i aria-hidden="true"></i>Rascunho no ar</span>
+            </div>
+          </figure>
+
+          <!-- WhatsApp: hoje x depois -->
+          <div class="ba wa-ba" data-ba data-state="hoje" data-reveal>
+            <p class="k-cap"><b>Quando alguém indica vocês</b> no WhatsApp</p>
+            <div class="ba-tabs" role="group" aria-label="Como o link chega no WhatsApp">
+              <button type="button" class="ba-tab" data-ba-btn="hoje" aria-pressed="true">Hoje</button>
+              <button type="button" class="ba-tab" data-ba-btn="depois" aria-pressed="false">Com a NOVRA</button>
+            </div>
+            <div class="wa" data-ba-frame>
+              <div class="wa__head" aria-hidden="true">
+                <span class="wa__av"></span>
+                <span><b>Conversa</b><small>WhatsApp</small></span>
+              </div>
+              <div class="wa__body">
+                <p class="wa__msg wa__msg--out">Conhece um dentista bom perto da Paulista?<span class="wa__time">14:31</span></p>
+                <p class="wa__msg">Conheço! Olha essa:</p>
+                <div class="wa__msg wa__link">
+                  <span class="wa__card">
+                    <span class="wa__real">
+                      <img src="/proposta/kira/kira-recepcao.webp" alt="Recepção da Kira Odontologia com o letreiro iluminado." width="800" height="419" loading="lazy" />
+                      <span class="wa__ct">
+                        <b>Kira Odontologia</b>
+                        <small>Implantes, facetas e Invisalign no Jardim Paulista</small>
+                        <i aria-hidden="true">kiraodontologia.com.br</i>
+                      </span>
+                    </span>
+                    <span class="wa__none">Sem foto e sem descrição</span>
+                  </span>
+                  <span class="wa__url">kiraodontologia.com.br</span>
+                  <span class="wa__time">14:32</span>
+                </div>
+              </div>
+            </div>
+            <p class="ba-hint">Toque na conversa para comparar</p>
+          </div>
+        </div>
+
+        <ul class="k-stats" data-reveal>
+          {placar.map((p) => (
+            <li class="k-stat">
+              <p class="k-stat__n text-silver">
                 {p.count !== undefined
-                  ? <span data-count={p.count} data-decimals={p.decimals ?? 0} data-suffix={p.suffix ?? ''}>{p.fallback}</span>
-                  : p.num}
+                  ? <span data-count={p.count} data-decimals={p.decimals} data-suffix={p.suffix}>{p.fallback}</span>
+                  : p.valor}
               </p>
-              <p class="placar__label">{p.label}</p>
-              <p class="placar__det">{p.detalhe}</p>
+              <p class="k-stat__l">{p.label}</p>
             </li>
           ))}
         </ul>
 
-        <figure class="evid" data-reveal>
-          <img src="/proposta/kira/kira-equipe-hoje.webp" alt="Página Sobre da Kira Odontologia com quatro cartões de equipe vazios, escritos “Nome Sobrenome” e “Cargo”." width="1100" height="414" loading="lazy" />
-          <figcaption>
-            <strong>kiraodontologia.com.br/sobre</strong>, hoje, no ar. Os quatro espaços da equipe
-            estão com o texto de rascunho. É a página que mais pesa quando alguém está decidindo
-            fazer um implante: a pessoa quer saber quem vai mexer na boca dela.
-          </figcaption>
-        </figure>
-
-        <p class="pdiag__close lead pretty" data-reveal>
-          A procura existe: 8 em cada 10 pacientes pesquisam no Google antes de escolher um dentista
-          <em>(Simples Dental, agosto de 2026)</em>. A reputação existe: <strong class="text-bright">4,9 no Google</strong>,
-          com quase 300 avaliações. Isso não se compra. O que falta é o site estar à altura disso.
+        <p class="k-rep" data-reveal>
+          <Icon name="star" size={18} />
+          <span><b>293 avaliações no Google.</b> A reputação já existe. O site precisa acompanhar.</span>
         </p>
+        <p class="k-fine">Conferido no site da clínica em {EMITIDA}.</p>
       </div>
     </section>
 
-    <!-- ============ ENTREGAS ============ -->
-    <section class="section pentregas">
-      <span class="glow-orb pentregas__orb" aria-hidden="true"></span>
+    <!-- ===== ENTREGAS ===== -->
+    <section class="k-sec k-ent" id="entregas">
+      <span class="k-glow" aria-hidden="true"><span class="glow-orb k-ent__orb"></span></span>
       <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="eyebrow">O que entregamos</span>
-          <span class="signature-line signature-line--sm head-sig" aria-hidden="true"></span>
-          <h2 class="h2 balance">Três entregas, <span class="text-gradient">um projeto só.</span></h2>
-          <p class="lead pretty">
-            Vocês já têm site, blog e bio. Por isso esta proposta não fala em criar nada do zero.
-            Ela refaz os três pontos que carregam a primeira impressão, com a mesma identidade,
-            as mesmas fotos e o mesmo jeito de escrever.
-          </p>
+        <div class="ent-top">
+          <div class="k-head" data-reveal>
+            <span class="eyebrow">O que vocês recebem</span>
+            <span class="signature-line signature-line--sm head-sig" aria-hidden="true"></span>
+            <h2 class="k-h2 balance">Três entregas, <span class="text-gradient">um projeto só.</span></h2>
+            <p class="k-sub">O site, o blog e a bio da Akaki foram feitos pela NOVRA. Abaixo de cada entrega, o que ficou pronto lá.</p>
+          </div>
+
+          <!-- prévia ilustrativa da nova página da Kira -->
+          <figure class="kv" data-reveal>
+            <figcaption class="k-cap"><span class="kv__badge">Prévia ilustrativa</span> A nova página, com a recepção e a marca de vocês</figcaption>
+            <div class="phone phone--kv">
+              <span class="phone__notch" aria-hidden="true"></span>
+              <div class="phone__screen kv__screen">
+                <div class="kv__nav">
+                  <img src="/proposta/kira/kira-logo-claro.svg" alt="Kira Odontologia" width="148" height="84" />
+                  <span class="kv__burger" aria-hidden="true"><i></i><i></i></span>
+                </div>
+                <div class="kv__hero">
+                  <img class="kv__bg" src="/proposta/kira/kira-recepcao-alta.webp" alt="" width="640" height="854" loading="lazy" />
+                  <div class="kv__copy">
+                    <span class="kv__eb">Jardim Paulista · SP</span>
+                    <p class="kv__h">Clínica odontológica perto da Paulista</p>
+                    <p class="kv__s">Implantes, facetas e Invisalign.</p>
+                    <span class="kv__btn">Agendar pelo WhatsApp</span>
+                    <span class="kv__btn kv__btn--o">Como chegar</span>
+                  </div>
+                </div>
+                <div class="kv__chips" aria-hidden="true"><span>Implantes</span><span>Facetas</span><span>Invisalign</span></div>
+              </div>
+            </div>
+          </figure>
         </div>
 
-        <div class="ent__grid">
-          {entregas.map((e, i) => (
-            <article class="ent card card-accent" data-reveal style={`--reveal-delay: ${i * 110}ms`}>
+        <div class="ent-grid">
+          {entregas.map((e) => (
+            <article class="ent card card-accent" data-reveal>
               <i class="card-halo" aria-hidden="true"></i>
+              <a class="ent__media" href={e.prova.url} target="_blank" rel="noopener" aria-label={`${e.titulo} da Akaki, feita pela NOVRA (abre em nova aba)`}>
+                {e.prova.tipo === 'browser' ? (
+                  <span class="bframe">
+                    <span class="bframe__bar" aria-hidden="true"><i></i><i></i><i></i><span>{e.prova.label}</span></span>
+                    <img src={`/proposta/kira/${e.prova.img}`} alt="" width={e.prova.w} height={e.prova.h} loading="lazy" style={`object-position: ${e.prova.pos}`} />
+                  </span>
+                ) : (
+                  <span class="pframe">
+                    <img src={`/proposta/kira/${e.prova.img}`} alt="" width={e.prova.w} height={e.prova.h} loading="lazy" />
+                  </span>
+                )}
+                <span class="ent__prova">Na Akaki ficou assim <Icon name="arrow-up-right" size={14} /></span>
+              </a>
               <div class="ent__top">
-                <span class="ent__n">{e.n}</span>
-                <span class="ent__preco">{e.preco}</span>
+                <span class="k-ico"><Icon name={e.icon} /></span>
+                <h3 class="ent__t">{e.titulo}</h3>
+                <span class="ent__p">{e.preco}</span>
               </div>
-              <h3 class="ent__titulo">{e.titulo}</h3>
-              <p class="ent__resumo">{e.resumo}</p>
-              <ul class="ent__dest">
-                {e.destaques.map((d) => <li>{d}</li>)}
+              <ul class="k-checks">
+                {e.pontos.map((t) => <li>{t}</li>)}
               </ul>
               <details class="disc ent__disc">
-                <summary>Ver tudo que entra <span class="disc__c" aria-hidden="true"></span></summary>
+                <summary>E mais {e.mais.length} itens<span class="sr-only">: {e.titulo}</span> <span class="disc__c" aria-hidden="true"></span></summary>
                 <ul class="disc__list">
-                  {e.tudo.map((t) => <li>{t}</li>)}
+                  {e.mais.map((t) => <li>{t}</li>)}
                 </ul>
               </details>
             </article>
@@ -255,183 +313,126 @@ const cases = [
       </div>
     </section>
 
-    <!-- ============ CASE AKAKI ============ -->
-    <section class="section pcase">
+    <!-- ===== PRAZO ===== -->
+    <section class="k-sec k-prazo">
       <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="eyebrow">Já fizemos exatamente isto</span>
+        <div class="k-head" data-reveal>
+          <span class="eyebrow">Como funciona</span>
           <span class="signature-line signature-line--sm head-sig" aria-hidden="true"></span>
-          <h2 class="h2 balance">Akaki Odontologia: <span class="text-gold">as mesmas três peças.</span></h2>
-          <p class="lead pretty">
-            Clínica em Jardim América, São Paulo. Página principal, blog e página de links da bio,
-            construídos como um projeto só. Está tudo no ar: abra e navegue.
-          </p>
+          <h2 class="k-h2 balance">No ar em <span class="text-gradient">10 dias úteis.</span></h2>
         </div>
 
-        <div class="case__grid">
-          {cases.map((c, i) => (
-            <a class="case card" href={c.url} target="_blank" rel="noopener" data-reveal data-tilt style={`--reveal-delay: ${i * 110}ms`}>
-              <i class="card-halo" aria-hidden="true"></i>
-              <span class="case__shot"><img src={`/proposta/kira/${c.img}`} alt={`${c.titulo} da Akaki Odontologia`} width={c.w} height={c.h} loading="lazy" /></span>
-              <h3 class="case__t">{c.titulo}</h3>
-              <p class="case__d">{c.desc}</p>
-              <span class="link-arrow case__l">
-                {c.label}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-            </a>
-          ))}
+        <div class="cal" data-cal data-reveal>
+          <div class="cal__grid" role="img" aria-label="Calendário de duas semanas: dia 1 conversa, dias 2 a 4 desenho e textos, dia 5 aprovação, dias 6 a 8 construção, dias 9 e 10 no ar.">
+            {semana.map((d) => <span class="cal__dow" aria-hidden="true">{d}</span>)}
+            {diaEtapa.map((cls, i) => (
+              <span class={`cal__day ${cls}`} style={`--i:${i}`} aria-hidden="true"><b>{i + 1}</b>{i === 9 && <small>No ar</small>}</span>
+            ))}
+          </div>
+          <ol class="cal__leg">
+            {etapas.map((s) => (
+              <li class={s.cls}><i aria-hidden="true"></i><span class="cal__d">{s.dias}</span><b>{s.titulo}</b><small>{s.sub}</small></li>
+            ))}
+          </ol>
         </div>
+        <p class="k-fine">Contando com o material no dia 1 e cada aprovação em até 1 dia útil.</p>
       </div>
     </section>
 
-    <!-- ============ INVESTIMENTO ============ -->
-    <section class="section pinvest" id="investimento">
-      <span class="glow-orb pinvest__orb" aria-hidden="true"></span>
+    <!-- ===== INVESTIMENTO ===== -->
+    <section class="k-sec k-inv" id="investimento">
+      <span class="k-glow" aria-hidden="true"><span class="glow-orb k-inv__orb"></span></span>
       <div class="container">
-        <div class="invest card" data-reveal>
+        <div class="inv card" data-inv data-reveal>
           <i class="card-halo" aria-hidden="true"></i>
-          <div class="invest__head">
-            <span class="eyebrow">Investimento</span>
-            <p class="invest__sub">Projeto fechado. Sem mensalidade, sem taxa de manutenção.</p>
-          </div>
-
-          <ul class="invest__linhas">
-            <li><span>Página principal</span><b>R$ 2.000,00</b></li>
-            <li><span>Blog</span><b>R$ 1.500,00</b></li>
-            <li><span>Página de links da bio</span><b>R$ 800,00</b></li>
-            <li class="invest__sub-l"><span>Subtotal</span><b>R$ 4.300,00</b></li>
-            <li class="invest__desc"><span>Desconto por fechar as três juntas · 12%</span><b>− R$ 516,00</b></li>
-          </ul>
-
-          <div class="invest__total">
-            <span>Total</span>
-            <p class="invest__valor text-silver">R$ <span data-count="3784" data-decimals="0">3.784</span>,00</p>
-            <span class="invest__cond">à vista, na assinatura · proposta válida até {VALIDA_ATE}</span>
-          </div>
-
-          <p class="invest__nota">
-            <strong class="text-bright">Por que existe o desconto:</strong> os três são o mesmo projeto.
-            Feitos juntos, compartilham a mesma identidade, as mesmas fotos e o mesmo jeito de escrever,
-            e isso economiza trabalho de verdade. Feitos separados, esse ganho não existe.
-          </p>
+          <h2 class="inv__head"><span class="eyebrow">Investimento</span></h2>
+          <p class="inv__de"><span class="sr-only">De </span><s>R$ 4.300</s></p>
+          <p class="inv__valor text-silver"><span class="sr-only">Por </span>R$ <span data-count="3784" data-decimals="0">3.784</span></p>
+          <p class="inv__eco">Economia de R$ 516 por fechar as três</p>
+          <p class="inv__cond">À vista · sem mensalidade<br />Válida até&nbsp;{VALIDA_ATE}</p>
+          <a href={waLink} target="_blank" rel="noopener" class="btn btn-primary btn-lg inv__btn" data-magnetic>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d={WA_PATH} /></svg>
+            Responder pelo WhatsApp
+          </a>
+          <details class="disc inv__disc">
+            <summary>Ver por item <span class="disc__c" aria-hidden="true"></span></summary>
+            <ul class="inv__lines">
+              <li><span>Página principal</span><b>R$ 2.000</b></li>
+              <li><span>Blog</span><b>R$ 1.500</b></li>
+              <li><span>Links da bio</span><b>R$ 800</b></li>
+              <li class="inv__desc"><span>Desconto de 12%</span><b>− R$ 516</b></li>
+            </ul>
+          </details>
         </div>
       </div>
     </section>
 
-    <!-- ============ O COMBINADO (tudo que protege, em acordeão) ============ -->
-    <section class="section pcomb">
+    <!-- ===== DETALHES ===== -->
+    <section class="k-sec k-termos">
       <div class="container">
-        <div class="section-head" data-reveal>
-          <span class="eyebrow">O combinado</span>
+        <div class="k-head" data-reveal>
+          <span class="eyebrow">Detalhes</span>
           <span class="signature-line signature-line--sm head-sig" aria-hidden="true"></span>
-          <h2 class="h2 balance">Sem surpresa no meio do caminho.</h2>
-          <p class="lead pretty">
-            Está tudo escrito. Abra o que quiser conferir: prazo, regras do Conselho,
-            o que está incluso, o que não está e de que o cronograma depende.
-          </p>
+          <h2 class="k-h2 balance">Para ler antes de aprovar.</h2>
         </div>
 
-        <div class="comb" data-reveal>
-
+        <div class="termos" data-reveal>
           <details class="disc">
-            <summary>Como trabalhamos, etapa por etapa <span class="disc__c" aria-hidden="true"></span></summary>
+            <summary>Regras da odontologia <span class="disc__c" aria-hidden="true"></span></summary>
             <div class="disc__body">
-              <ol class="etapas">
-                <li><b>1. Diagnóstico</b> · Dia 1. Reunião de cerca de uma hora e levantamento do que já existe, página por página. Confirmamos nomes, formações e registros da equipe, inscrição da clínica e do responsável técnico, quais tratamentos entram e como são nomeados, e quais acessos precisamos.</li>
-                <li><b>2. Desenho das páginas e textos</b> · Dias 2 a 4. Desenhamos as páginas no papel antes de programar e escrevemos os textos. <b>Primeira aprovação de vocês</b> no dia 5, e é aqui que fica a primeira das duas rodadas de ajuste incluídas.</li>
-                <li><b>3. Desenvolvimento</b> · Dias 6 a 8. Construímos as três peças sobre a mesma base. Vocês acompanham por um link de prévia.</li>
-                <li><b>4. Conferência e publicação</b> · Dias 9 e 10. <b>Segunda aprovação de vocês</b>, cópia de segurança do site antigo e virada em janela combinada, sem a clínica ficar fora do ar. Conferimos tudo no celular antes de liberar.</li>
-                <li><b>5. Acompanhamento e treinamento</b> · Depois de publicar. Corrigimos o que aparecer nos primeiros 30 dias e entregamos o treinamento em vídeo gravado, que fica com vocês, mais uma conversa de meia hora ao vivo.</li>
-              </ol>
-              <p class="disc__fine">
-                São 10 dias úteis de trabalho nosso, e eles só correm com duas condições: o material da
-                clínica chega completo no dia 1 e cada uma das duas aprovações volta em até 1 dia útil.
-                Cada dia de espera por material ou por aprovação empurra a entrega no mesmo tanto, e isso
-                é dito agora para a data combinada ser real. Se a espera passar de 10 dias corridos, o
-                projeto é pausado e reagendado na primeira janela livre, sem alteração do valor, desde que
-                a retomada aconteça dentro de 90 dias.
-              </p>
-            </div>
-          </details>
-
-          <details class="disc">
-            <summary>Dentro das regras da odontologia <span class="disc__c" aria-hidden="true"></span></summary>
-            <div class="disc__body">
-              <p>Odontologia tem regras próprias de divulgação, e elas valem igual para site, blog e página de links. O site da Kira nasce dentro delas. Essa parte é nosso trabalho e já sai pronta.</p>
-              <p>Entram por obrigação: nome e inscrição da clínica no Conselho, nome e registro do responsável técnico, a identificação de Cirurgião-Dentista e, se o site citar especialidades, a relação dos profissionais com as suas qualificações. Esses dados ficam em campo editável, e não travados dentro do site, porque o responsável técnico pode mudar.</p>
-              <p class="disc__sub">Fica de fora do site, de propósito:</p>
+              <p>O site nasce dentro das regras do Conselho. Entram por obrigação a inscrição da clínica, o nome e o registro do responsável técnico e a identificação de Cirurgião-Dentista, tudo editável pela equipe.</p>
+              <p class="disc__sub">Fica de fora, de propósito</p>
               <ul class="disc__list disc__list--no">
-                <li>preço, tabela ou “a partir de R$”</li>
-                <li>parcelamento e forma de pagamento</li>
+                <li>preço, “a partir de R$” ou parcelamento</li>
                 <li>“avaliação gratuita” ou “primeira consulta grátis”</li>
-                <li>promessa de resultado, do tipo “sorriso perfeito garantido”</li>
-                <li>“a melhor da região”, “referência em”</li>
-                <li>foto de equipamento ou instrumental identificável, e vídeo durante o procedimento</li>
+                <li>promessa de resultado e “a melhor da região”</li>
+                <li>foto de equipamento identificável e vídeo de procedimento</li>
                 <li>a palavra “popular”, que a norma proíbe pelo nome</li>
               </ul>
-              <p class="disc__sub">Três pontos que passam pela responsável técnica antes de ir ao ar:</p>
+              <p class="disc__sub">Passa pelo responsável técnico antes de ir ao ar</p>
               <ul class="disc__list">
-                <li><b>Como cada tratamento é nomeado.</b> Termos comerciais muito usados, como “lente de contato dental”, são questionados pelo Conselho. Nossa recomendação é usar o nome técnico com o popular entre parênteses.</li>
-                <li><b>Quais tratamentos entram.</b> Alguns, como sedação, exigem habilitação específica e só podem ser divulgados com o profissional habilitado identificado.</li>
-                <li><b>Antes e depois.</b> Pela nossa leitura, é conteúdo do dentista que executou, no perfil dele, com autorização escrita da paciente e registro na imagem. Não é conteúdo da clínica. Por isso não prevemos galeria de resultados. Se o entendimento da responsável técnica for outro, o espaço se adapta.</li>
+                <li><b>Nome dos tratamentos.</b> Termos como “lente de contato dental” são questionados pelo Conselho. Recomendamos o nome técnico com o popular entre parênteses.</li>
+                <li><b>Tratamentos com habilitação,</b> como sedação, só com o profissional habilitado identificado.</li>
+                <li><b>Antes e depois.</b> Pela nossa leitura, é conteúdo do dentista que fez o tratamento, não da clínica. Se o entendimento for outro, o site se adapta.</li>
               </ul>
-              <p class="disc__fine">
-                Base: Código de Ética Odontológica (Resolução CFO-118/2012) e Resolução CFO-196/2019, com as
-                atualizações publicadas em 2025. A responsabilidade perante o Conselho pelo que está publicado
-                recai sobre a clínica e o responsável técnico. Por isso entregamos o site já dentro da norma, e
-                por isso a validação final de qualquer conteúdo, inclusive da mensagem pronta do botão de
-                WhatsApp, é sempre da responsável técnica. A NOVRA não é escritório jurídico.
-              </p>
+              <p class="disc__fine">Base: Código de Ética Odontológica (Resolução CFO-118/2012) e Resolução CFO-196/2019, com as atualizações de 2025. A validação final de qualquer conteúdo, inclusive da mensagem pronta do WhatsApp, é do responsável técnico. A NOVRA não é escritório jurídico.</p>
             </div>
           </details>
 
           <details class="disc">
-            <summary>O que está incluso e o que não está <span class="disc__c" aria-hidden="true"></span></summary>
+            <summary>O que entra e o que fica fora <span class="disc__c" aria-hidden="true"></span></summary>
             <div class="disc__body">
               <div class="duo">
                 <div>
-                  <p class="disc__sub disc__sub--yes">Está incluso</p>
+                  <p class="disc__sub disc__sub--yes">Entra</p>
                   <ul class="disc__list">
-                    <li>As três peças refeitas, com os textos escritos pela NOVRA. Vocês não recebem um site vazio para preencher</li>
-                    <li>Tratamento e organização de até 40 fotos que vocês já tiverem</li>
-                    <li>Equipe com foto, nome, formação e registro de cada profissional</li>
-                    <li>Dados obrigatórios do Conselho em campo editável</li>
+                    <li>As três peças, com textos escritos pela NOVRA</li>
+                    <li>Até 40 fotos enviadas por vocês, tratadas e organizadas</li>
                     <li>Política de privacidade e aviso de cookies</li>
-                    <li>WhatsApp fixo com mensagem pronta, mapa, horário e como chegar</li>
-                    <li>Formulário enxuto entregando as mensagens no e-mail e no WhatsApp que vocês indicarem</li>
-                    <li>Prévia com foto e descrição ao compartilhar o link</li>
-                    <li>Medição de visitas no site e contagem de cliques na bio</li>
-                    <li>Endereços antigos continuando a funcionar</li>
-                    <li>Cópia de segurança do site atual antes da virada</li>
-                    <li>Duas rodadas de ajuste e correção de defeito por 30 dias após a publicação</li>
-                    <li>Treinamento em vídeo, conversa de meia hora ao vivo, modelo de artigo e diretriz editorial</li>
+                    <li>Formulário que chega no e-mail e no WhatsApp de vocês</li>
+                    <li>Medição de visitas no site e de cliques na bio</li>
+                    <li>Links antigos funcionando e cópia de segurança do site atual</li>
+                    <li>Duas rodadas de ajuste e 30 dias de correção de defeito</li>
+                    <li>Treinamento em vídeo e meia hora ao vivo</li>
                   </ul>
                 </div>
                 <div>
-                  <p class="disc__sub disc__sub--no">Não está incluso</p>
+                  <p class="disc__sub disc__sub--no">Fica fora</p>
                   <ul class="disc__list disc__list--no">
-                    <li>O cuidado do Perfil da Empresa no Google. A honestidade aqui: o que mais pesa na escolha da paciente é a avaliação de outros pacientes, e isso vive no perfil do Google, não no site. Orientamos sem cobrar, e não vendemos como entrega o que ele entrega.</li>
-                    <li>Reescrita das páginas internas de cada tratamento. Elas continuam no ar com o visual atual, ligadas à nova página principal. Dizemos agora para não haver surpresa na entrega.</li>
-                    <li>Produção de artigos novos depois da entrega</li>
-                    <li>Gestão de Instagram, anúncios pagos e disparo de mensagens</li>
-                    <li>Sessão de fotos profissional. Entregamos o roteiro do que pode e do que não pode aparecer, pela norma do Conselho, antes de vocês contratarem o fotógrafo.</li>
-                    <li>Sistema de agendamento, atendimento automático e painéis de acompanhamento</li>
-                    <li>Validação jurídica da política de privacidade e aprovação final do conteúdo pelo responsável técnico</li>
-                    <li>Domínio e hospedagem, que continuam no nome da clínica. A NOVRA não cobra nada por isso e não entra nessa relação.</li>
-                    <li>Banco de imagens, fontes pagas ou ferramentas pagas</li>
-                    <li>Mudanças pedidas depois da segunda aprovação, fora das duas rodadas incluídas</li>
-                    <li>Promessa de posição no Google, número de visitas ou quantidade de pacientes</li>
+                    <li>Perfil da Empresa no Google (orientamos sem cobrar)</li>
+                    <li>Reescrever as páginas internas de cada tratamento, que seguem no ar com o visual atual</li>
+                    <li>Artigos novos depois da entrega</li>
+                    <li>Instagram, anúncios e disparo de mensagens</li>
+                    <li>Sessão de fotos (entregamos o roteiro para o fotógrafo)</li>
+                    <li>Agendamento online e atendimento automático</li>
+                    <li>Validação jurídica da política de privacidade</li>
+                    <li>Domínio e hospedagem, que seguem no nome da clínica</li>
+                    <li>Mudanças depois da segunda aprovação</li>
+                    <li>Promessa de posição no Google, visitas ou pacientes</li>
                   </ul>
                 </div>
               </div>
-              <p class="disc__fine">
-                O que conta como defeito nos 30 dias de garantia: qualquer coisa entregue por nós que não
-                funcione como combinado: link quebrado, bloco que não abre no celular, formulário que não
-                chega, texto trocado. Não conta: mudança de ideia sobre conteúdo ou visual, problema causado
-                por edição feita pela própria equipe depois da entrega, e queda ou lentidão da hospedagem,
-                que é contratada pela clínica.
-              </p>
+              <p class="disc__fine">Conta como defeito o que entregamos e não funciona como combinado: link quebrado, bloco que não abre no celular, formulário que não chega. Não conta mudança de ideia, edição feita pela equipe depois da entrega ou queda da hospedagem.</p>
             </div>
           </details>
 
@@ -439,352 +440,558 @@ const cases = [
             <summary>De que o prazo depende <span class="disc__c" aria-hidden="true"></span></summary>
             <div class="disc__body">
               <ul class="disc__list">
-                <li><b>Acesso ao site e ao domínio liberado no dia 1.</b> É o ponto que mais trava projeto de troca de site. O domínio e a hospedagem são de vocês, então o acesso é de vocês para liberar. Só precisamos dele a tempo. Se demorar, o cronograma começa a contar a partir da liberação.</li>
-                <li><b>A hospedagem atual comporta a entrega.</b> Conferimos no dia 1, sem custo. Se for preciso trocar de plano, dizemos na hora, com o custo na mesa, antes de qualquer coisa ser construída.</li>
-                <li><b>As fotos são de vocês para usar.</b> As imagens enviadas precisam ser de uso autorizado, e qualquer paciente identificável precisa ter autorizado por escrito. Essa parte é da clínica, porque é ela quem tem a relação com a paciente.</li>
-                <li><b>Uma pessoa decide.</b> Uma pessoa da Kira como ponto de contato, com autonomia para aprovar as duas etapas em até 1 dia útil. Num projeto de duas semanas, aprovação por comitê é o que mais atrasa.</li>
+                <li><b>Acesso ao site e ao domínio no dia 1.</b> Se demorar, o prazo conta a partir da liberação.</li>
+                <li><b>Hospedagem que aguente o site novo.</b> Conferimos no dia 1, sem custo. Se precisar trocar, vocês sabem o valor antes de qualquer mudança.</li>
+                <li><b>Fotos de uso autorizado.</b> Paciente identificável só com autorização por escrito.</li>
+                <li><b>Uma pessoa decide.</b> Um ponto de contato da Kira para aprovar em até 1 dia útil.</li>
               </ul>
-              <p class="disc__fine">
-                A entrega contratada é o site novo, e não mexemos no site atual durante o projeto. Intervir
-                nele cria acesso e responsabilidade sobre um sistema que não é a entrega. A exceção é a página
-                Sobre: se o acesso estiver liberado no dia 1, trocamos os quatro cartões “Nome Sobrenome”
-                pelos nomes reais como cortesia, sem cobrar, para isso não ficar no ar nem mais duas semanas.
-              </p>
+              <p class="disc__fine">Se a espera por material ou aprovação passar de 10 dias corridos, o projeto pausa e volta na primeira data livre, sem mudar o valor, desde que a retomada aconteça em até 90 dias. A cortesia da página Sobre vale com o acesso liberado no dia 1.</p>
             </div>
           </details>
 
           <details class="disc">
-            <summary>Perguntas que sempre aparecem <span class="disc__c" aria-hidden="true"></span></summary>
+            <summary>Perguntas frequentes <span class="disc__c" aria-hidden="true"></span></summary>
             <div class="disc__body">
               <p class="disc__sub">Dá para parcelar?</p>
-              <p>O valor com os 12% de desconto é para pagamento à vista na assinatura. O desconto é a contrapartida. Se parcelar for necessário para fechar, fale comigo antes de assinar que a gente conversa sobre a condição.</p>
-              <p class="disc__sub">Quem escreve os artigos do blog?</p>
-              <p>Os textos das páginas e a reorganização dos 10 artigos existentes são nossos, assim como a pauta inicial e a diretriz editorial. Artigos novos mês a mês, depois da entrega, não estão incluídos: vocês publicam sozinhas, com o modelo pronto e o treinamento gravado. Todo artigo precisa sair assinado por um dentista com nome e registro. É regra do Conselho.</p>
-              <p class="disc__sub">Eu consigo mudar as coisas depois, sem depender de vocês?</p>
-              <p>Sim, e é assim que foi pensado. Publicar artigo, trocar foto, mudar texto de uma seção, trocar um botão da bio ou a ordem deles: tudo isso vocês fazem sozinhas, com o vídeo de passo a passo que entregamos.</p>
-              <p class="disc__sub">E o domínio e a hospedagem? Vocês cobram alguma coisa?</p>
-              <p>Não. Continuam contratados e pagos pela clínica, no nome dela, como já são hoje. A NOVRA não cobra nada por isso e não entra nessa relação. Todos os acessos ficam com vocês: nós usamos durante o projeto e devolvemos.</p>
-              <p class="disc__sub">O que exatamente eu preciso enviar?</p>
-              <p>Cinco coisas: as fotos que vocês já têm da clínica e da equipe; nome, formação e registro no CRO de cada profissional; a inscrição da clínica no Conselho e o nome e registro do responsável técnico; a confirmação do endereço e do horário; e os acessos do site e do domínio.</p>
+              <p>A proposta é para pagamento à vista. Se precisar parcelar, chame no WhatsApp antes de aprovar.</p>
+              <p class="disc__sub">Consigo mudar as coisas depois?</p>
+              <p>Sim. Publicar artigo, trocar foto, mudar texto ou a ordem dos botões da bio, tudo pela própria equipe, com o vídeo que entregamos.</p>
+              <p class="disc__sub">Vocês cobram domínio ou hospedagem?</p>
+              <p>Não. Seguem no nome da clínica, sem mensalidade.</p>
+              <p class="disc__sub">E depois?</p>
+              <p>O site novo já fica pronto para receber agendamento online, resposta automática no WhatsApp fora do horário e acompanhamento de quem pediu orçamento. Nada disso está nesta proposta.</p>
             </div>
           </details>
-
         </div>
-
-        <p class="pcomb__depois lead pretty" data-reveal>
-          Mais para frente, essa base comporta a paciente marcar horário direto pelo site, o WhatsApp
-          responder sozinho fora do horário e a clínica acompanhar quem pediu orçamento e não voltou.
-          <strong class="text-bright">Nada disso está nesta proposta e nada disso tem custo aqui</strong>.
-          Fica registrado só porque não vai precisar refazer o site para chegar lá.
-        </p>
       </div>
     </section>
 
-    <!-- ============ FECHAMENTO ============ -->
-    <section class="section pcta">
-      <span class="glow-orb pcta__orb" aria-hidden="true"></span>
-      <div class="container">
-        <div class="cta card" data-reveal>
-          <i class="card-halo" aria-hidden="true"></i>
-          <span class="eyebrow">Para começar</span>
-          <h2 class="h2 balance cta__t">Três passos, e a agenda <span class="text-gradient">fica reservada.</span></h2>
-
-          <ol class="cta__passos">
-            <li><b>Aprovar.</b> Um retorno por escrito confirmando as três entregas, o valor de R$ 3.784 à vista e quem assina pela clínica. Com isso emitimos contrato e nota.</li>
-            <li><b>Reunir o material.</b> Fotos, dados da equipe com registro, inscrição da clínica e do responsável técnico, endereço e horário, e os acessos. É a parte que define o prazo.</li>
-            <li><b>Marcar o diagnóstico.</b> Uma hora, presencial ou online. Saímos dela com a data de publicação no calendário.</li>
-          </ol>
-
-          <div class="cta__actions">
-            <a href={waLink} target="_blank" rel="noopener" class="btn btn-primary btn-lg" data-magnetic>
-              Responder pelo WhatsApp
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <p class="cta__mail">{WHATSAPP_FMT} · <strong>contato@novratech.com.br</strong></p>
+    <!-- ===== FECHAMENTO ===== -->
+    <div id="fim">
+      <section class="k-sec k-cta" id="fechar">
+        <span class="k-glow" aria-hidden="true"><span class="glow-orb k-cta__orb"></span></span>
+        <div class="container">
+          <div class="cta card" data-reveal>
+            <i class="card-halo" aria-hidden="true"></i>
+            <span class="eyebrow">Para começar</span>
+            <h2 class="k-h2 balance cta__t">Três passos e a data de início <span class="text-gradient">fica reservada.</span></h2>
+            <ol class="cta__steps">
+              {passos.map((p) => (
+                <li class="cta__step">
+                  <span class="k-ico"><Icon name={p.icon} /></span>
+                  <span><b>{p.titulo}</b><small>{p.sub}</small></span>
+                </li>
+              ))}
+            </ol>
+            <div class="cta__actions">
+              <a href={waLink} target="_blank" rel="noopener" class="btn btn-primary btn-lg" data-magnetic>
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d={WA_PATH} /></svg>
+                Responder pelo WhatsApp
+              </a>
+              <p class="cta__contact">
+                <a href="tel:+5511998002960">{WHATSAPP_FMT}</a>
+                <a href="mailto:contato@novratech.com.br">contato@novratech.com.br</a>
+              </p>
+              <p class="cta__price"><b>R$ 3.784 à vista</b><small>válida até&nbsp;{VALIDA_ATE}</small></p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <footer class="pfoot">
-      <div class="container">
-        <hr class="signature-line footer__sig" />
-        <div class="pfoot__in">
-          <p>
-            <strong class="text-bright">NOVRA</strong> · Sistemas inteligentes para a próxima era<br />
-            <a href="https://novratech.com.br" target="_blank" rel="noopener">novratech.com.br</a> · contato@novratech.com.br
-          </p>
-          <p class="pfoot__r">
-            Proposta para Kira Odontologia<br />
-            Emitida em {EMITIDA} · válida até {VALIDA_ATE}<br />
-            Documento comercial, não é contrato
-          </p>
+      <footer class="kf">
+        <div class="container">
+          <hr class="signature-line footer__sig" />
+          <div class="kf__in">
+            <p><b>NOVRA</b> · <a href="https://novratech.com.br" target="_blank" rel="noopener">novratech.com.br</a></p>
+            <p>Proposta para Kira Odontologia · válida até&nbsp;{VALIDA_ATE} · não é contrato</p>
+          </div>
         </div>
-      </div>
-    </footer>
-
+      </footer>
+    </div>
   </main>
+
+  <!-- barra fixa no celular -->
+  <div class="kbar" inert>
+    <p class="kbar__p"><small>Total da proposta</small><b>R$ 3.784 à vista</b></p>
+    <a href={waLink} target="_blank" rel="noopener" class="btn btn-primary kbar__btn">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d={WA_PATH} /></svg>
+      WhatsApp
+    </a>
+  </div>
 </Base>
 
 <style>
-  /* ---------- cabeçalho enxuto ---------- */
-  .phead { position: relative; z-index: 3; padding-block: 1.5rem; border-bottom: 1px solid var(--border); }
-  .phead__in { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-  .phead__logo img { width: 128px; height: auto; }
-  .phead__meta {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em;
-    text-transform: uppercase; color: var(--text-3);
+  /* ---------- base ---------- */
+  main, .kbar { --text-3: #8a909c; } /* contraste 4,5:1 nos textos pequenos */
+  .k-sec { position: relative; z-index: 2; padding-block: clamp(2.75rem, 1.9rem + 3vw, 4.5rem); }
+  .k-head { position: relative; max-width: 760px; }
+  .k-head .head-sig { margin-top: 0.85rem; }
+  .k-h2 { font-size: clamp(1.8rem, 1.2rem + 2.6vw, 3.2rem); line-height: 1.06; margin-top: 0.85rem; }
+  .k-sub { margin-top: 0.9rem; max-width: 52ch; font-size: 0.98rem; line-height: 1.55; color: var(--text-2); text-wrap: pretty; }
+  .k-fine { margin-top: 1rem; font-size: 0.8rem; color: var(--text-3); }
+  .k-cap { margin: 0 0 0.85rem; font-size: 0.88rem; line-height: 1.45; color: var(--text-2); text-wrap: pretty; }
+  .k-cap b { color: var(--text-1); font-weight: 600; }
+
+  /* brilhos de fundo que somem nas bordas, sem corte reto */
+  .k-glow {
+    position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    -webkit-mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
+    mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
   }
 
-  /* ---------- hero ---------- */
-  .phero { position: relative; z-index: 2; overflow: hidden; padding-block: clamp(3.5rem, 7vw, 6.5rem) clamp(2.5rem, 5vw, 4rem); }
-  .phero__orb-a { top: -14%; left: -8%; width: 46vw; height: 46vw; max-width: 620px; max-height: 620px; background: var(--blue); animation: float-orb 17s ease-in-out infinite; }
-  .phero__orb-b { top: 22%; right: -10%; width: 34vw; height: 34vw; max-width: 460px; max-height: 460px; background: var(--gold); opacity: 0.09; animation: float-orb 21s ease-in-out infinite reverse; }
+  .k-ico {
+    display: grid; place-items: center; width: 44px; height: 44px; flex: none; border-radius: 12px;
+    background: linear-gradient(160deg, rgba(46, 107, 255, 0.24), rgba(0, 168, 255, 0.08)), var(--bg-1);
+    border: 1px solid var(--border-brand); color: var(--cyan-300);
+  }
+  .k-ico :global(svg) { width: 21px; height: 21px; }
 
-  .phero__in {
-    display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    gap: clamp(2rem, 5vw, 4rem); align-items: center;
+  .k-checks { display: grid; gap: 0.5rem; margin-top: 1rem; }
+  .k-checks li, .disc__list li {
+    position: relative; max-width: 68ch; padding-left: 1.5rem; font-size: 0.93rem; line-height: 1.5; color: var(--text-2);
   }
-  .phero__title { margin-top: 1.4rem; }
-  .phero__lead { margin-top: 1.6rem; max-width: 54ch; }
-  .phero__actions { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-top: 2.2rem; }
+  .k-checks li::before, .disc__list li::before {
+    content: ""; position: absolute; left: 0.1rem; top: 0.5em; width: 8px; height: 4px;
+    border-left: 1.5px solid var(--cyan-500); border-bottom: 1.5px solid var(--cyan-500); transform: rotate(-45deg);
+  }
 
-  /* mock de resultado de busca: a prova mais direta do diagnóstico */
-  .serp {
-    border: 1px solid var(--border-strong); border-radius: var(--r-md);
-    background: linear-gradient(180deg, var(--bg-2), var(--bg-1));
-    overflow: hidden; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
-  }
-  .serp__chrome {
-    display: flex; align-items: center; gap: 0.4rem;
-    padding: 0.7rem 0.9rem; background: var(--bg-3); border-bottom: 1px solid var(--border);
-  }
-  .serp__dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); }
-  .serp__tab {
-    margin-left: 0.8rem; font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-2);
-    background: var(--bg-1); border: 1px solid var(--border); border-radius: 6px;
-    padding: 0.22rem 0.9rem;
-  }
-  .serp__body { padding: 1.3rem 1.4rem 1.2rem; }
-  .serp__url { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-3); }
-  .serp__title {
-    font-family: var(--font-display); font-size: 1.5rem; font-weight: 500;
-    color: #8fb6ff; margin-top: 0.25rem; letter-spacing: -0.01em;
-  }
-  .serp__desc { margin-top: 0.4rem; font-size: 0.9rem; }
-  .serp__missing {
-    color: var(--text-3); font-style: italic;
-    border-bottom: 1px dashed var(--border-strong); padding-bottom: 2px;
-  }
-  .serp__note { margin-top: 0.9rem; font-size: 0.85rem; color: var(--text-3); line-height: 1.6; }
-  .serp .hairline { margin-top: 1rem; }
+  /* ícone do WhatsApp nunca encolhe dentro do botão */
+  .btn > svg { flex: none; width: 20px; height: 20px; }
 
-  /* faixa de fatos */
-  .facts {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 1px; background: var(--border); border: 1px solid var(--border);
-    border-radius: var(--r-md); overflow: hidden; margin-top: clamp(2.5rem, 5vw, 4rem);
+  /* ---------- cabeçalho ---------- */
+  .kh { position: relative; z-index: 3; border-bottom: 1px solid var(--border); }
+  .kh__in { display: flex; align-items: center; gap: 0.7rem; padding-block: 1rem; }
+  .kh__logo img { width: 104px; height: auto; }
+  .kh__x { color: var(--text-3); font-size: 0.85rem; }
+  .kh__cli { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap; color: var(--gold-light); }
+  @media (min-width: 720px) { .kh__logo img { width: 124px; } }
+
+  /* ---------- topo ---------- */
+  .k-hero { position: relative; z-index: 2; padding-block: clamp(1.8rem, 1.2rem + 4vw, 5rem) clamp(2.5rem, 1.6rem + 3vw, 4.5rem); }
+  .k-hero__orb { top: -22%; left: -30%; width: 90vw; height: 90vw; max-width: 680px; max-height: 680px; background: var(--blue); opacity: 0.2; }
+  .k-hero__grid { position: relative; display: grid; gap: 2.2rem; align-items: center; }
+  @media (min-width: 960px) { .k-hero__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 4rem; } }
+  .k-hero__h { font-size: clamp(2.2rem, 1.3rem + 4.3vw, 4.3rem); line-height: 1.03; margin-top: 1rem; }
+  .k-hero__lead { margin-top: 1rem; font-size: clamp(1.05rem, 0.98rem + 0.4vw, 1.3rem); color: var(--text-2); max-width: 38ch; }
+  .k-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.3rem; }
+  .k-chips li {
+    display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.45rem 0.8rem;
+    border: 1px solid var(--border-strong); border-radius: var(--r-pill); background: var(--surface-2);
+    font-size: 0.82rem; color: var(--text-1); white-space: nowrap;
   }
-  .facts__i { background: var(--bg-1); padding: 1.15rem 1.25rem; }
-  .facts__i--hl { background: linear-gradient(180deg, rgba(46,107,255,0.12), var(--bg-1)); }
-  .facts__i dt {
-    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--text-3);
+  .k-chips :global(svg) { color: var(--gold); }
+  @media (max-width: 419px) { .k-chips { gap: 0.3rem; } .k-chips li { padding: 0.4rem 0.55rem; gap: 0.3rem; font-size: 0.78rem; } }
+  @media (max-width: 379px) { .k-chips :global(svg) { display: none; } }
+  .k-hero__cta { display: none; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.6rem; }
+  @media (min-width: 720px) { .k-hero__cta { display: flex; } }
+
+  /* no celular, a prova do Google vem logo depois do título */
+  @media (max-width: 959px) {
+    .k-hero__grid { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+    .k-hero__copy { display: contents; }
+    .k-hero__eb { order: 0; align-self: flex-start; }
+    .k-hero__h { order: 1; }
+    .serp-ba { order: 2; margin-top: 1.4rem; }
+    .k-hero__lead { order: 3; margin-top: 1.4rem; }
+    .k-chips { order: 4; }
+    .k-hero__cta { order: 5; }
   }
-  .facts__i dd {
-    font-family: var(--font-display); font-size: 1.2rem; font-weight: 600;
-    color: var(--text-1); margin-top: 0.45rem; font-variant-numeric: tabular-nums;
+
+  /* ---------- antes x depois ---------- */
+  .ba { min-width: 0; }
+  .ba-tabs {
+    display: inline-flex; gap: 4px; padding: 4px; margin-bottom: 0.9rem;
+    border: 1px solid var(--border-strong); border-radius: var(--r-pill); background: var(--bg-1);
   }
-  .facts__i span { display: block; font-size: 0.8rem; color: var(--text-3); margin-top: 0.15rem; }
+  .ba-tab {
+    min-height: 40px; padding: 0 1.05rem; border-radius: var(--r-pill);
+    font-family: var(--font-display); font-weight: 500; font-size: 0.88rem; color: var(--text-2);
+    transition: background 0.35s var(--ease-out), color 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+  }
+  @media (pointer: coarse) { .ba-tab { min-height: 44px; } }
+  .ba-tab[aria-pressed="true"] { background: var(--grad-brand); color: #fff; box-shadow: 0 6px 20px rgba(46, 107, 255, 0.35); }
+  [data-ba-frame] { cursor: pointer; }
+  .ba-hint { margin-top: 0.7rem; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.04em; color: var(--text-2); }
+  @media (hover: hover) and (pointer: fine) { .ba-hint { display: none; } }
+
+  .ba-stack { display: grid; }
+  .ba-stack > * { grid-area: 1 / 1; }
+  .ba-hoje, .ba-depois {
+    opacity: 0; visibility: hidden; transform: translateY(6px);
+    transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out), visibility 0s linear 0.45s;
+  }
+  [data-state="hoje"] .ba-hoje, [data-state="depois"] .ba-depois { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+
+  /* resultado do Google, no tema escuro do próprio Google */
+  .g-frame { border: 1px solid var(--border-strong); border-radius: var(--r-md); overflow: hidden; background: #202124; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55); }
+  .g-chrome { display: flex; align-items: center; gap: 6px; padding: 0.6rem 0.8rem; background: #2b2c30; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+  .g-chrome > i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 255, 0.18); }
+  .g-tab { margin-left: 0.6rem; min-width: 0; padding: 0.22rem 0.85rem; border-radius: 6px; background: #202124; font: 500 0.72rem/1.4 system-ui, -apple-system, sans-serif; color: #e8eaed; }
+  .g-tab > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .g-body { padding: 1.1rem 1.15rem 1.3rem; font-family: Arial, 'Helvetica Neue', sans-serif; }
+  .g-res { display: flex; flex-direction: column; }
+  .g-site { display: flex; align-items: center; gap: 0.65rem; }
+  .g-fav { width: 28px; height: 28px; flex: none; border-radius: 50%; background: #fff; object-fit: contain; padding: 2px; }
+  .g-site b { display: block; font-weight: 400; font-size: 0.86rem; color: #dadce0; }
+  .g-site small { display: block; font-size: 0.74rem; color: #bdc1c6; }
+  .g-title { margin-top: 0.6rem; font-size: 1.24rem; line-height: 1.3; color: #8ab4f8; }
+  .ba-depois .g-title { min-height: 2.6em; text-wrap: balance; }
+  .g-desc { margin-top: 0.35rem; font-size: 0.87rem; line-height: 1.55; color: #bdc1c6; }
+  /* a descrição que falta vira uma caixa tracejada, do mesmo tamanho da que vem depois */
+  .g-miss {
+    flex: 1; display: grid; place-items: center; min-height: 4.6em; margin-top: 0.6rem; padding: 0.7rem 0.9rem;
+    border: 1px dashed #5f6368; border-radius: 8px; text-align: center; font-size: 0.84rem; font-style: italic; color: #9aa0a6;
+  }
+  .g-title.is-typing::after {
+    content: ""; display: inline-block; width: 2px; height: 1.05em; margin-left: 2px;
+    background: #8ab4f8; vertical-align: -0.15em; animation: k-caret 0.8s steps(1) infinite;
+  }
+  @keyframes k-caret { 50% { opacity: 0; } }
 
   /* ---------- diagnóstico ---------- */
-  .pdiag { position: relative; z-index: 2; }
-  .placar {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-    gap: 1.1rem; margin-top: clamp(2.5rem, 5vw, 3.5rem);
-  }
-  .placar__i { padding: 1.6rem 1.5rem; }
-  .placar__num {
-    font-family: var(--font-display); font-size: clamp(2.6rem, 5vw, 3.6rem);
-    font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums;
-  }
-  .placar__label { margin-top: 0.7rem; color: var(--text-1); font-weight: 500; line-height: 1.45; }
-  .placar__det { margin-top: 0.6rem; font-size: 0.89rem; color: var(--text-3); line-height: 1.6; }
+  .hoje__vis { display: grid; gap: 2.4rem; margin-top: clamp(2rem, 1.2rem + 3vw, 3rem); }
+  @media (min-width: 760px) { .hoje__vis { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .hoje__fig { margin: 0; text-align: center; }
+  .wa-ba { width: 100%; max-width: 400px; margin-inline: auto; text-align: center; }
 
-  .evid { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
-  .evid img { width: 100%; border: 1px solid var(--border); border-radius: var(--r-md); }
-  .evid figcaption {
-    margin-top: 1rem; font-size: 0.88rem; color: var(--text-3);
-    line-height: 1.7; max-width: 70ch;
+  .phone {
+    position: relative; width: min(250px, 68vw); margin-inline: auto; padding: 9px; border-radius: 38px;
+    background: linear-gradient(160deg, #2c2f38, #121318);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09), 0 30px 70px rgba(0, 0, 0, 0.55);
   }
-  .evid figcaption strong { font-family: var(--font-mono); color: var(--gold); font-weight: 500; }
-  .pdiag__close { margin-top: clamp(2rem, 4vw, 3rem); max-width: 68ch; }
-  .pdiag__close em { font-style: normal; color: var(--text-3); font-size: 0.9em; }
+  .phone__notch { position: absolute; top: 16px; left: 50%; z-index: 3; width: 72px; height: 20px; transform: translateX(-50%); border-radius: 12px; background: #0a0a0c; }
+  .phone__screen { position: relative; border-radius: 30px; overflow: hidden; background: #f5f5f5; text-align: left; }
+  .phone__url { padding: 38px 10px 8px; background: #f1f1f1; border-bottom: 1px solid #e2e2e2; font: 500 10px/1.2 system-ui, sans-serif; color: #5f6368; text-align: center; }
+  .ph-sobre { height: 410px; -webkit-mask-image: linear-gradient(#000 80%, transparent); mask-image: linear-gradient(#000 80%, transparent); }
+  .ph-cards { display: grid; gap: 4px; padding: 6px 0; }
+  .ph-card { padding: 8px 12px 10px; }
+  .ph-card span { display: block; aspect-ratio: 16 / 9; background: #b5b5b5; }
+  .ph-card b { display: block; margin-top: 7px; font: 700 13px/1.2 system-ui, -apple-system, sans-serif; color: #111; }
+  .ph-card small { display: block; font: 12px/1.3 system-ui, -apple-system, sans-serif; color: #444; }
+  .phone__tag {
+    position: absolute; right: -22px; top: 38%; z-index: 4; display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.42rem 0.75rem; border-radius: var(--r-pill); border: 1px solid var(--border-gold);
+    background: rgba(20, 17, 10, 0.92); font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold-light); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  .phone__tag i { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); animation: pulse-glow 1.6s ease-in-out infinite; }
+
+  /* WhatsApp, no tema escuro do próprio WhatsApp */
+  .wa {
+    text-align: left; border-radius: 22px; overflow: hidden; border: 1px solid var(--border-strong);
+    background: #0b141a; box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+  .wa__head { display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 1rem; background: #202c33; color: #e9edef; }
+  .wa__av { width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 50% 38%, #8696a0 0 26%, transparent 27%), radial-gradient(circle at 50% 100%, #8696a0 0 44%, #6b7c85 45%); }
+  .wa__head b { display: block; font-weight: 500; font-size: 0.92rem; }
+  .wa__head small { display: block; font-size: 0.72rem; color: #8696a0; }
+  .wa__body {
+    display: flex; flex-direction: column; gap: 0.45rem; padding: 1rem 0.8rem;
+    background-color: #0b141a; background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 18px 18px;
+  }
+  .wa__msg { align-self: flex-start; max-width: 86%; padding: 0.45rem 0.65rem; border-radius: 10px; border-top-left-radius: 3px; background: #202c33; color: #e9edef; font-size: 0.88rem; line-height: 1.4; }
+  .wa__msg--out { align-self: flex-end; border-radius: 10px; border-top-right-radius: 3px; background: #005c4b; }
+  .wa__msg .wa__time { display: inline-block; margin-left: 0.5rem; padding: 0; vertical-align: -0.35em; }
+  .wa__link { width: 86%; padding: 0.3rem 0.3rem 0.35rem; }
+  /* o espaço da prévia existe nos dois estados: hoje ele mostra o que falta */
+  .wa__card { position: relative; display: grid; margin-bottom: 0.35rem; border-radius: 7px; overflow: hidden; background: #1d282f; }
+  .wa__card > * { grid-area: 1 / 1; }
+  .wa__real, .wa__none { transition: opacity 0.45s var(--ease-out), visibility 0s linear 0.45s; }
+  .wa__real img { display: block; width: 100%; aspect-ratio: 1.91 / 1; object-fit: cover; }
+  .wa__ct { display: block; padding: 0.45rem 0.6rem 0.5rem; }
+  .wa__ct b { display: block; font-size: 0.84rem; font-weight: 600; color: #e9edef; }
+  .wa__ct small { display: block; margin-top: 0.1rem; font-size: 0.76rem; line-height: 1.35; color: #8696a0; }
+  .wa__ct i { display: block; margin-top: 0.25rem; font-style: normal; font-size: 0.72rem; color: #8696a0; }
+  .wa__none {
+    display: grid; place-items: center; margin: 1px; border: 1.5px dashed rgba(233, 237, 239, 0.25); border-radius: 6px;
+    background: #111b21; font-size: 0.8rem; color: #8696a0;
+  }
+  [data-state="hoje"] .wa__real { opacity: 0; visibility: hidden; }
+  [data-state="depois"] .wa__none { opacity: 0; visibility: hidden; }
+  [data-state="hoje"] .wa__none, [data-state="depois"] .wa__real { transition-delay: 0s; }
+  .wa__url { display: block; padding: 0 0.3rem; color: #53bdeb; font-size: 0.88rem; text-decoration: underline; word-break: break-all; }
+  .wa__time { display: block; padding: 0 0.3rem; text-align: right; font-size: 0.66rem; color: #8696a0; }
+
+  .k-stats {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin-top: clamp(2.5rem, 1.6rem + 3vw, 3.5rem);
+    background: var(--border); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;
+  }
+  @media (min-width: 900px) { .k-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .k-stat { background: var(--bg-1); padding: 1.15rem 1rem 1.25rem; min-width: 0; }
+  .k-stat__n { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.1rem, 1.5rem + 2.4vw, 3.3rem); line-height: 1; font-variant-numeric: tabular-nums; }
+  .k-stat__l { margin-top: 0.5rem; font-size: 0.84rem; line-height: 1.4; color: var(--text-2); text-wrap: pretty; }
+
+  .k-rep {
+    display: flex; align-items: center; gap: 0.75rem; width: fit-content; max-width: 100%; margin: 1.1rem auto 0; padding: 0.95rem 1.2rem;
+    border: 1px solid var(--border-gold); border-radius: var(--r-md);
+    background: linear-gradient(90deg, rgba(201, 162, 75, 0.13), rgba(201, 162, 75, 0.02));
+    font-size: 0.92rem; line-height: 1.45; color: var(--text-2);
+  }
+  .k-rep span { text-wrap: pretty; }
+  .k-rep :global(svg) { flex: none; color: var(--gold); }
+  .k-rep b { color: var(--gold-light); font-weight: 600; }
+  .k-hoje .k-fine { text-align: center; }
 
   /* ---------- entregas ---------- */
-  .pentregas { position: relative; z-index: 2; overflow: hidden; }
-  .pentregas__orb { top: 10%; right: -12%; width: 42vw; height: 42vw; max-width: 560px; max-height: 560px; background: var(--blue); }
-  .ent__grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-    gap: 1.3rem; margin-top: clamp(2.5rem, 5vw, 3.5rem); align-items: start;
-  }
-  .ent { padding: 1.8rem 1.6rem; display: flex; flex-direction: column; }
-  .ent__top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-  .ent__n {
-    font-family: var(--font-mono); font-size: 0.78rem; color: var(--gold);
-    border: 1px solid var(--border-gold); border-radius: var(--r-pill); padding: 0.2rem 0.75rem;
-  }
-  .ent__preco { font-family: var(--font-mono); font-size: 0.95rem; color: var(--text-1); }
-  .ent__titulo { font-size: var(--fs-h4); margin-top: 1.1rem; }
-  .ent__resumo { margin-top: 0.8rem; font-size: 0.95rem; line-height: 1.65; }
-  .ent__dest { margin-top: 1.2rem; display: grid; gap: 0.5rem; }
-  .ent__dest li {
-    position: relative; padding-left: 1.4rem; font-size: 0.9rem; color: var(--text-2); line-height: 1.55;
-  }
-  .ent__dest li::before {
-    content: ""; position: absolute; left: 0; top: 0.5em;
-    width: 8px; height: 4px; border-left: 1.5px solid var(--cyan-500); border-bottom: 1.5px solid var(--cyan-500);
-    transform: rotate(-45deg);
-  }
-  .ent__disc { margin-top: auto; padding-top: 1.3rem; }
+  .k-ent__orb { top: 8%; right: -30%; width: 70vw; height: 70vw; max-width: 560px; max-height: 560px; background: var(--blue); }
+  .ent-top { position: relative; display: grid; gap: 2rem; }
+  @media (min-width: 900px) { .ent-top { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 3rem; } }
 
-  /* ---------- disclosure (acordeão) ---------- */
+  .kv { margin: 0; text-align: center; }
+  .kv__badge {
+    display: inline-block; margin-right: 0.35rem; padding: 0.18rem 0.55rem; border: 1px solid var(--border-gold); border-radius: var(--r-pill);
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-light); vertical-align: 0.1em;
+  }
+  .phone--kv { width: min(260px, 70vw); }
+  .kv__screen { height: 470px; background: #0f0f10; color: #fff; display: flex; flex-direction: column; }
+  .kv__nav { position: absolute; top: 0; left: 0; right: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 40px 16px 10px; background: linear-gradient(180deg, rgba(10, 10, 10, 0.75), transparent); }
+  .kv__nav img { width: 70px; height: auto; }
+  .kv__burger { display: grid; gap: 4px; }
+  .kv__burger i { display: block; width: 16px; height: 1.5px; background: #fff; }
+  .kv__hero { position: relative; flex: 1; display: flex; align-items: flex-end; }
+  .kv__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; }
+  .kv__hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10, 10, 10, 0) 25%, rgba(10, 10, 10, 0.88) 72%); }
+  .kv__copy { position: relative; z-index: 1; display: grid; gap: 7px; padding: 0 16px 16px; }
+  .kv__eb { font-size: 8.5px; letter-spacing: 0.22em; text-transform: uppercase; color: #ccbe98; }
+  .kv__h { font-family: var(--font-body); font-weight: 300; font-size: 21px; line-height: 1.12; letter-spacing: -0.01em; color: #fff; }
+  .kv__s { font-size: 11px; color: rgba(255, 255, 255, 0.78); }
+  .kv__btn { display: block; margin-top: 3px; padding: 9px 10px; border-radius: 999px; background: linear-gradient(90deg, #ab9b71, #ccbe98); color: #1d1a12; font: 600 10.5px/1 var(--font-body); text-align: center; }
+  .kv__btn--o { margin-top: 0; background: transparent; border: 1px solid rgba(255, 255, 255, 0.5); color: #fff; }
+  .kv__chips { display: flex; gap: 5px; padding: 10px 12px 14px; background: #f7f4ee; }
+  .kv__chips span { flex: 1; padding: 6px 0; border: 1px solid #ccbe98; border-radius: 999px; font: 500 9px/1 var(--font-body); color: #6b5f40; text-align: center; }
+
+  .ent-grid { display: grid; gap: 1rem; margin-top: clamp(2rem, 1.2rem + 3vw, 3rem); }
+  @media (min-width: 900px) { .ent-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; align-items: start; } }
+  .ent { padding: 0.85rem 0.85rem 0.3rem; }
+  .ent__media {
+    position: relative; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center;
+    aspect-ratio: 16 / 10; padding: 0.85rem; border-radius: var(--r-sm); overflow: hidden;
+    background: radial-gradient(120% 90% at 50% 0%, rgba(201, 162, 75, 0.14), transparent 70%), var(--bg-2);
+  }
+  .bframe { width: 100%; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-strong); background: #111; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); }
+  .bframe__bar { display: flex; align-items: center; gap: 4px; padding: 6px 8px; background: #1c1d22; }
+  .bframe__bar > i { width: 6px; height: 6px; flex: none; border-radius: 50%; background: rgba(255, 255, 255, 0.22); }
+  .bframe__bar > span { flex: 1; min-width: 0; margin-left: 6px; padding: 0 6px; border-radius: 4px; background: rgba(255, 255, 255, 0.07); font: 9px/14px var(--font-mono); color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bframe img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .pframe { height: 100%; aspect-ratio: 9 / 18.5; padding: 5px; border-radius: 18px; background: linear-gradient(160deg, #2c2f38, #121318); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09), 0 16px 40px rgba(0, 0, 0, 0.5); }
+  .pframe img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 13px; }
+  .ent__prova {
+    position: absolute; right: 0.6rem; bottom: 0.6rem; display: inline-flex; align-items: center; gap: 0.3rem;
+    padding: 0.32rem 0.6rem; border-radius: var(--r-pill); background: rgba(10, 10, 12, 0.85); border: 1px solid var(--border-gold);
+    font-family: var(--font-mono); font-size: 0.68rem; color: var(--gold-light); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  }
+  .ent__media:hover .ent__prova { border-color: var(--gold); }
+  .ent__top { display: flex; align-items: center; gap: 0.85rem; margin-top: 1.1rem; padding-inline: 0.4rem; }
+  .ent__t { font-size: 1.14rem; }
+  .ent__p { margin-left: auto; font-family: var(--font-mono); font-size: 0.92rem; color: var(--gold-light); white-space: nowrap; }
+  .ent .k-checks, .ent__disc { padding-inline: 0.4rem; }
+  .ent__disc { margin-top: 1rem; }
+
+  /* ---------- acordeão ---------- */
   .disc { border-top: 1px solid var(--border); }
-  .disc:first-child { border-top: 0; }
+  .termos .disc:first-child { border-top: 0; }
   .disc > summary {
-    list-style: none; cursor: pointer; display: flex; align-items: center; gap: 1rem;
-    padding: 1.15rem 0; font-family: var(--font-display); font-weight: 500;
-    color: var(--text-1); font-size: 1rem;
-    transition: color 0.3s var(--ease-out);
+    list-style: none; cursor: pointer; display: flex; align-items: center; gap: 1rem; min-height: 52px; padding: 0.9rem 0;
+    font-family: var(--font-display); font-weight: 500; font-size: 0.98rem; color: var(--text-1); transition: color 0.3s var(--ease-out);
   }
   .disc > summary::-webkit-details-marker { display: none; }
   .disc > summary:hover { color: var(--cyan-400); }
-  .disc__c {
-    margin-left: auto; position: relative; width: 14px; height: 14px; flex: none;
-  }
-  .disc__c::before, .disc__c::after {
-    content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 2px;
-    background: var(--gold); border-radius: 2px; transition: transform 0.35s var(--ease-out);
-  }
+  .disc__c { position: relative; width: 14px; height: 14px; flex: none; margin-left: auto; }
+  .disc__c::before, .disc__c::after { content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; border-radius: 2px; background: var(--gold); transition: transform 0.35s var(--ease-out); }
   .disc__c::after { transform: rotate(90deg); }
   .disc[open] > summary { color: var(--gold-light); }
   .disc[open] .disc__c::after { transform: rotate(0deg); }
-  .disc__body, .disc__list { padding-bottom: 1.5rem; }
-  .disc__body > p { margin-bottom: 0.9rem; font-size: 0.94rem; line-height: 1.7; }
-  .disc__sub {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--text-3); margin: 1.4rem 0 0.7rem !important;
-  }
-  .disc__sub--yes { color: var(--cyan-400); }
-  .disc__sub--no { color: var(--text-3); }
-  .disc__list { display: grid; gap: 0.6rem; }
-  .disc__list li {
-    position: relative; padding-left: 1.5rem; font-size: 0.92rem;
-    color: var(--text-2); line-height: 1.65;
-  }
-  .disc__list li::before {
-    content: ""; position: absolute; left: 0; top: 0.52em;
-    width: 8px; height: 4px; border-left: 1.5px solid var(--cyan-500); border-bottom: 1.5px solid var(--cyan-500);
-    transform: rotate(-45deg);
-  }
-  .disc__list--no li::before {
-    border: 0; background: var(--text-3); width: 9px; height: 1.5px; transform: none; top: 0.72em;
-  }
-  .disc__list b, .etapas b { color: var(--text-1); font-weight: 600; }
-  .disc__fine {
-    margin-top: 1.2rem; font-size: 0.84rem; color: var(--text-3);
-    line-height: 1.7; border-left: 1px solid var(--border); padding-left: 1rem;
-  }
-  .etapas { display: grid; gap: 0.9rem; padding-bottom: 0.4rem; }
-  .etapas li { font-size: 0.93rem; color: var(--text-2); line-height: 1.65; }
-  .duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.6rem; }
+  .disc__body { padding-bottom: 1.4rem; }
+  .disc__body > p { max-width: 68ch; margin-bottom: 0.8rem; font-size: 0.93rem; line-height: 1.65; color: var(--text-2); }
+  .disc__list { display: grid; gap: 0.55rem; padding-bottom: 1.2rem; }
+  .disc__body .disc__list { padding-bottom: 0.4rem; }
+  .disc__list b { color: var(--text-1); font-weight: 600; }
+  .disc__list--no li::before { border: 0; width: 9px; height: 1.5px; top: 0.72em; background: var(--text-3); transform: none; }
+  .disc__body .disc__sub { margin: 1.2rem 0 0.6rem; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); }
+  .disc__body .disc__sub--yes { color: var(--cyan-400); }
+  .disc__fine { margin-top: 1rem; padding-left: 1rem; border-left: 1px solid var(--border); font-size: 0.82rem !important; color: var(--text-3) !important; }
+  .duo { display: grid; gap: 0.5rem 1.6rem; }
+  @media (min-width: 760px) { .duo { grid-template-columns: 1fr 1fr; } }
   .duo > div { min-width: 0; }
-  .comb {
-    margin-top: clamp(2.2rem, 4vw, 3rem);
-    border: 1px solid var(--border); border-radius: var(--r-lg);
-    padding: 0.4rem clamp(1.2rem, 3vw, 2rem); background: var(--surface);
-  }
-  .pcomb__depois { margin-top: clamp(2rem, 4vw, 3rem); max-width: 70ch; }
+  .termos { margin-top: clamp(1.8rem, 1.2rem + 2vw, 2.6rem); padding: 0.2rem clamp(1.1rem, 0.8rem + 1.5vw, 1.8rem); border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); }
 
-  /* ---------- case ---------- */
-  .pcase { position: relative; z-index: 2; }
-  .case__grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.3rem; margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  /* ---------- prazo: calendário de 2 semanas ---------- */
+  .cal { display: grid; gap: 1.6rem; margin-top: clamp(1.8rem, 1.2rem + 2vw, 2.6rem); }
+  @media (min-width: 900px) { .cal { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); align-items: center; gap: 3rem; } }
+  .cal__grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .cal__dow { padding-bottom: 2px; text-align: center; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.14em; color: var(--text-3); }
+  .cal__day {
+    position: relative; display: grid; place-items: center; align-content: center; min-height: 58px; border-radius: 12px;
+    border: 1px solid var(--border); background: var(--bg-1); color: var(--text-3);
+    transition: background 0.5s var(--ease-out), border-color 0.5s var(--ease-out), color 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+    transition-delay: calc(var(--i) * 90ms);
   }
-  .case { padding: 1.1rem; display: block; }
-  .case__shot {
-    display: block; border-radius: var(--r-sm); overflow: hidden;
-    border: 1px solid var(--border); background: var(--bg-2);
-    aspect-ratio: 16 / 10;
-  }
-  .case__shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
-  .case__t { font-size: 1.05rem; margin-top: 1.1rem; }
-  .case__d { font-size: 0.88rem; color: var(--text-3); margin-top: 0.4rem; line-height: 1.55; }
-  .case__l { margin-top: 0.9rem; font-family: var(--font-mono); font-size: 0.78rem; }
+  .cal__day b { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+  .cal__day small { font-family: var(--font-mono); font-size: 0.56rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .cal.is-on .cal__day { color: #fff; }
+  .cal.is-on .e1 { background: rgba(46, 107, 255, 0.55); border-color: rgba(46, 107, 255, 0.8); }
+  .cal.is-on .e2 { background: rgba(46, 107, 255, 0.22); border-color: rgba(46, 107, 255, 0.45); }
+  .cal.is-on .e3 { background: transparent; border: 1.5px solid var(--gold); color: var(--gold-light); }
+  .cal.is-on .e4 { background: rgba(0, 168, 255, 0.3); border-color: rgba(0, 168, 255, 0.6); }
+  .cal.is-on .e5 { background: rgba(201, 162, 75, 0.32); border-color: rgba(201, 162, 75, 0.7); }
+  .cal.is-on .cal__day:last-child { background: var(--grad-gold); border-color: var(--gold-light); color: #1d1a12; box-shadow: 0 0 28px rgba(201, 162, 75, 0.45); }
+  .cal__leg { display: grid; gap: 0.7rem; }
+  .cal__leg li { display: grid; grid-template-columns: 14px auto 1fr; align-items: baseline; gap: 0.2rem 0.7rem; }
+  .cal__leg i { width: 12px; height: 12px; border-radius: 4px; align-self: center; }
+  .cal__leg .e1 i { background: rgba(46, 107, 255, 0.7); }
+  .cal__leg .e2 i { background: rgba(46, 107, 255, 0.3); border: 1px solid rgba(46, 107, 255, 0.6); }
+  .cal__leg .e3 i { border: 1.5px solid var(--gold); }
+  .cal__leg .e4 i { background: rgba(0, 168, 255, 0.45); }
+  .cal__leg .e5 i { background: var(--grad-gold); }
+  .cal__d { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+  .cal__leg b { font-family: var(--font-display); font-weight: 600; font-size: 0.98rem; color: var(--text-1); }
+  .cal__leg small { grid-column: 3; font-size: 0.84rem; color: var(--text-3); }
 
   /* ---------- investimento ---------- */
-  .pinvest { position: relative; z-index: 2; overflow: hidden; scroll-margin-top: 80px; }
-  .pinvest__orb { top: 4%; left: 50%; transform: translateX(-50%); width: 52vw; height: 52vw; max-width: 680px; max-height: 680px; background: var(--gold); opacity: 0.1; }
-  .invest { max-width: 680px; margin-inline: auto; padding: clamp(1.8rem, 4vw, 3rem); }
-  .invest__head { text-align: center; }
-  .invest__head .eyebrow::before { display: none; }
-  .invest__sub { margin-top: 0.8rem; color: var(--text-3); font-size: 0.92rem; }
-  .invest__linhas { margin-top: 2rem; display: grid; }
-  .invest__linhas li {
-    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
-    padding: 0.85rem 0; border-bottom: 1px solid var(--border);
-    font-size: 0.96rem; color: var(--text-2);
+  .k-inv__orb { top: 10%; left: 50%; width: 80vw; height: 80vw; max-width: 640px; max-height: 640px; margin-left: -40vw; background: var(--gold); opacity: 0.1; }
+  @media (min-width: 800px) { .k-inv__orb { margin-left: -320px; } }
+  .inv { max-width: 560px; margin-inline: auto; padding: clamp(1.6rem, 1.1rem + 2vw, 2.6rem); text-align: center; }
+  .inv__head { font: inherit; letter-spacing: normal; }
+  .inv__head .eyebrow::before { display: none; }
+  .inv__de { margin-top: 1.2rem; font-family: var(--font-display); font-size: 1.3rem; color: var(--text-3); }
+  .inv__de s { position: relative; text-decoration: none; }
+  .inv__de s::after {
+    content: ""; position: absolute; left: -4%; right: -4%; top: 52%; height: 2px; border-radius: 2px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left; transition: transform 0.7s var(--ease-out) 0.3s;
   }
-  .invest__linhas b { font-family: var(--font-mono); color: var(--text-1); font-weight: 500; white-space: nowrap; }
-  .invest__sub-l { color: var(--text-3) !important; }
-  .invest__desc { color: var(--gold-light) !important; }
-  .invest__desc b { color: var(--gold-light) !important; }
-  .invest__total { text-align: center; padding-top: 2rem; }
-  .invest__total > span:first-child {
-    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--text-3);
+  .inv.is-on .inv__de s::after { transform: none; }
+  .inv__valor { margin-top: 0.2rem; font-family: var(--font-display); font-weight: 700; font-size: clamp(3rem, 2rem + 5vw, 4.6rem); line-height: 1; font-variant-numeric: tabular-nums; }
+  .inv__eco {
+    display: inline-block; margin-top: 0.9rem; padding: 0.38rem 0.8rem; border-radius: var(--r-pill); border: 1px solid var(--border-gold);
+    background: rgba(201, 162, 75, 0.12); font-size: 0.84rem; color: var(--gold-light);
   }
-  .invest__valor {
-    font-family: var(--font-display); font-weight: 700; line-height: 1;
-    font-size: clamp(2.8rem, 8vw, 4.4rem); margin-top: 0.6rem;
-    font-variant-numeric: tabular-nums;
-  }
-  .invest__cond { display: block; margin-top: 0.9rem; font-size: 0.88rem; color: var(--text-3); }
-  .invest__nota {
-    margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
-    font-size: 0.9rem; line-height: 1.7; color: var(--text-2);
+  .inv__cond { margin-top: 0.9rem; font-size: 0.86rem; line-height: 1.6; color: var(--text-2); }
+  .inv__btn { margin-top: 1.4rem; }
+  @media (max-width: 719px) { .inv__btn { width: 100%; } }
+  .inv__disc { margin-top: 1.2rem; text-align: left; }
+  .inv__lines { display: grid; padding-bottom: 0.8rem; }
+  .inv__lines li { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; color: var(--text-2); }
+  .inv__lines li:last-child { border-bottom: 0; }
+  .inv__lines b { font-family: var(--font-mono); font-weight: 500; color: var(--text-1); white-space: nowrap; }
+  .inv__lines .inv__desc, .inv__lines .inv__desc b { color: var(--gold-light); }
+
+  /* ---------- fechamento ---------- */
+  .k-cta__orb { bottom: -20%; left: -10%; width: 80vw; height: 80vw; max-width: 600px; max-height: 600px; background: var(--blue); }
+  .cta { padding: clamp(1.5rem, 1rem + 2.5vw, 3rem); }
+  .cta__t { margin-top: 1rem; }
+  .cta__steps { display: grid; gap: 0.95rem; margin-top: 1.6rem; }
+  @media (min-width: 900px) { .cta__steps { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .cta__step { display: flex; align-items: center; gap: 0.85rem; }
+  .cta__step b { display: block; font-family: var(--font-display); font-weight: 600; color: var(--text-1); }
+  .cta__step small { display: block; font-size: 0.85rem; color: var(--text-3); text-wrap: pretty; }
+  .cta__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.2rem; margin-top: 1.8rem; }
+  @media (max-width: 719px) { .cta__actions .btn { width: 100%; } }
+  @media (max-width: 419px) { .cta__actions .btn { --btn-pad-x: 1rem; font-size: 1rem; } }
+  .cta__contact { display: grid; font-family: var(--font-mono); font-size: 0.84rem; }
+  .cta__contact a { display: inline-block; padding-block: 0.4rem; color: var(--text-2); }
+  .cta__contact a:first-child { color: var(--text-1); }
+  .cta__contact a:hover { color: var(--cyan-400); }
+  .cta__price { display: none; }
+  @media (min-width: 900px) {
+    .cta__price { display: grid; margin-left: auto; text-align: right; }
+    .cta__price b { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; color: var(--text-1); }
+    .cta__price small { font-size: 0.84rem; color: var(--text-3); }
   }
 
-  /* ---------- cta ---------- */
-  .pcta { position: relative; z-index: 2; overflow: hidden; }
-  .pcta__orb { bottom: -18%; left: 8%; width: 44vw; height: 44vw; max-width: 600px; max-height: 600px; background: var(--blue); }
-  .cta { padding: clamp(2rem, 5vw, 3.4rem); }
-  .cta__t { margin-top: 1.2rem; }
-  .cta__passos { margin-top: 2rem; display: grid; gap: 1rem; max-width: 70ch; counter-reset: p; }
-  .cta__passos li { font-size: 0.97rem; color: var(--text-2); line-height: 1.7; }
-  .cta__actions { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; margin-top: 2.4rem; }
-  .cta__mail { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-3); }
-  .cta__mail strong { color: var(--text-1); font-weight: 500; user-select: all; }
+  .kf { position: relative; z-index: 2; padding-block: 0 2.6rem; }
+  .kf__in { display: grid; gap: 0.35rem; font-size: 0.8rem; line-height: 1.6; color: var(--text-3); }
+  .kf__in b { color: var(--text-1); }
+  .kf a { display: inline-block; padding-block: 0.3rem; color: var(--text-2); }
+  .kf a:hover { color: var(--cyan-400); }
 
-  /* ---------- rodapé ---------- */
-  .pfoot { position: relative; z-index: 2; padding-block: 0 4rem; }
-  .pfoot__in {
-    display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
-    font-size: 0.82rem; color: var(--text-3); line-height: 1.9;
+  /* ---------- barra fixa (celular) ---------- */
+  .kbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 110; display: flex; align-items: center; gap: 0.9rem;
+    padding: 0.7rem var(--gutter) calc(0.7rem + env(safe-area-inset-bottom, 0px));
+    background: rgba(10, 10, 12, 0.88); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    border-top: 1px solid var(--border-strong); transform: translateY(110%); transition: transform 0.45s var(--ease-out);
   }
-  .pfoot__r { text-align: right; }
-  .pfoot a { color: var(--text-2); }
-  .pfoot a:hover { color: var(--cyan-400); }
+  .kbar.is-on { transform: none; }
+  .kbar__p small { display: block; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+  .kbar__p b { display: block; font-family: var(--font-display); font-weight: 600; font-size: 1.04rem; color: var(--text-1); }
+  .kbar__btn { --btn-pad-y: 0.8rem; --btn-pad-x: 1.15rem; margin-left: auto; font-size: 0.92rem; }
+  @media (min-width: 900px) { .kbar { display: none; } }
 
-  /* ---------- responsivo ---------- */
-  @media (max-width: 900px) {
-    .phero__in { grid-template-columns: 1fr; }
-    .serp { order: 2; }
-  }
-  @media (max-width: 560px) {
-    .pfoot__in { flex-direction: column; }
-    .pfoot__r { text-align: left; }
-    .phero__actions .btn { width: 100%; }
+  @media (prefers-reduced-motion: reduce) {
+    .phone__tag i { animation: none; }
+    .cal__day, .inv__de s::after { transition: none; }
   }
 </style>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasIO = 'IntersectionObserver' in window;
+  const AUTO_MS = 3500;
+
+  // título do Google "sendo escrito" quando entra o depois
+  function typeOut(el: HTMLElement) {
+    const full = el.dataset.type || '';
+    const t = (el as any)._t;
+    if (t) clearInterval(t);
+    if (reduce) { el.textContent = full; return; }
+    let i = 0;
+    el.textContent = '';
+    el.classList.add('is-typing');
+    (el as any)._t = setInterval(() => {
+      i += 1;
+      el.textContent = full.slice(0, i);
+      if (i >= full.length) { clearInterval((el as any)._t); el.classList.remove('is-typing'); }
+    }, 22);
+  }
+
+  // antes x depois: mostra o hoje, vira para o depois uma vez e para ali
+  document.querySelectorAll<HTMLElement>('[data-ba]').forEach((root) => {
+    const btns = [...root.querySelectorAll<HTMLButtonElement>('[data-ba-btn]')];
+    let timer: number | null = null;
+    const stop = () => { if (timer) { clearTimeout(timer); timer = null; } };
+    const halt = () => { root.dataset.touched = '1'; stop(); };
+    const set = (state: string) => {
+      if (root.dataset.state === state) return;
+      root.dataset.state = state;
+      btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.baBtn === state)));
+      root.querySelectorAll<HTMLElement>('[data-type]').forEach((el) => {
+        if (state === 'depois') typeOut(el);
+        else { const t = (el as any)._t; if (t) clearInterval(t); el.classList.remove('is-typing'); el.textContent = el.dataset.type || ''; }
+      });
+    };
+    btns.forEach((b) => b.addEventListener('click', () => { halt(); set(b.dataset.baBtn || 'hoje'); }));
+    root.querySelector('[data-ba-frame]')?.addEventListener('click', () => { halt(); set(root.dataset.state === 'hoje' ? 'depois' : 'hoje'); });
+    root.addEventListener('focusin', halt);
+    if (reduce || !hasIO) return;
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !root.dataset.touched) {
+        if (!timer) timer = window.setTimeout(() => { timer = null; set('depois'); root.dataset.touched = '1'; }, AUTO_MS);
+      } else stop();
+    }, { threshold: 0.25 }).observe(root);
+  });
+
+  // calendário acende dia a dia; preço antigo é riscado
+  const onView = (sel: string, threshold = 0.35) => {
+    const el = document.querySelector<HTMLElement>(sel);
+    if (!el) return;
+    if (reduce || !hasIO) { el.classList.add('is-on'); return; }
+    new IntersectionObserver(([e], o) => { if (e.isIntersecting) { el.classList.add('is-on'); o.disconnect(); } }, { threshold }).observe(el);
+  };
+  onView('[data-cal]');
+  onView('[data-inv]', 0.5);
+
+  // barra fixa: aparece depois do topo, some sobre o investimento e no fechamento
+  const bar = document.querySelector<HTMLElement>('.kbar');
+  const hero = document.querySelector<HTMLElement>('.k-hero');
+  const inv = document.querySelector<HTMLElement>('[data-inv]');
+  const fim = document.getElementById('fim');
+  if (bar && hero && fim && hasIO) {
+    let past = false;
+    let onInv = false;
+    let end = false;
+    const sync = () => { const on = past && !onInv && !end; bar.classList.toggle('is-on', on); bar.inert = !on; };
+    new IntersectionObserver(([e]) => { past = !e.isIntersecting; sync(); }).observe(hero);
+    if (inv) new IntersectionObserver(([e]) => { onInv = e.isIntersecting; sync(); }, { threshold: 0.2 }).observe(inv);
+    new IntersectionObserver(([e]) => { end = e.isIntersecting; sync(); }, { threshold: 0.05 }).observe(fim);
+  }
+</script>
