@@ -1,144 +1,82 @@
 ---
-import Icon from './Icon.astro';
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/novra-logo.png';
 
 const year = new Date().getFullYear();
-const EMAIL = 'contato@novratech.com.br'; // EDITE
-
-const cols = [
-  {
-    title: 'Soluções',
-    links: [
-      { label: 'Inteligência Artificial', href: '#solucoes' },
-      { label: 'Desenvolvimento de Sistemas', href: '#solucoes' },
-      { label: 'Automações', href: '#solucoes' },
-      { label: 'Cloud & Infraestrutura', href: '#solucoes' },
-      { label: 'Segurança Digital', href: '#solucoes' },
-    ],
-  },
-  {
-    title: 'Empresa',
-    links: [
-      { label: 'Diferenciais', href: '#diferenciais' },
-      { label: 'Processo', href: '#processo' },
-      { label: 'Tecnologias', href: '#tecnologias' },
-      { label: 'Contato', href: '#contato' },
-    ],
-  },
+const WHATSAPP = 'https://wa.me/5511998002960?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20NOVRA%20e%20quero%20conversar%20sobre%20um%20projeto.';
+// e-mail e horário de atendimento só voltam quando estiverem confirmados
+const navegue = [
+  { label: 'Soluções', href: '#solucoes' },
+  { label: 'Clientes', href: '#clientes' },
+  { label: 'Como trabalhamos', href: '#processo' },
+  { label: 'Contato', href: '#contato' },
 ];
 ---
 <footer class="footer">
   <div class="container">
     <div class="footer__top">
       <div class="footer__brand">
-        <img src="/brand/novra-logo-ui.png" alt="NOVRA" class="footer__logo" width="1041" height="308" />
-        <hr class="signature-line signature-line--sm footer__sig" aria-hidden="true" />
-        <p class="footer__tagline pretty">
-          Sistemas inteligentes para a próxima era. Software, IA, automação e cloud
-          com performance, segurança e escala.
-        </p>
-        <div class="footer__social">
-          <a href="#" aria-label="LinkedIn" class="footer__social-link" data-magnetic>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C20.4 8.65 22 10.6 22 14v7h-4v-6.2c0-1.48-.03-3.38-2.06-3.38-2.06 0-2.38 1.6-2.38 3.27V21H9V9Z"/></svg>
-          </a>
-          <a href="https://www.instagram.com/novratech.oficial" target="_blank" rel="noopener" aria-label="Instagram — @novratech.oficial" class="footer__social-link" data-magnetic>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          </a>
-          <a href="#" aria-label="GitHub" class="footer__social-link" data-magnetic>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
-          </a>
-        </div>
+        <Image src={logo} alt="NOVRA" height={26} densities={[1, 2, 3]} format="webp" />
+        <p>Sistemas inteligentes para a próxima era.</p>
       </div>
-
-      <nav class="footer__cols" aria-label="Rodapé">
-        {cols.map((c) => (
-          <div class="footer__col">
-            <h3 class="footer__col-title">{c.title}</h3>
-            <ul>
-              {c.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
-            </ul>
-          </div>
-        ))}
-        <div class="footer__col">
-          <h3 class="footer__col-title">Contato</h3>
-          <ul>
-            <li><a href={`mailto:${EMAIL}`}>{EMAIL}</a></li>
-            <li class="footer__muted"><Icon name="pin" size={14} /> São Paulo · Brasil</li>
-            <li class="footer__muted"><Icon name="clock" size={14} /> Seg–Sex, 9h–18h</li>
-          </ul>
-          <a href="/formulario" class="btn btn-ghost footer__cta" data-magnetic>Iniciar projeto <Icon name="arrow-up-right" size={16} /></a>
-        </div>
+      <nav class="footer__col" aria-label="Rodapé">
+        <h2>Navegue</h2>
+        <ul>{navegue.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
       </nav>
+      <div class="footer__col">
+        <h2>Fale com a NOVRA</h2>
+        <ul>
+          <li><a href="/formulario">Solicitar diagnóstico</a></li>
+          <li><a href={WHATSAPP} target="_blank" rel="noopener" aria-label="WhatsApp (11) 99800-2960 (abre em nova aba)">WhatsApp <span class="nowrap">(11) 99800-2960</span></a></li>
+          <li><a href="https://www.instagram.com/novratech.oficial" target="_blank" rel="noopener" aria-label="Instagram @novratech.oficial (abre em nova aba)">Instagram <span class="nowrap">@novratech.oficial</span></a></li>
+          <li class="footer__muted">São Paulo, Brasil</li>
+        </ul>
+      </div>
     </div>
-
-    <div class="footer__watermark" aria-hidden="true">NOVRA</div>
-
     <div class="footer__bottom">
       <p>© {year} NOVRA. Todos os direitos reservados.</p>
-      <div class="footer__legal">
-        <a href="#">Privacidade</a>
-        <a href="#">Termos</a>
-        <button class="footer__top-btn" id="back-to-top" data-magnetic>
-          Voltar ao topo <Icon name="arrow-up-right" size={14} />
-        </button>
-      </div>
+      <a href="#topo">Voltar ao topo</a>
     </div>
   </div>
 </footer>
 
 <style>
-  .footer { position: relative; z-index: 2; border-top: 1px solid var(--border); padding-top: clamp(3.5rem, 2.5rem + 4vw, 6rem); background: linear-gradient(180deg, transparent, rgba(8, 11, 20, 0.6)); overflow: hidden; }
+  .footer {
+    position: relative;
+    background: #000;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: clamp(3rem, 2rem + 3vw, 4rem);
+    font-size: 14px;
+    letter-spacing: -0.006em;
+  }
   .footer__top {
-    display: grid; grid-template-columns: 1fr; gap: clamp(2.5rem, 1.5rem + 4vw, 4rem);
-    padding-bottom: clamp(2.5rem, 2rem + 3vw, 4rem);
+    display: grid; grid-template-columns: 1fr; gap: 2.5rem;
+    padding-bottom: 2.5rem;
   }
-  .footer__logo { height: 30px; width: auto; margin-bottom: 1.4rem; }
-  .footer__tagline { color: var(--text-2); font-size: 0.95rem; max-width: 360px; }
-  .footer__social { display: flex; gap: 0.7rem; margin-top: 1.6rem; }
-  .footer__social-link {
-    display: grid; place-items: center; width: 42px; height: 42px; border-radius: 11px;
-    border: 1px solid var(--border-strong); background: var(--surface-2); color: var(--text-2);
-    transition: color 0.3s var(--ease-out), border-color 0.3s var(--ease-out), background 0.3s var(--ease-out), transform 0.3s var(--ease-out);
-  }
-  .footer__social-link:hover { color: var(--cyan-300); border-color: var(--border-brand); background: rgba(46, 107, 255, 0.12); transform: translateY(-2px); }
-
-  .footer__cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
-  .footer__col-title { font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 1.1rem; font-weight: 500; }
-  .footer__col ul { display: flex; flex-direction: column; gap: 0.7rem; }
-  .footer__col a { color: var(--text-2); font-size: 0.95rem; transition: color 0.3s var(--ease-out); }
-  .footer__col a:hover { color: var(--cyan-300); }
-  .footer__muted { display: inline-flex; align-items: center; gap: 0.5em; color: var(--text-3); font-size: 0.9rem; }
-  .footer__muted :global(svg) { color: var(--cyan-400); }
-  .footer__cta { margin-top: 1.4rem; --btn-pad-y: 0.7rem; --btn-pad-x: 1.1rem; font-size: 0.9rem; }
-
-  .footer__watermark {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(4rem, 18vw, 16rem);
-    line-height: 0.8;
-    letter-spacing: -0.04em;
-    text-align: center;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 80%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-    user-select: none;
-    margin-bottom: -0.1em;
-    pointer-events: none;
-  }
-
+  .footer__brand img { height: 26px; width: auto; }
+  .footer__brand p { margin-top: 1rem; color: #86868b; }
+  .footer__col h2 { font-size: 14px; font-weight: 600; color: #f5f5f7; letter-spacing: -0.006em; }
+  .footer__col ul { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.9rem; }
+  .footer__col a { color: #86868b; transition: color 0.2s var(--ease-ui); }
+  .footer__col a:hover { color: #f5f5f7; }
+  .footer__muted { color: #86868b; }
   .footer__bottom {
-    display: flex; flex-direction: column; gap: 1rem;
-    padding-block: 1.8rem;
-    border-top: 1px solid var(--border);
-    font-size: 0.85rem; color: var(--text-3);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem 2rem;
+    padding-block: 1.25rem 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 12px; color: #86868b;
   }
-  .footer__legal { display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap; }
-  .footer__legal a { color: var(--text-3); transition: color 0.3s; }
-  .footer__legal a:hover { color: var(--text-1); }
-  .footer__top-btn { display: inline-flex; align-items: center; gap: 0.4em; color: var(--text-2); font-family: var(--font-display); font-size: 0.85rem; }
-  .footer__top-btn:hover { color: var(--cyan-300); }
+  .footer__bottom a { color: #86868b; }
+  .footer__bottom a:hover { color: #f5f5f7; }
 
-  @media (min-width: 760px) {
-    .footer__top { grid-template-columns: 1.2fr 1.8fr; }
-    .footer__cols { grid-template-columns: repeat(3, 1fr); }
-    .footer__bottom { flex-direction: row; align-items: center; justify-content: space-between; }
+  @media (min-width: 735px) {
+    .footer__top { grid-template-columns: 2fr 1fr 1fr; }
+  }
+  @media (max-width: 734px) {
+    .footer__top { grid-template-columns: 1fr 1fr; }
+    .footer__brand { grid-column: 1 / -1; }
+    /* alvos de toque confortáveis no celular */
+    .footer__col ul { gap: 0; }
+    .footer__col a, .footer__bottom a { display: inline-flex; align-items: center; gap: 0.3em; min-height: 44px; }
   }
 </style>

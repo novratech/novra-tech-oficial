@@ -1,0 +1,131 @@
+---
+import Icon from '../Icon.astro';
+import Shot from './Shot.astro';
+import renato from '../../assets/home/clientes/renato-cariani.jpg';
+import pablo from '../../assets/home/clientes/pablo-marcal.jpg';
+import kaka from '../../assets/home/clientes/kaka-diniz.jpg';
+import bruno from '../../assets/home/clientes/bruno-camargo.jpg';
+import akaki from '../../assets/home/clientes/dr-akaki.jpg';
+import igor from '../../assets/home/clientes/dr-igor-alves.jpg';
+import elisiane from '../../assets/home/clientes/elisiane-moreira.jpg';
+import fabio from '../../assets/home/clientes/fabio-fray.jpg';
+import marcos from '../../assets/home/clientes/marcos-paulo.jpg';
+import plx from '../../assets/home/clientes/plx.jpg';
+import sca from '../../assets/home/clientes/sca.jpg';
+import elias from '../../assets/home/clientes/seu-elias.jpg';
+
+// Fonte: novratech/portfolio-novra (src/lib/site-config.ts), na mesma ordem da vitrine.
+// "Página" = implementação: o layout veio pronto e a NOVRA fez código, checagem e publicação.
+// Marcos Paulo está oculto no portfólio (hidden), mas entra aqui a pedido do Felipe (02/10/2026).
+const clients = [
+  { name: 'Renato Cariani', what: 'Agente de IA e página', img: renato },
+  { name: 'Pablo Marçal', what: 'Página', img: pablo },
+  { name: 'Kaká Diniz', what: 'Agente de IA e página', img: kaka },
+  { name: 'Dr. Bruno Camargo', what: 'Página da Clinic Perfect Face', img: bruno, url: 'https://www.clinicperfectface.com.br/' },
+  { name: 'Dr. Akaki', what: 'Página da Akaki Odontologia', img: akaki, url: 'https://akaki.odo.br/' },
+  { name: 'Dr. Igor Alves', what: 'Página', img: igor },
+  { name: 'Elisiane Moreira', what: 'Página', img: elisiane },
+  { name: 'Fabio Fray', what: 'Página', img: fabio },
+  { name: 'Marcos Paulo', what: 'Agente de IA e página', img: marcos },
+  { name: 'PLX Digital', what: 'Página', img: plx },
+  { name: 'S.C.A Super Carros Alphaville', what: 'Design e página', img: sca },
+  { name: 'Seu Elias', what: 'Agente de IA de vendas e cobrança no WhatsApp', img: elias },
+];
+const PORTFOLIO = 'https://portfolio.novratech.com.br/';
+---
+<section class="section clientes" id="clientes" aria-labelledby="clientes-t">
+  <div class="container">
+    <header class="head clientes__head" data-reveal>
+      <p class="eyebrow">Clientes</p>
+      <h2 class="h2" id="clientes-t">Quem já trabalha com a NOVRA. <span class="tone">De consultórios a grandes nomes da internet.</span></h2>
+    </header>
+  </div>
+
+  <div class="gallery" data-gallery data-reveal>
+    <ul class="gallery__track" tabindex="0" aria-label="Clientes da NOVRA, role para o lado para ver todos">
+      {clients.map((c) => (
+        <li class="gallery__item">
+          <div class="gallery__card">
+            <Shot src={c.img} alt={`Capa do case ${c.name} no portfólio da NOVRA`}
+              sizes="(min-width: 1069px) 384px, (min-width: 735px) 30vw, 72vw"
+              widths={[320, 480, 640, 960, 1200]} />
+          </div>
+          <p class="gallery__name">{c.name}</p>
+          <p class="gallery__what">{c.what}</p>
+          {c.url && (
+            <a class="more gallery__link" href={c.url} target="_blank" rel="noopener" aria-label={`Ver a página de ${c.name} no ar (abre em nova aba)`}>
+              Ver no ar <Icon name="arrow-up-right" strokeWidth={2} />
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+    <div class="container gallery__nav">
+      <button type="button" class="gallery__btn" data-gallery-prev aria-label="Clientes anteriores" disabled><Icon name="chevron-right" strokeWidth={2.2} class="flip" /></button>
+      <button type="button" class="gallery__btn" data-gallery-next aria-label="Próximos clientes"><Icon name="chevron-right" strokeWidth={2.2} /></button>
+    </div>
+  </div>
+
+  <div class="container">
+    <p class="caption clientes__note">
+      Nas páginas, a NOVRA fez a construção, a checagem e a publicação a partir do layout de cada cliente. Na S.C.A, fez também o design.
+      <a class="more" href={PORTFOLIO} target="_blank" rel="noopener" aria-label="Ver todos os projetos no portfólio da NOVRA (abre em nova aba)">Ver todos os projetos <Icon name="arrow-up-right" strokeWidth={2} /></a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .clientes__head { max-width: 820px; }
+
+  /* galeria de destaques: alinha com o conteúdo à esquerda e sangra até a borda direita */
+  .gallery { margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem); }
+  .gallery__track {
+    --edge: max(var(--gutter), calc((100% - var(--container)) / 2));
+    display: flex; gap: 20px;
+    overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--edge);
+    padding: 4px var(--edge) 8px;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+  }
+  .gallery__track::-webkit-scrollbar { display: none; }
+  .gallery__track:focus-visible { outline-offset: -2px; border-radius: 0; }
+  .gallery__item { flex: 0 0 auto; width: clamp(17rem, 26vw, 24rem); scroll-snap-align: start; }
+  .gallery__card {
+    aspect-ratio: 1;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #111;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+    isolation: isolate;
+  }
+  .gallery__card :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .gallery__name { margin-top: 1rem; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--fg); }
+  .gallery__what { margin-top: 0.2rem; font-size: 15px; line-height: 1.4; color: var(--fg-2); }
+  .gallery__link { margin-top: 0.45rem; font-size: 15px; }
+
+  .gallery__nav { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; }
+  .gallery__btn {
+    display: grid; place-items: center;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #f5f5f7;
+    transition: background-color 0.2s var(--ease-ui), opacity 0.2s var(--ease-ui);
+  }
+  .gallery__btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.2); }
+  .gallery__btn:disabled { opacity: 0.35; cursor: default; }
+  .gallery__btn :global(svg) { width: 18px; height: 18px; }
+  .gallery__btn :global(.flip) { transform: scaleX(-1); }
+
+  .clientes__note { margin-top: clamp(2rem, 1.5rem + 1.5vw, 3rem); max-width: 46em; }
+  .clientes__note .more { font-size: 14px; margin-left: 0.25rem; }
+
+  @media (max-width: 734px) {
+    .gallery__item { width: 72vw; }
+    .gallery__track { gap: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gallery__track { scroll-behavior: auto; }
+  }
+</style>

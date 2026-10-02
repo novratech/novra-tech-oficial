@@ -1,0 +1,52 @@
+---
+// Imagem responsiva com direção de arte: AVIF e WebP em várias larguras e, se houver,
+// um recorte próprio para o celular. O <Picture> do Astro não troca de recorte por tela,
+// por isso o <picture> é montado aqui com getImage().
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  sizes: string;
+  mobile?: ImageMetadata;      // recorte para telas de até 734 px
+  mobileSizes?: string;
+  widths?: number[];
+  mobileWidths?: number[];
+  loading?: 'lazy' | 'eager';
+  class?: string;
+  imgClass?: string;
+}
+const {
+  src, alt, sizes, mobile,
+  mobileSizes = '100vw',
+  widths = [640, 960, 1280, 1680, 2048, 2560],
+  mobileWidths = [480, 780, 1170],
+  loading = 'lazy',
+  class: className,
+  imgClass,
+} = Astro.props;
+
+async function srcset(img: ImageMetadata, ws: number[], format: 'avif' | 'webp') {
+  const list = ws.filter((w) => w <= img.width);
+  if (!list.includes(img.width) && img.width < (ws.at(-1) ?? 0)) list.push(img.width);
+  const out = await Promise.all(list.map(async (w) => {
+    const r = await getImage({ src: img, width: w, format, quality: format === 'avif' ? 60 : 80 });
+    return `${r.src} ${w}w`;
+  }));
+  return out.join(', ');
+}
+
+const [avif, webp] = await Promise.all([srcset(src, widths, 'avif'), srcset(src, widths, 'webp')]);
+const [avifM, webpM] = mobile
+  ? await Promise.all([srcset(mobile, mobileWidths, 'avif'), srcset(mobile, mobileWidths, 'webp')])
+  : ['', ''];
+const fallback = await getImage({ src, width: Math.min(1280, src.width), format: 'webp', quality: 80 });
+---
+<picture class={className}>
+  {mobile && <source media="(max-width: 734px)" type="image/avif" srcset={avifM} sizes={mobileSizes} width={mobile.width} height={mobile.height} />}
+  {mobile && <source media="(max-width: 734px)" type="image/webp" srcset={webpM} sizes={mobileSizes} width={mobile.width} height={mobile.height} />}
+  <source type="image/avif" srcset={avif} sizes={sizes} />
+  <source type="image/webp" srcset={webp} sizes={sizes} />
+  <img class={imgClass} src={fallback.src} width={src.width} height={src.height} alt={alt} loading={loading} decoding="async" />
+</picture>

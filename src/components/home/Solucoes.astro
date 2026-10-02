@@ -1,0 +1,266 @@
+---
+import Icon from '../Icon.astro';
+import Shot from './Shot.astro';
+import agente from '../../assets/home/demo-agente.png';
+import agenteM from '../../assets/home/demo-agente-m.png';
+import atlas from '../../assets/home/demo-atlas.png';
+import atlasM from '../../assets/home/demo-atlas-m.png';
+import processflow from '../../assets/home/demo-processflow.png';
+import processflowM from '../../assets/home/demo-processflow-m.png';
+import insight from '../../assets/home/demo-insight.png';
+import insightM from '../../assets/home/demo-insight-m.png';
+
+// As telas são das demos que a NOVRA construiu (dados fictícios). tools/capture-demos.mjs refaz as imagens.
+// "Na prática" cita projetos reais do portfólio (novratech/portfolio-novra), sem inventar resultado.
+// Legenda e texto alternativo valem para os dois recortes (desktop e celular).
+const items = [
+  {
+    label: 'Inteligência artificial',
+    title: 'IA que conhece a sua empresa.',
+    text: 'Assistentes que atendem os seus clientes a qualquer hora, com as informações do seu negócio, e chamam alguém da equipe quando faz sentido.',
+    real: 'agentes feitos para Seu Elias, Renato Cariani e Kaká Diniz.',
+    caption: 'Um agente remarca a consulta de um cliente pelo chat, do pedido à confirmação.',
+    alt: 'Demonstração do Agente NOVRA: um cliente pede para remarcar a consulta e o agente oferece horários e confirma o escolhido. Dados fictícios.',
+    img: agente, imgM: agenteM,
+  },
+  {
+    label: 'Desenvolvimento de software',
+    title: 'Software feito sob medida.',
+    text: 'Criamos sistemas do zero ou modernizamos o que a sua empresa já usa, do jeito que ela trabalha.',
+    real: 'um sistema financeiro com emissão de notas e um call center que liga pelo navegador.',
+    caption: 'A gestão do dia numa tela só, com o que precisa da sua aprovação.',
+    alt: 'Demonstração do Atlas ERP: as pendências do dia que precisam de aprovação, como compras, notas fiscais, estoque e contas. Dados fictícios.',
+    img: atlas, imgM: atlasM,
+  },
+  {
+    label: 'Automações',
+    title: 'O repetitivo, feito pelo sistema.',
+    text: 'Tarefas que alguém faz na mão todo dia passam a ser feitas pelo sistema, com menos erro e menos retrabalho.',
+    real: 'um editor de vídeo automático para as redes e um radar que acompanha os concorrentes.',
+    caption: 'As entregas do dia acompanhadas pelo sistema, que marca o que está no prazo e o que vai atrasar.',
+    alt: 'Demonstração do ProcessFlow: mapa ao vivo das rotas de entrega e a lista de entregas em andamento, com o status de cada uma. Dados fictícios.',
+    img: processflow, imgM: processflowM,
+  },
+  {
+    label: 'Dados e painéis',
+    title: 'Seus números, em tempo real.',
+    text: 'Painéis que reúnem as informações da empresa num só lugar, para decidir melhor. E uma IA para quem prefere perguntar.',
+    real: 'um painel que substituiu uma planilha de mais de 34 mil linhas.',
+    caption: 'Um painel de vendas com receita, pedidos e a evolução do mês, sempre atualizado.',
+    alt: 'Demonstração do NOVRA Insight: receita, pedidos e o gráfico de receita do mês. Dados fictícios.',
+    img: insight, imgM: insightM,
+  },
+];
+
+const also = [
+  { t: 'Nuvem e infraestrutura', d: 'Seus sistemas na nuvem, estáveis e com custo sob controle.' },
+  { t: 'Segurança digital', d: 'Seus sistemas e dados protegidos, do projeto ao dia a dia.' },
+  { t: 'Consultoria', d: 'Um olhar técnico para decidir o que fazer primeiro.' },
+  { t: 'Sites e páginas', d: 'Construídos, testados e publicados, prontos para qualquer tela.', link: { href: '#clientes', label: 'Ver clientes' } },
+];
+const DEMO = 'Demonstração com dados fictícios.';
+---
+<section class="solucoes theme-light sheet" id="solucoes" aria-labelledby="solucoes-t">
+  <div class="container">
+    <header class="head solucoes__head" data-reveal>
+      <p class="eyebrow">Soluções</p>
+      <h2 class="h2" id="solucoes-t">O que a NOVRA faz <span class="tone">pela sua empresa.</span></h2>
+      <p class="lead">Quatro serviços que trabalham juntos: inteligência artificial, software, automações e dados.</p>
+    </header>
+  </div>
+
+  <div class="container tour" data-tour>
+    <ol class="tour__list">
+      {items.map((it, i) => (
+        <li class={i === 0 ? 'tour__item is-active' : 'tour__item'} data-i={i} data-cap={it.caption}>
+          <div class="tour__copy" data-reveal>
+            <h3 class="tour__title"><span class="tour__label">{it.label}<span class="sr-only">:</span></span> {it.title}</h3>
+            <p class="tour__text">{it.text}</p>
+            <p class="tour__real"><strong>Na prática:</strong> {it.real}</p>
+            <!-- no desktop a imagem fica na tela presa ao lado; a descrição dela entra aqui, na ordem certa -->
+            <p class="sr-only tour__sr">{DEMO} {it.alt}</p>
+          </div>
+          <figure class="tour__figure" data-reveal>
+            <div class="screen tour__screen">
+              <Shot src={it.img} mobile={it.imgM} alt={it.alt}
+                sizes="(min-width: 735px) calc(100vw - 96px), 100vw"
+                mobileSizes="calc(100vw - 48px)" />
+            </div>
+            <figcaption class="caption"><strong>{DEMO}</strong> {it.caption}</figcaption>
+          </figure>
+        </li>
+      ))}
+    </ol>
+
+    <!-- desktop: uma tela só, presa no meio, que troca conforme o serviço lido (decorativa para
+         o leitor de tela, que recebe cada descrição junto do seu serviço) -->
+    <div class="tour__aside" aria-hidden="true">
+      <div class="tour__stage">
+        <div class="screen tour__frame">
+          {items.map((it, i) => (
+            <Shot src={it.img} alt="" class={i === 0 ? 'tour__shot is-active' : 'tour__shot'}
+              sizes="(min-width: 1600px) 920px, (min-width: 1069px) min(58vw, 820px), 1px" />
+          ))}
+        </div>
+        <p class="caption tour__cap">
+          <strong>{DEMO}</strong> <span data-tour-cap>{items[0].caption}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="also">
+      <h3 class="also__t">Também fazemos</h3>
+      <ul class="also__list">
+        {also.map((a) => (
+          <li>
+            <h4>{a.t}</h4>
+            <p>{a.d}</p>
+            {a.link && <a class="more" href={a.link.href}>{a.link.label} <Icon name="chevron-right" strokeWidth={2} /></a>}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <p class="solucoes__cta" data-reveal>
+      Não sabe por onde começar?
+      <a class="more" href="/formulario">Solicite um diagnóstico <Icon name="chevron-right" strokeWidth={2} /></a>
+    </p>
+  </div>
+</section>
+
+<style>
+  /* a folha clara entra e sai com cantos arredondados sobre o preto */
+  .solucoes {
+    position: relative;
+    z-index: 2;
+    padding-block: var(--section-y);
+    border-radius: 32px;
+  }
+  .solucoes__head { max-width: 760px; }
+
+  /* ---------- tour (celular, tablet e sem JavaScript: empilhado) ---------- */
+  .tour { margin-top: clamp(3rem, 2rem + 3vw, 4.5rem); }
+  .tour__list { display: flex; flex-direction: column; gap: clamp(4rem, 3rem + 3vw, 6rem); }
+  .tour__label {
+    display: block; margin-bottom: 0.5rem;
+    font-size: 17px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.24;
+    color: var(--fg-2);
+  }
+  .tour__title {
+    font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .tour__text { margin-top: 0.9rem; max-width: 34em; color: var(--fg-body); }
+  .tour__real { margin-top: 0.9rem; max-width: 34em; font-size: 15px; line-height: 1.45; color: var(--fg-2); }
+  .tour__real strong { color: var(--fg); font-weight: 600; }
+  .tour__sr { display: none; }
+  .tour__figure { margin-top: 2rem; }
+  .tour__screen { aspect-ratio: 16 / 10; }
+  .tour__figure .caption { margin-top: 0.9rem; }
+  .caption strong { color: var(--fg); font-weight: 600; }
+  .tour__aside { display: none; }
+
+  @media (max-width: 734px) {
+    .tour__screen { aspect-ratio: 4 / 5; border-radius: 14px; }
+  }
+
+  /* ---------- desktop com JavaScript: texto rolando à esquerda, tela presa à direita ---------- */
+  /* a tela fica com cerca de 0,8 da escala da captura: a interface continua legível */
+  @media (min-width: 1069px) {
+    :global(html.js) .tour {
+      display: grid;
+      grid-template-columns: minmax(0, 3.6fr) minmax(0, 8.4fr);
+      column-gap: clamp(2.5rem, 1rem + 2vw, 3.5rem);
+    }
+    :global(html.js) .tour__list { gap: 0; }
+    :global(html.js) .tour__item {
+      min-height: 64vh; min-height: 64svh;
+      display: flex; align-items: center;
+    }
+    /* o primeiro e o último ocupam uma tela inteira: a tela presa já está parada e inteira
+       quando o texto deles passa pelo meio */
+    :global(html.js) .tour__item:first-child,
+    :global(html.js) .tour__item:last-child {
+      min-height: calc(100vh - var(--header-h));
+      min-height: calc(100svh - var(--header-h));
+    }
+    :global(html.js) .tour__copy { max-width: 400px; }
+    :global(html.js) .tour__figure { display: none; }
+    :global(html.js) .tour__sr { display: block; }
+    /* o serviço fora de foco recua, sem perder o contraste de leitura */
+    :global(html.js) .tour__title { color: var(--fg-tone); transition: color 0.4s var(--ease-ui); }
+    :global(html.js) .tour__text { color: var(--fg-2); transition: color 0.4s var(--ease-ui); }
+    :global(html.js) .tour__item.is-active .tour__title { color: var(--fg); }
+    :global(html.js) .tour__item.is-active .tour__label { color: var(--fg); }
+    :global(html.js) .tour__item.is-active .tour__text { color: var(--fg-body); }
+
+    :global(html.js) .tour__aside { display: block; }
+    .tour__stage {
+      position: sticky;
+      top: var(--header-h);
+      height: calc(100vh - var(--header-h));
+      height: calc(100svh - var(--header-h));
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .tour__frame {
+      position: relative;
+      width: min(100%, (100vh - var(--header-h) - 160px) * 1.6);
+      width: min(100%, (100svh - var(--header-h) - 160px) * 1.6);
+      aspect-ratio: 16 / 10;
+      margin-left: auto;
+    }
+    /* o <picture> nasce dentro do Shot.astro: o estilo precisa ser global para alcançá-lo */
+    .tour__frame :global(.tour__shot) {
+      position: absolute; inset: 0;
+      opacity: 0; visibility: hidden;
+      transform: scale(1.015);
+      transition: opacity 0.6s var(--ease-ui), transform 0.9s var(--ease-out), visibility 0s linear 0.6s;
+    }
+    .tour__frame :global(.tour__shot.is-active) {
+      opacity: 1; visibility: visible; transform: none;
+      transition: opacity 0.6s var(--ease-ui), transform 0.9s var(--ease-out), visibility 0s;
+    }
+    .tour__frame :global(.tour__shot img) { width: 100%; height: 100%; object-fit: cover; }
+    .tour__cap {
+      width: min(100%, (100vh - var(--header-h) - 160px) * 1.6);
+      width: min(100%, (100svh - var(--header-h) - 160px) * 1.6);
+      margin: 1rem 0 0 auto;
+      min-height: 2.9em;
+    }
+  }
+  /* monitor grande: só a imagem rompe a coluna de texto */
+  @media (min-width: 1600px) {
+    :global(html.js) .tour__aside { margin-right: -120px; }
+  }
+
+  /* ---------- secundários e chamada ---------- */
+  .also { margin-top: clamp(4rem, 3rem + 3vw, 6rem); }
+  .also__t { font-size: 21px; letter-spacing: 0.011em; }
+  .also__list {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .also__list li { padding-top: 1.25rem; border-top: 1px solid var(--line); }
+  .also__list h4 { font-size: 17px; letter-spacing: -0.01em; }
+  .also__list p { margin-top: 0.35rem; font-size: 15px; line-height: 1.45; color: var(--fg-2); }
+  .also__list .more { margin-top: 0.6rem; font-size: 15px; }
+  @media (min-width: 900px) { .also__list { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 479px) { .also__list { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+  .solucoes__cta {
+    margin-top: clamp(3.5rem, 3rem + 2vw, 5rem);
+    font-size: 21px; letter-spacing: 0.011em; color: var(--fg);
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.6rem;
+  }
+  .solucoes__cta .more { font-size: 21px; }
+
+  @media (max-width: 734px) {
+    .solucoes { border-radius: 24px; }
+    .solucoes__cta, .solucoes__cta .more { font-size: 19px; }
+    .also__list .more { min-height: 44px; }
+  }
+</style>

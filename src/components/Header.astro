@@ -1,169 +1,157 @@
 ---
+import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
+import logo from '../assets/brand/novra-logo.png';
 
+// no desktop, "Fale conosco" já leva ao Contato; no menu do celular o Contato entra na lista
 const nav = [
   { label: 'Soluções', href: '#solucoes' },
-  { label: 'Diferenciais', href: '#diferenciais' },
-  { label: 'Processo', href: '#processo' },
-  { label: 'Tecnologias', href: '#tecnologias' },
-  { label: 'Contato', href: '#contato' },
+  { label: 'Clientes', href: '#clientes' },
+  { label: 'Como trabalhamos', href: '#processo' },
 ];
+const menuNav = [...nav, { label: 'Contato', href: '#contato' }];
+const WHATSAPP = 'https://wa.me/5511998002960?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20NOVRA%20e%20quero%20conversar%20sobre%20um%20projeto.';
 ---
-<header class="site-header" id="site-header" data-state="top">
-  <div class="container site-header__inner">
-    <a href="#topo" class="brand" aria-label="NOVRA — página inicial">
-      <img src="/brand/novra-logo-ui.png" alt="NOVRA" class="brand__full" width="1041" height="308" />
-      <img src="/brand/novra-icon-ui.png" alt="" class="brand__icon" aria-hidden="true" width="324" height="347" />
+<header class="nav" id="site-header" data-state="top">
+  <div class="nav__inner">
+    <a href="#topo" class="nav__brand" aria-label="NOVRA, ir para o início">
+      <Image src={logo} alt="" height={30} densities={[1, 2, 3]} format="webp" loading="eager" />
     </a>
 
-    <nav class="site-nav" aria-label="Navegação principal">
-      {nav.map((item) => (
-        <a href={item.href} class="site-nav__link" data-magnetic>{item.label}</a>
-      ))}
+    <nav class="nav__links" aria-label="Principal">
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
     </nav>
 
-    <div class="site-header__actions">
-      <a href="/formulario" class="btn btn-primary btn-sm header-cta" data-magnetic>
-        Fale com um especialista
-        <Icon name="arrow-right" />
-      </a>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
+    <div class="nav__actions">
+      <!-- leva ao Contato, onde estão as duas saídas: diagnóstico e WhatsApp -->
+      <a href="#contato" class="btn btn-primary btn-sm nav__cta">Fale conosco</a>
+      <button class="nav__toggle" id="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span>
       </button>
     </div>
   </div>
 </header>
 
-<!-- Mobile menu — FORA do <header> de propósito: quando rola, o header ganha
-     backdrop-filter, que vira containing block do position:fixed e fazia o
-     inset:0 do menu colapsar (menu "transparente"/cortado ao descer a tela). -->
-<div class="mobile-menu" id="mobile-menu" hidden>
-  <nav class="mobile-menu__nav" aria-label="Navegação mobile">
-    {nav.map((item, i) => (
-      <a href={item.href} class="mobile-menu__link" style={`--i:${i}`}>
-        <span class="mobile-menu__num">{String(i + 1).padStart(2, '0')}</span>
-        {item.label}
-      </a>
-    ))}
+<!-- fora do <header> de propósito: o backdrop-filter do cabeçalho viraria o bloco de
+     contenção do position:fixed e o menu ficaria cortado -->
+<div class="menu" id="mobile-menu" role="dialog" aria-label="Menu" hidden>
+  <nav class="menu__links" aria-label="Seções">
+    {menuNav.map((item, i) => <a href={item.href} style={`--i:${i}`}>{item.label}</a>)}
   </nav>
-  <a href="/formulario" class="btn btn-primary btn-lg btn-block mobile-menu__cta">
-    Iniciar um projeto <Icon name="arrow-right" />
-  </a>
+  <div class="menu__foot">
+    <a href="/formulario" class="btn btn-primary btn-lg">Solicitar diagnóstico</a>
+    <a href={WHATSAPP} class="more" target="_blank" rel="noopener" aria-label="WhatsApp (11) 99800-2960 (abre em nova aba)">
+      <Icon name="whatsapp" size={18} /> WhatsApp <span class="nowrap">(11) 99800-2960</span>
+    </a>
+  </div>
 </div>
 
 <style>
-  .site-header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    transition: background 0.5s var(--ease-out), border-color 0.5s var(--ease-out),
-      backdrop-filter 0.5s var(--ease-out);
-    border-bottom: 1px solid transparent;
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 100;
+    height: var(--header-h);
+    transition: background-color 0.3s var(--ease-ui), box-shadow 0.3s var(--ease-ui);
   }
-  .site-header[data-state='scrolled'] {
-    background: rgba(7, 9, 16, 0.72);
-    backdrop-filter: blur(16px) saturate(140%);
-    border-bottom-color: var(--border);
+  .nav[data-state='scrolled'] {
+    background: rgba(0, 0, 0, 0.72);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
   }
-  .site-header__inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    height: clamp(68px, 8vh, 84px);
+  /* sobre as seções claras o vidro fecha mais: o logo cromado precisa de fundo escuro */
+  .nav.is-over-light { background: rgba(0, 0, 0, 0.86); }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .nav[data-state='scrolled'] { background: rgba(0, 0, 0, 0.94); }
   }
-  .brand { display: inline-flex; align-items: center; }
-  .brand__full { height: clamp(34px, 4vw, 46px); width: auto; }
-  .brand__icon { display: none; height: 40px; width: auto; }
+  /* sem JavaScript: cabeçalho sempre com fundo, sem botão de menu morto e com a pílula visível */
+  :global(html:not(.js)) .nav { background: rgba(0, 0, 0, 0.86); }
+  :global(html:not(.js)) .nav__toggle { display: none; }
+  :global(html:not(.js)) .nav .nav__cta { position: static; opacity: 1; visibility: visible; transform: none; pointer-events: auto; }
 
-  .site-nav { display: none; align-items: center; gap: 0.4rem; }
-  .site-nav__link {
-    position: relative;
-    padding: 0.5rem 0.9rem;
-    font-family: var(--font-display);
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--text-2);
-    border-radius: var(--r-pill);
-    transition: color 0.3s var(--ease-out);
+  .nav__inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    height: 100%;
+    max-width: calc(var(--container) + 2 * var(--gutter));
+    margin-inline: auto;
+    padding-inline: var(--gutter);
   }
-  .site-nav__link::after {
-    content: "";
-    position: absolute;
-    left: 0.9rem; right: 0.9rem; bottom: 0.32rem;
-    height: 1px;
-    background: var(--cyan-400);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s var(--ease-out);
-  }
-  .site-nav__link:hover { color: var(--text-1); }
-  .site-nav__link:hover::after { transform: scaleX(1); }
+  .nav__brand { display: inline-flex; align-items: center; height: 44px; }
+  .nav__brand img { height: 30px; width: auto; }
 
-  .site-header__actions { display: flex; align-items: center; gap: 0.75rem; }
-  .btn-sm { --btn-pad-y: 0.7rem; --btn-pad-x: 1.2rem; font-size: 0.9rem; }
-  .header-cta { display: none; }
-
-  .nav-toggle {
-    display: inline-flex; flex-direction: column; justify-content: center; gap: 6px;
-    width: 46px; height: 46px; border-radius: 12px;
-    border: 1px solid var(--border-strong);
-    background: var(--surface-2);
-    padding: 0 12px;
-    position: relative; z-index: 101; /* acima do menu aberto p/ poder fechar (X) */
+  .nav__links { display: none; gap: 2rem; }
+  .nav__links a {
+    font-size: 14px; letter-spacing: -0.01em;
+    color: rgba(245, 245, 247, 0.8);
+    transition: color 0.2s var(--ease-ui);
   }
-  .nav-toggle span {
-    display: block; height: 2px; width: 100%;
-    background: var(--text-1); border-radius: 2px;
-    transition: transform 0.4s var(--ease-out), opacity 0.3s var(--ease-out);
-  }
-  .site-header.menu-open .nav-toggle span:first-child { transform: translateY(4px) rotate(45deg); }
-  .site-header.menu-open .nav-toggle span:last-child { transform: translateY(-4px) rotate(-45deg); }
+  .nav__links a:hover { color: #f5f5f7; }
 
-  /* Mobile menu */
-  .mobile-menu {
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    padding: calc(clamp(68px, 8vh, 84px) + 2rem) var(--gutter) 2.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1.5rem;
-    overflow-y: auto;            /* telas baixas: rola dentro do menu, não corta */
-    overscroll-behavior: contain; /* não "vaza" o scroll p/ a página atrás */
-    background: rgba(6, 8, 15, 0.94);
-    backdrop-filter: blur(26px);
+  .nav__actions { position: relative; display: flex; align-items: center; gap: 0.25rem; }
+
+  /* a pílula só entra quando o botão do hero sai da tela (nunca dois botões azuis juntos);
+     escondida, ela sai do fluxo para não empurrar o botão do menu */
+  .nav__cta { transition: opacity 0.3s var(--ease-ui), transform 0.3s var(--ease-ui), background-color 0.2s var(--ease-ui); }
+  .nav:not(.show-cta) .nav__cta,
+  .nav.menu-open .nav__cta {
+    opacity: 0; transform: translateY(-4px); pointer-events: none; visibility: hidden;
+  }
+  @media (max-width: 833px) {
+    .nav:not(.show-cta) .nav__cta,
+    .nav.menu-open .nav__cta { position: absolute; right: 0; }
+  }
+
+  .nav__toggle {
+    display: inline-flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+    width: 44px; height: 44px; margin-right: -12px;
+  }
+  /* linhas desenhadas com borda: continuam visíveis em alto contraste (cores forçadas) */
+  .nav__toggle span {
+    display: block; width: 18px; height: 0; border-top: 1.5px solid #f5f5f7;
+    transition: transform 0.3s var(--ease-ui);
+  }
+  .nav.menu-open .nav__toggle span:first-child { transform: translateY(3.75px) rotate(45deg); }
+  .nav.menu-open .nav__toggle span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+  .nav.menu-open { background: #000; box-shadow: none; }
+  @media (forced-colors: active) {
+    .nav__toggle span { border-top-color: CanvasText; }
+  }
+
+  /* menu do celular: camada opaca, sem blur de tela cheia */
+  .menu {
+    position: fixed; inset: 0; z-index: 90;
+    display: flex; flex-direction: column; justify-content: space-between; gap: 2rem;
+    padding: calc(var(--header-h) + 2.5rem) var(--gutter) calc(2rem + env(safe-area-inset-bottom));
+    background: #000;
+    overflow-y: auto; overscroll-behavior: contain;
     opacity: 0;
-    pointer-events: none; /* fechado não captura toques (não cobre o hambúrguer) */
-    transform: translateY(-12px);
-    transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+    transition: opacity 0.32s var(--ease-ui);
   }
-  /* respeita o atributo hidden — sem isso o display:flex deixava o menu invisível por cima da tela */
-  .mobile-menu[hidden] { display: none; }
-  .mobile-menu.is-open { opacity: 1; transform: none; pointer-events: auto; }
-  .mobile-menu__nav { display: flex; flex-direction: column; }
-  .mobile-menu__link {
-    display: flex; align-items: baseline; gap: 1rem;
-    padding: 1rem 0;
-    font-family: var(--font-display); font-weight: 600;
-    font-size: clamp(2rem, 9vw, 3rem);
-    color: var(--text-1);
-    border-bottom: 1px solid var(--border);
-    opacity: 0; transform: translateY(16px);
+  .menu[hidden] { display: none; }
+  .menu.is-open { opacity: 1; }
+  .menu__links { display: flex; flex-direction: column; gap: 1.25rem; }
+  .menu__links a {
+    font-size: 28px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.1;
+    color: #f5f5f7;
+    opacity: 0; transform: translateY(8px);
   }
-  .mobile-menu.is-open .mobile-menu__link {
+  .menu.is-open .menu__links a {
     opacity: 1; transform: none;
-    transition: opacity 0.5s var(--ease-out) calc(var(--i) * 60ms + 100ms),
-      transform 0.5s var(--ease-out) calc(var(--i) * 60ms + 100ms);
+    transition: opacity 0.4s var(--ease-out) calc(var(--i) * 40ms + 60ms), transform 0.4s var(--ease-out) calc(var(--i) * 40ms + 60ms);
   }
-  .mobile-menu__num { font-family: var(--font-mono); font-size: 0.9rem; color: var(--cyan-400); font-weight: 500; }
-  .mobile-menu__cta { margin-top: 2rem; }
+  .menu__foot { display: flex; flex-direction: column; align-items: stretch; gap: 1.25rem; }
+  .menu__foot .more { justify-content: center; min-height: 44px; }
+  .menu__foot .more :global(svg) { width: 18px; height: 18px; }
 
-  @media (min-width: 980px) {
-    .site-nav { display: flex; }
-    .header-cta { display: inline-flex; }
-    .nav-toggle { display: none; }
-    .mobile-menu { display: none; }
+  @media (min-width: 834px) {
+    .nav__links { display: flex; }
+    .nav__toggle { display: none; }
+    .menu { display: none !important; }
+  }
+  @media (max-width: 833px) {
+    /* no celular a pílula fica mais leve que o logo */
+    .nav__cta { min-height: 28px; padding: 0 0.75rem; font-size: 12px; }
+  }
+  @media (max-width: 733px) {
+    .nav__brand img { height: 26px; }
   }
 </style>

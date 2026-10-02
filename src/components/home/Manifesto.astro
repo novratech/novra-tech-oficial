@@ -1,0 +1,56 @@
+---
+// As dores vêm das opções do /formulario ("Onde a sua equipe mais perde tempo hoje?").
+// Ao rolar, cada dor acende; no fim elas recuam e a resposta fica sozinha em branco.
+// Sem JS ou com menos movimento: dores em cinza e resposta em branco, já no estado final.
+const pains = [
+  'Responder cliente no WhatsApp até tarde.',
+  'Lançar pedido na mão.',
+  // espaço que não quebra: "por planilha." e "o mês." ficam juntos na mesma linha
+  'Conferir planilha por planilha.',
+  'Montar relatório para saber como foi o mês.',
+];
+const answer = 'A NOVRA transforma esse trabalho em sistema.';
+const words = (s: string) => s.split(' ');
+---
+<section class="manifesto" id="para-quem" aria-labelledby="manifesto-t">
+  <div class="container">
+    <h2 class="eyebrow" id="manifesto-t">Para donos e gestores</h2>
+    <p class="manifesto__text" data-manifesto>
+      {pains.map((p) => (
+        <span class="manifesto__pain">{words(p).map((w) => <><span class="lw">{w}</span>{' '}</>)}</span>
+      ))}
+      <span class="manifesto__answer">{words(answer).map((w) => <><span class="lw">{w}</span>{' '}</>)}</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .manifesto {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    padding-block: var(--section-y);
+    background: #000;
+  }
+  .manifesto__text {
+    margin-top: 1.5rem;
+    max-width: 20.5em;
+    font-size: clamp(1.75rem, 1rem + 2.2vw, 3rem);
+    font-weight: 600;
+    line-height: 1.18;
+    letter-spacing: -0.012em;
+    color: #f5f5f7;
+    text-wrap: pretty;
+  }
+  .manifesto__pain { color: #86868b; }
+  .manifesto__answer { display: block; margin-top: 0.45em; color: #f5f5f7; }
+  /* com o efeito ligado, todas as palavras ficam brancas e quem controla o tom é a opacidade */
+  .manifesto__text.is-scrubbed .manifesto__pain { color: #f5f5f7; }
+  .lw { will-change: opacity; }
+
+  @media (min-width: 1069px) and (min-height: 640px) and (prefers-reduced-motion: no-preference) {
+    /* fica parado enquanto a folha de Soluções sobe por cima */
+    .manifesto { position: sticky; top: 0; min-height: 100vh; min-height: 100svh; }
+  }
+</style>

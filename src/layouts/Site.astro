@@ -1,0 +1,76 @@
+---
+// Layout da marca nova (estilo Apple). A home usa este; as outras páginas seguem no Base.astro
+// até migrarem, para que a proposta no ar e o painel não mudem sem querer.
+// Inter com tamanho óptico: só baixa onde não existe SF Pro (Windows, Android, Linux)
+import '@fontsource-variable/inter/opsz.css';
+import '../styles/site.css';
+
+interface Props {
+  title?: string;
+  /** título para prévias de link (WhatsApp, LinkedIn); por padrão, o slogan da marca */
+  socialTitle?: string;
+  description?: string;
+  noindex?: boolean;
+  image?: string;
+  imageAlt?: string;
+}
+const {
+  title = 'NOVRA · IA, software e automação para empresas',
+  socialTitle = 'NOVRA · Sistemas inteligentes para a próxima era',
+  description = 'A NOVRA cria inteligência artificial, software sob medida, automações e painéis de dados para empresas que buscam performance, segurança e escala.',
+  noindex = false,
+  image = '/og/novra-1200x630.jpg',
+  imageAlt = 'NOVRA: sistemas inteligentes para a próxima era',
+} = Astro.props;
+// og:image precisa de endereço completo; relativo, o WhatsApp ignora
+const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- com JS, os elementos que entram ao rolar começam escondidos; sem JS, tudo aparece -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/brand/novra-icon-512.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="NOVRA" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={socialTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'NOVRA',
+      description,
+      url: 'https://novratech.com.br',
+      logo: 'https://novratech.com.br/brand/novra-icon-512.png',
+      sameAs: ['https://www.instagram.com/novratech.oficial'],
+    })} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Pular para o conteúdo</a>
+    <slot />
+    <script src="../scripts/site.js"></script>
+  </body>
+</html>

@@ -1,33 +1,26 @@
 ---
-import Base from '../layouts/Base.astro';
+import Site from '../layouts/Site.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import TrustStrip from '../components/TrustStrip.astro';
-import Stats from '../components/Stats.astro';
-import Services from '../components/Services.astro';
-import Cases from '../components/Cases.astro';
-import Process from '../components/Process.astro';
-import WhyUs from '../components/WhyUs.astro';
-import Band from '../components/Band.astro';
-import TechStack from '../components/TechStack.astro';
-import Proof from '../components/Proof.astro';
-import CTA from '../components/CTA.astro';
+import Manifesto from '../components/home/Manifesto.astro';
+import Solucoes from '../components/home/Solucoes.astro';
+import Clientes from '../components/home/Clientes.astro';
+import Processo from '../components/home/Processo.astro';
+import Contato from '../components/home/Contato.astro';
 import Footer from '../components/Footer.astro';
 ---
-<Base>
+<Site>
   <Header />
   <main id="main">
     <Hero />
-    <TrustStrip />
-    <Stats />
-    <Services />
-    <Cases />
-    <Process />
-    <WhyUs />
-    <Band />
-    <TechStack />
-    <Proof />
-    <CTA />
+    <!-- o manifesto fica parado enquanto a folha clara de Soluções sobe por cima dele -->
+    <div class="stack">
+      <Manifesto />
+      <Solucoes />
+    </div>
+    <Clientes />
+    <Processo />
+    <Contato />
   </main>
   <Footer />
-</Base>
+</Site>

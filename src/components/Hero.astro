@@ -1,208 +1,247 @@
 ---
 import Icon from './Icon.astro';
 
+// duas linhas, como nos títulos da Apple: a afirmação em branco, o complemento em cinza
 const words = [
-  { t: 'Sistemas' }, { t: 'inteligentes' }, { t: 'para' },
-  { t: 'a' }, { t: 'próxima', a: true }, { t: 'era.', a: true },
+  { t: 'Sistemas' }, { t: 'inteligentes' }, { t: 'para', a: true },
+  { t: 'a', a: true }, { t: 'próxima', a: true }, { t: 'era.', a: true },
 ];
 const caps = ['IA', 'Software', 'Automação', 'Cloud', 'Segurança', 'Dados'];
+const WHATSAPP = 'https://wa.me/5511998002960?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20NOVRA%20e%20quero%20conversar%20sobre%20um%20projeto.';
+
+// Quem recebe o recorte quadrado (N em cima, texto embaixo): celular e tablet em pé.
+const SQUARE = '(max-width: 700px), (max-width: 1068px) and (orientation: portrait)';
+const WIDE = '(min-width: 1069px), (min-width: 701px) and (orientation: landscape)';
+// do mais eficiente ao mais compatível; o navegador fica com o primeiro que sabe tocar.
+// As fontes entram pelo site.js depois que a página carrega e só com o hero à vista:
+// a imagem parada aparece na hora e o vídeo (5 a 10 MB) não disputa banda com o resto.
+const sources = [
+  { src: '/hero/n-1440.av1.mp4', type: 'video/mp4; codecs="av01.0.12M.10"', media: WIDE },
+  { src: '/hero/n-1440.hevc.mp4', type: 'video/mp4; codecs="hvc1"', media: WIDE },
+  { src: '/hero/n-1080.h264.mp4', type: 'video/mp4', media: WIDE },
+  { src: '/hero/n-m.av1.mp4', type: 'video/mp4; codecs="av01.0.08M.10"', media: SQUARE },
+  { src: '/hero/n-m.hevc.mp4', type: 'video/mp4; codecs="hvc1"', media: SQUARE },
+  { src: '/hero/n-m.h264.mp4', type: 'video/mp4', media: SQUARE },
+];
 ---
 <section class="hero" id="topo">
-  <!-- Rosto tecnológico sangrando do canto direito, dissolvido no preto -->
+  <!-- N da NOVRA em partículas, em loop lento: ampliado e interpolado por IA, emenda sem corte -->
   <div class="hero__face-layer" aria-hidden="true">
-    <video class="hero__video" autoplay muted loop playsinline preload="auto" poster="/img/hero-poster.jpg">
-      <source src="/hero.webm" type="video/webm" />
-      <source src="/hero.mp4" type="video/mp4" />
-    </video>
+    <picture>
+      <source media={SQUARE} srcset="/hero/n-poster-m.webp" width="1080" height="1080" />
+      <img class="hero__poster" src="/hero/n-poster.webp" width="1920" height="1080" alt="" fetchpriority="high" decoding="async" />
+    </picture>
+    <video class="hero__video" muted loop playsinline preload="none" disablepictureinpicture
+      data-sources={JSON.stringify(sources)}></video>
     <span class="hero__veil"></span>
-    <!-- constelação de partículas ouro/azul sobre o rosto (o JS já mascara p/ a direita) -->
-    <canvas id="hero-fx" class="hero__fx" data-parallax="0.2"></canvas>
   </div>
 
   <div class="container hero__inner">
     <div class="hero__content">
-      <div class="hero__eyebrow" data-reveal>
-        <span class="chip"><span class="dot"></span> Tecnologia premium · Sistemas inteligentes</span>
-      </div>
+      <p class="hero__eyebrow rise" style="--d: 80ms">Tecnologia premium</p>
 
       <h1 class="hero__title">
         {words.map((w, i) => (
-          <span class={w.a ? 'hw hw--accent' : 'hw'} style={`--d:${i * 55 + 140}ms`}>{w.t}</span>
+          <>
+            {w.a && !words[i - 1]?.a && <span class="hw-br" aria-hidden="true"></span>}
+            <span class={w.a ? 'hw hw--accent' : 'hw'} style={`--d:${i * 55 + 140}ms`}>{w.t}</span>
+          </>
         ))}
       </h1>
 
-      <span class="hero__sig signature-line" data-reveal style="--reveal-delay: 560ms" aria-hidden="true"></span>
-
-      <p class="hero__lead lead pretty" data-reveal style="--reveal-delay: 640ms">
+      <p class="hero__lead rise" style="--d: 640ms">
         Desenvolvemos soluções em tecnologia, IA, automação e sistemas digitais para
         empresas que buscam <strong>performance, segurança e escala.</strong>
       </p>
 
-      <div class="hero__actions" data-reveal style="--reveal-delay: 740ms">
-        <a href="/formulario" class="btn btn-primary btn-lg" data-magnetic>
-          Fale com um especialista
-          <Icon name="arrow-right" />
-        </a>
-        <a href="#solucoes" class="btn btn-ghost btn-lg" data-magnetic>
-          Conheça nossas soluções
+      <div class="hero__actions rise" style="--d: 740ms">
+        <a href="/formulario" class="btn btn-primary btn-lg" id="hero-cta">Solicitar diagnóstico</a>
+        <a href={WHATSAPP} class="btn btn-secondary btn-lg" target="_blank" rel="noopener" aria-label="Conversar no WhatsApp (abre em nova aba)">
+          <Icon name="whatsapp" /> Conversar no WhatsApp
         </a>
       </div>
 
-      <ul class="hero__caps" data-reveal style="--reveal-delay: 840ms">
+      <ul class="hero__caps rise" style="--d: 840ms" aria-label="O que fazemos">
         {caps.map((c) => <li>{c}</li>)}
       </ul>
     </div>
   </div>
 
-  <a class="hero__scroll" href="#solucoes" data-reveal style="--reveal-delay: 980ms" aria-label="Rolar">
-    <span class="hero__scroll-line"><i></i></span>
-  </a>
+  <!-- vídeo em loop precisa de um jeito de parar (WCAG 2.2.2); aparece só quando o vídeo toca -->
+  <button class="hero__pause" type="button" aria-label="Pausar a animação de fundo" hidden>
+    <svg class="hero__pause-i" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
+    <svg class="hero__play-i" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg>
+  </button>
 </section>
 
 <style>
   .hero {
     position: relative;
     z-index: 2;
+    min-height: 100vh;
     min-height: 100svh;
     display: flex;
     align-items: center;
     padding-top: clamp(6rem, 12vh, 8.5rem);
     padding-bottom: clamp(5rem, 9vh, 7rem);
     overflow: hidden;
-    background: var(--bg-0);
+    background: #000;
   }
 
-  /* ---- Rosto no canto ---- */
+  /* ---- o N, à direita ---- */
   .hero__face-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-  /* vídeo de fundo (rosto à direita, preto à esquerda) */
-  .hero__video {
-    position: absolute; inset: 0; z-index: 0;
+  .hero__poster, .hero__video {
+    position: absolute; inset: 0;
     width: 100%; height: 100%;
     object-fit: cover; object-position: right center;
-    opacity: 0; transition: opacity 1.2s ease;
   }
+  .hero__poster { z-index: 0; }
+  /* o vídeo começa no mesmo quadro do pôster: quando ele toca, a troca não aparece */
+  .hero__video { z-index: 1; opacity: 0; transition: opacity 0.8s ease; }
   .hero__video.is-ready { opacity: 1; }
-  /* véu: máscara escura geral + reforço à esquerda (leitura) + topo/base no preto */
+  /* véu: só a faixa do texto escurece; o N brilha sozinho no fundo escuro do vídeo */
   .hero__veil {
     position: absolute; inset: 0; z-index: 2;
     background:
-      linear-gradient(rgba(7,7,9,0.46), rgba(7,7,9,0.46)),
-      linear-gradient(90deg, var(--bg-0) 28%, rgba(10,10,12,0.6) 52%, transparent 84%),
-      linear-gradient(180deg, var(--bg-0) 1%, transparent 14%, transparent 82%, var(--bg-0) 100%);
+      linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.12)),
+      linear-gradient(90deg, #000 20%, rgba(0, 0, 0, 0.55) 40%, transparent 62%),
+      linear-gradient(180deg, #000 1%, transparent 14%, transparent 82%, #000 100%);
   }
-  /* constelação: pontos ouro/azul + cometas por cima do rosto (JS mascara o lado esquerdo) */
-  .hero__fx {
-    position: absolute; inset: 0; z-index: 3;
-    width: 100%; height: 100%;
-    opacity: 0; transition: opacity 1.4s ease 0.3s;
-  }
-  .hero__fx.is-ready { opacity: 1; }
 
   .hero__inner { position: relative; z-index: 2; width: 100%; }
-  .hero__content { display: flex; flex-direction: column; align-items: flex-start; max-width: 600px; }
+  .hero__content { display: flex; flex-direction: column; align-items: flex-start; max-width: 640px; }
 
+  /* o texto do hero entra por CSS: aparece mesmo se o script demorar ou falhar */
+  .rise { animation: hero-rise 0.8s var(--ease-out) backwards; animation-delay: var(--d, 0ms); }
+  @keyframes hero-rise { from { opacity: 0; transform: translateY(24px); } }
+
+  .hero__eyebrow {
+    font-size: 1.06rem; font-weight: 600; letter-spacing: -0.01em;
+    color: #86868b;
+  }
+
+  /* teto de tamanho: "Sistemas inteligentes" cabe numa linha sem encostar no N, inclusive em MacBook (16:10) */
   .hero__title {
-    margin-top: 1.4rem;
-    font-size: clamp(2rem, 1.2rem + 3vw, 3.7rem);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
+    margin-top: 1rem;
+    font-size: clamp(2.4rem, 1rem + 2.6vw, 3.2rem);
+    line-height: 1.07;
+    letter-spacing: -0.012em;
     font-weight: 600;
-    color: var(--text-1);
-    display: flex; flex-wrap: wrap; gap: 0 0.24em;
-    max-width: 14ch;
-    text-shadow: 0 2px 40px rgba(0,0,0,0.6);
+    color: #f5f5f7;
+    display: flex; flex-wrap: wrap; gap: 0 0.22em;
+    text-wrap: initial;
   }
+  .hw-br { flex-basis: 100%; height: 0; }
   .hw { display: inline-block; animation: word-rise 0.85s var(--ease-out) backwards; animation-delay: var(--d, 0ms); }
-  .hw--accent {
-    background: var(--grad-brand-soft);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
+  /* o trecho final em cinza, como nos títulos da Apple */
+  .hw--accent { color: #86868b; }
   @keyframes word-rise {
     from { opacity: 0; transform: translateY(0.5em); filter: blur(10px); }
     to { opacity: 1; transform: none; filter: none; }
   }
 
-  .hero__sig { margin: 1.8rem 0 0; width: 128px; }
   .hero__lead {
-    margin-top: 1.6rem; max-width: 480px; color: var(--text-2);
-    text-shadow: 0 1px 18px rgba(0,0,0,0.6);
+    margin-top: 1.4rem; max-width: 23em;
+    font-size: clamp(1.06rem, 0.9rem + 0.35vw, 1.25rem); font-weight: 400;
+    line-height: 1.45; letter-spacing: 0.002em; color: #86868b;
   }
-  .hero__lead strong { color: var(--text-1); font-weight: 600; }
+  .hero__lead strong { color: #f5f5f7; font-weight: 600; }
   .hero__actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.1rem; }
-  .hero__caps { display: flex; flex-wrap: wrap; gap: 0.6rem 0.5rem; margin-top: 2.3rem; }
-  .hero__caps li {
-    font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.05em;
-    color: var(--text-2);
-    padding: 0.4em 0.85em; border: 1px solid var(--border); border-radius: var(--r-pill);
-    background: rgba(255,255,255,0.015);
+  /* o contorno fica legível mesmo quando passa por cima do N claro */
+  .hero__actions .btn-secondary {
+    background: rgba(0, 0, 0, 0.55);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   }
+  .hero__actions .btn-secondary:hover { background: rgba(40, 40, 42, 0.7); }
+  .hero__caps { display: flex; flex-wrap: wrap; gap: 0.3rem 0; margin-top: 2.2rem; }
+  .hero__caps li { font-size: 0.94rem; letter-spacing: -0.005em; color: #86868b; }
+  .hero__caps li + li::before { content: "·"; content: "·" / ""; margin: 0 0.6em; color: #48484a; }
 
-  .hero__scroll { position: absolute; bottom: clamp(3.5rem, 6vh, 4.5rem); left: var(--gutter); z-index: 2; }
-  .hero__scroll-line { display: block; width: 1px; height: 46px; background: var(--border-strong); position: relative; overflow: hidden; }
-  .hero__scroll-line i { position: absolute; top: 0; left: 0; width: 100%; height: 45%; background: var(--blue-energy); animation: scroll-hint 2s var(--ease-in-out) infinite; }
+  .hero__pause {
+    position: absolute; z-index: 3;
+    right: var(--gutter); bottom: clamp(1rem, 4vh, 2rem);
+    display: grid; place-items: center;
+    width: 44px; height: 44px; border-radius: 50%;
+    color: #f5f5f7;
+    background: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    transition: background-color 0.2s var(--ease-ui);
+  }
+  .hero__pause:hover { background: rgba(255, 255, 255, 0.2); }
+  .hero__pause[hidden] { display: none; }
+  .hero__play-i { display: none; }
+  .hero__pause.is-paused .hero__pause-i { display: none; }
+  .hero__pause.is-paused .hero__play-i { display: block; }
 
-  /* tablet: vídeo mais presente à direita, texto à esquerda */
-  @media (max-width: 999px) and (min-width: 701px) {
-    .hero__video { object-position: 78% center; opacity: 0.72; }
-    .hero__video.is-ready { opacity: 0.72; }
+  /* telas médias deitadas e zoom de 200%: o texto ocupa mais da tela, o véu precisa ir mais longe */
+  @media (min-width: 701px) and (max-width: 1199px) {
     .hero__veil { background:
-      linear-gradient(rgba(7,7,9,0.18), rgba(7,7,9,0.18)),
-      linear-gradient(90deg, var(--bg-0) 30%, rgba(10,10,12,0.5) 58%, transparent 100%),
-      linear-gradient(180deg, var(--bg-0), transparent 16%, transparent 82%, var(--bg-0)); }
+      linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+      linear-gradient(90deg, #000 34%, rgba(0, 0, 0, 0.86) 54%, rgba(0, 0, 0, 0.4) 74%, transparent 90%),
+      linear-gradient(180deg, #000, transparent 16%, transparent 76%, #000); }
     .hero__content { max-width: 100%; }
-    .hero__scroll { display: none; }
+  }
+  @media (min-width: 701px) and (max-width: 999px) {
+    .hero__poster, .hero__video { object-position: 72% center; }
+  }
+  /* telas grandes: sobra espaço até o N, o título pode crescer */
+  @media (min-width: 1680px) {
+    .hero__title { font-size: 3.75rem; }
   }
 
-  /* phone: experiência cinematográfica — rosto em destaque no topo, conteúdo ancorado embaixo */
-  @media (max-width: 700px) {
+  /* celular e tablet em pé: o N em destaque no topo, conteúdo ancorado embaixo */
+  @media (max-width: 700px), (max-width: 1068px) and (orientation: portrait) {
     .hero {
-      min-height: 100svh;
       padding-top: clamp(4.5rem, 13vh, 6rem);
       padding-bottom: clamp(2rem, 6vh, 3.25rem);
       align-items: flex-end;
     }
-    .hero__video {
+    /* o N inteiro na parte de cima; o texto embaixo, no escuro.
+       A perna direita do N é maior e mais clara e as partículas se juntam à direita:
+       o quadro corre um pouco para a esquerda para o peso visual ficar no meio da tela. */
+    .hero__poster, .hero__video {
+      inset: auto 0 auto 0; top: 6%; height: 56%;
       object-fit: cover;
-      object-position: 84% 30%;
-      opacity: 0.96;
+      object-position: 66% 50%;
     }
-    .hero__video.is-ready { opacity: 0.96; }
-    /* scrim: rosto nítido no topo, fundo BEM escuro na faixa do texto p/ o azul destacar */
+    /* 1 px menor que o pôster: o Chrome arredonda a área do vídeo para fora e o tornaria o LCP */
+    .hero__video { top: calc(6% + 1px); height: calc(56% - 2px); left: 1px; width: calc(100% - 2px); }
     .hero__veil {
       background:
         linear-gradient(180deg,
-          rgba(10,10,12,0.45) 0%,
-          rgba(10,10,12,0.05) 11%,
+          rgba(0, 0, 0, 0.45) 0%,
+          rgba(0, 0, 0, 0.05) 11%,
           transparent 23%,
           transparent 33%,
-          rgba(10,10,12,0.74) 43%,
-          rgba(10,10,12,0.94) 53%,
-          rgba(10,10,12,0.99) 64%,
-          var(--bg-0) 76%),
-        linear-gradient(90deg, rgba(10,10,12,0.48) 0%, rgba(10,10,12,0.22) 45%, transparent 80%);
+          rgba(0, 0, 0, 0.74) 43%,
+          rgba(0, 0, 0, 0.94) 53%,
+          rgba(0, 0, 0, 0.99) 64%,
+          #000 76%),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.48) 0%, rgba(0, 0, 0, 0.22) 45%, transparent 80%);
     }
-    /* esconde a chip pra não competir com o rosto (foco) */
-    .hero__eyebrow { display: none; }
     .hero__content { max-width: 100%; align-items: flex-start; }
+    .hero__pause { bottom: auto; top: calc(var(--header-h) + 12px); }
+  }
+  @media (min-width: 701px) and (max-width: 1068px) and (orientation: portrait) {
+    .hero__poster, .hero__video { top: 6%; height: 58%; object-position: 50% 50%; }
+    .hero__video { top: calc(6% + 1px); height: calc(58% - 2px); }
+  }
+  @media (max-width: 700px) {
+    .hero__eyebrow { display: none; }
+    /* acompanha a largura da tela para "Sistemas inteligentes" nunca quebrar (testado de 280 a 700 px) */
     .hero__title {
       margin-top: 1rem;
-      font-size: clamp(1.95rem, 1rem + 7vw, 2.75rem);
-      line-height: 1.06;
-      max-width: 15ch;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.7), 0 6px 34px rgba(0,0,0,0.95);
+      font-size: min(2.6rem, calc((100vw - 2 * var(--gutter)) / 9.8));
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55);
     }
-    /* palavras azuis: sombra suave (sem halo preto) p/ o gradiente ficar vivo igual ao desktop */
-    .hero__title .hw--accent { text-shadow: 0 2px 22px rgba(0,0,0,0.45); }
-    .hero__sig { margin-top: 1.3rem; }
-    .hero__lead { margin-top: 1.2rem; color: var(--text-1); text-shadow: 0 1px 2px rgba(0,0,0,0.85), 0 2px 18px rgba(0,0,0,0.95); }
+    .hero__lead { margin-top: 1rem; font-size: 1.08rem; color: #a1a1a6; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7); }
     .hero__actions { margin-top: 1.7rem; width: 100%; }
-    .hero__actions .btn { flex: 1 1 auto; justify-content: center; }
-    /* pills escondidas no phone: encurta o bloco e dá respiro ao rosto */
+    .hero__actions .btn { flex: 1 1 auto; }
     .hero__caps { display: none; }
-    .hero__scroll { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .hw { animation: none; }
-    .hero__scroll-line i { animation: none; }
+    .hw, .rise { animation: none; }
   }
 </style>

@@ -1,0 +1,85 @@
+---
+// As cinco etapas vêm do brandbook e os textos, do site anterior (compromissos que a NOVRA
+// já assumia), reescritos em linguagem leiga.
+const steps = [
+  { t: 'Diagnóstico', d: 'Entendemos o seu negócio, os objetivos e os riscos, e definimos o caminho de maior impacto.' },
+  { t: 'Arquitetura', d: 'Desenhamos a solução e o plano de entrega. Você sabe exatamente o que será construído.' },
+  { t: 'Desenvolvimento', d: 'Construímos em etapas curtas, com testes e segurança desde o primeiro dia.' },
+  { t: 'Integração', d: 'Ligamos o sistema novo às ferramentas que a empresa já usa. Tudo conversando, sem digitar a mesma coisa duas vezes.' },
+  { t: 'Otimização', d: 'Monitoramento e evolução contínua para o sistema seguir rápido e seguro.' },
+];
+---
+<section class="section processo theme-light is-gray" id="processo" aria-labelledby="processo-t">
+  <div class="container">
+    <header class="head processo__head" data-reveal>
+      <p class="eyebrow">Como trabalhamos</p>
+      <h2 class="h2" id="processo-t">Sem <span class="nowrap">caixas-pretas.</span> <span class="tone">Você acompanha cada decisão.</span></h2>
+    </header>
+
+    <div class="steps" data-steps>
+      <span class="steps__track" aria-hidden="true"><i class="steps__fill"></i></span>
+      <ol class="steps__list">
+        {steps.map((s, i) => (
+          <li class="step">
+            <span class="step__n">{i + 1}</span>
+            <h3 class="step__t">{s.t}</h3>
+            <p class="step__d">{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* a segunda folha clara, também com cantos sobre o preto */
+  .processo { border-radius: 32px; }
+  .processo__head { max-width: 820px; }
+
+  .steps { position: relative; margin-top: clamp(3rem, 2rem + 3vw, 4.5rem); }
+  /* linha vertical (celular e tablet) */
+  .steps__track {
+    position: absolute;
+    left: 4px; top: 6px; bottom: 6px; width: 2px; border-radius: 1px;
+    background: var(--line);
+  }
+  .steps__fill {
+    position: absolute; inset: 0; border-radius: inherit;
+    background: var(--accent);
+    transform-origin: top center;
+  }
+  .steps__list { display: flex; flex-direction: column; gap: 2rem; padding-left: 2rem; }
+  .step { position: relative; }
+  /* um ponto por etapa, em cima da linha; fica azul quando a linha chega nele */
+  .step::before {
+    content: ""; position: absolute;
+    left: calc(-2rem + 0.5px); top: 4px;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: #c7c7cc;
+    transition: background-color 0.35s var(--ease-ui);
+  }
+  .step__n { font-size: 14px; font-weight: 600; color: var(--fg-2); font-variant-numeric: tabular-nums; }
+  .step__t { margin-top: 0.35rem; font-size: 21px; line-height: 1.24; letter-spacing: 0.011em; }
+  .step__d { margin-top: 0.4rem; font-size: 15px; line-height: 1.47; color: var(--fg-2); max-width: 30em; }
+
+  /* com o script, a etapa ainda não alcançada espera em cinza legível (4,7:1 sobre #f5f5f7) */
+  .steps.is-live .step__t { color: var(--fg-2); transition: color 0.35s var(--ease-ui); }
+  .steps.is-live .step.is-lit .step__t { color: var(--fg); }
+  .steps.is-live .step.is-lit::before,
+  .steps:not(.is-live) .step::before { background: var(--accent); }
+
+  /* linha horizontal só com espaço para "Desenvolvimento" caber na coluna */
+  @media (min-width: 1100px) {
+    .steps__track { left: 0; right: 0; top: 4px; bottom: auto; width: auto; height: 2px; }
+    .steps__fill { transform-origin: left center; }
+    .steps__list {
+      display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 2rem 1.5rem;
+      padding-left: 0; padding-top: 2rem;
+    }
+    .step::before { left: 0; top: calc(-2rem + 0.5px); }
+  }
+  @media (max-width: 734px) {
+    .processo { border-radius: 24px; }
+  }
+</style>

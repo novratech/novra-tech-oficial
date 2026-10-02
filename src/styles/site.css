@@ -1,0 +1,259 @@
+/* ============================================================
+   NOVRA · marca nova (home)
+   Estilo Apple: preto de palco, branco de galeria, um azul só para ação.
+   Tipografia do sistema (SF Pro nos aparelhos Apple, Inter nos outros).
+   Regras: sem degradê, sem brilho, sem chip, sem ícone em caixinha.
+   Contraste AA conferido em todos os pares de cor abaixo.
+   ============================================================ */
+
+:root {
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter Variable', 'Helvetica Neue', Arial, sans-serif;
+
+  /* ação: o único azul da página (branco sobre ele 4,9:1; no hover 5,9:1) */
+  --accent: #2a64f6;
+  --accent-hover: #2259e0;
+
+  /* ritmo */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-ui: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* medidas */
+  --container: 1200px;
+  --container-wide: 1440px;
+  --container-text: 980px;
+  --gutter: clamp(1.5rem, 0.6rem + 3vw, 3rem);
+  --section-y: clamp(5.5rem, 3rem + 7vw, 10rem);
+  --header-h: 52px;
+
+  /* o hero aprovado ainda lê estes nomes */
+  --bg-0: #000;
+  --border-strong: rgba(245, 245, 247, 0.16);
+  --blue-energy: #4d8dff;
+
+  /* tema escuro (padrão) */
+  --bg: #000;
+  --fg: #f5f5f7;        /* 19,3:1 */
+  --fg-2: #86868b;      /* 5,8:1  secundário e metade cinza dos títulos */
+  --fg-body: #a1a1a6;   /* 8,1:1  parágrafo longo */
+  --line: rgba(255, 255, 255, 0.14);
+  --link-c: #4d8dff;    /* 6,6:1 */
+
+  color-scheme: dark;
+}
+
+.theme-light {
+  --bg: #fff;
+  --fg: #1d1d1f;        /* 16,8:1 */
+  --fg-2: #6e6e73;      /* 5,1:1 */
+  --fg-tone: #86868b;   /* 3,6:1  só em texto de 24 px ou mais */
+  --fg-body: #424245;   /* 10:1 */
+  --line: #d2d2d7;
+  --link-c: #1f5bd8;    /* 5,9:1 */
+  color-scheme: light;
+  background: var(--bg);
+  color: var(--fg-body);
+}
+.theme-light.is-gray { --bg: #f5f5f7; } /* #6e6e73 continua 4,7:1 e #1f5bd8 5,4:1 */
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+}
+body {
+  font-family: var(--font);
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.012em;
+  color: var(--fg-body);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+img, svg, video, picture, canvas { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+ul, ol { list-style: none; }
+h1, h2, h3, h4 { color: var(--fg); font-weight: 600; text-wrap: balance; }
+p { text-wrap: pretty; }
+::selection { background: rgba(42, 100, 246, 0.32); color: inherit; }
+
+/* ---------- layout ---------- */
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container--wide { max-width: calc(var(--container-wide) + 2 * var(--gutter)); }
+.container--text { max-width: calc(var(--container-text) + 2 * var(--gutter)); }
+.section { position: relative; padding-block: var(--section-y); background: var(--bg); }
+
+/* ---------- tipografia ---------- */
+.eyebrow {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  color: var(--fg-2);
+}
+.h2 {
+  font-size: clamp(2rem, 1.25rem + 2vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.009em;
+}
+.display {
+  font-size: clamp(2.5rem, 1.2rem + 4.4vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+/* título em dois tons, como o hero: a afirmação e, embaixo, o complemento em cinza */
+.tone { display: block; color: var(--fg-2); }
+.theme-light .tone { color: var(--fg-tone); }
+.lead {
+  font-size: clamp(1.1875rem, 1.05rem + 0.3vw, 1.3125rem);
+  line-height: 1.38;
+  letter-spacing: 0.002em;
+  color: var(--fg-2);
+}
+.lead strong { color: var(--fg); font-weight: 600; }
+.caption { font-size: 14px; line-height: 1.43; letter-spacing: -0.006em; color: var(--fg-2); }
+.pretty { text-wrap: pretty; }
+.balance { text-wrap: balance; }
+
+.head > * + * { margin-top: 0.75rem; }
+.head .h2 + .lead, .head .display + .lead { margin-top: 1.25rem; }
+
+/* ---------- botões e links ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  border-radius: 980px;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color 0.2s var(--ease-ui), box-shadow 0.2s var(--ease-ui), color 0.2s var(--ease-ui), transform 0.2s var(--ease-ui);
+}
+.btn:active { transform: scale(0.98); }
+.btn svg { width: 1.05em; height: 1.05em; flex-shrink: 0; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-secondary {
+  color: var(--fg);
+  box-shadow: inset 0 0 0 1px rgba(245, 245, 247, 0.34);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fg) 34%, transparent);
+}
+.btn-secondary:hover {
+  background: rgba(245, 245, 247, 0.07);
+  background: color-mix(in srgb, var(--fg) 7%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(245, 245, 247, 0.6);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fg) 60%, transparent);
+}
+.btn-sm { min-height: 32px; padding: 0 0.875rem; font-size: 14px; }
+.btn-lg { min-height: 52px; padding: 0 1.75rem; }
+
+/* link com seta, o "Saiba mais ›" da Apple */
+.more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-size: 17px;
+  color: var(--link-c);
+  text-underline-offset: 0.2em;
+}
+.more svg { width: 0.72em; height: 0.72em; flex-shrink: 0; transition: transform 0.2s var(--ease-ui); }
+.more:hover { text-decoration: underline; }
+.more:hover svg { transform: translateX(2px); }
+
+/* ---------- molduras (sem aparelho falso: sem ilha, sem bolinhas, sem notebook) ---------- */
+.screen {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #0b0d12;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+  isolation: isolate; /* o Safari recorta direito filhos com transform */
+}
+.screen img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
+.screen::after { /* fio de luz na borda de dentro */
+  content: "";
+  position: absolute; inset: 0; z-index: 2;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+.theme-light .screen {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04),
+    0 24px 48px -12px rgba(0, 0, 0, 0.24), 0 56px 96px -24px rgba(13, 23, 60, 0.18);
+}
+
+/* ---------- entrada ao rolar ---------- */
+[data-reveal] {
+  transition: opacity 0.8s var(--ease-out), transform 0.9s var(--ease-out);
+  transition-delay: var(--d, var(--reveal-delay, 0ms));
+}
+html.js [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(24px); }
+html.js [data-reveal]:focus-within { opacity: 1; transform: none; transition-duration: 0s; }
+/* se o script não rodar, nada fica escondido: tudo aparece em 3,5 s */
+html.js:not(.is-ready) [data-reveal]:not(.is-in) { animation: reveal-failsafe 0.01s 3.5s forwards; }
+@keyframes reveal-failsafe { to { opacity: 1; transform: none; } }
+
+/* ---------- acessibilidade ---------- */
+:focus-visible { outline: 2px solid var(--link-c); outline-offset: 3px; }
+:where(:focus-visible) { border-radius: 4px; }
+main:focus, section[tabindex="-1"]:focus, [id][tabindex="-1"]:focus { outline: none; }
+.nowrap { white-space: nowrap; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: fixed; top: -100px; left: 1rem; z-index: 300;
+  background: var(--accent); color: #fff; padding: 0.7rem 1.1rem; border-radius: 10px;
+  transition: top 0.3s var(--ease-out);
+}
+.skip-link:focus { top: 1rem; }
+
+@media (max-width: 733px) {
+  :root { --header-h: 48px; }
+}
+@media (max-width: 734px) {
+  .eyebrow { font-size: 15px; }
+}
+@media (max-width: 420px) {
+  .btn { white-space: normal; text-align: center; line-height: 1.2; padding-block: 0.85rem; }
+}
+@media (forced-colors: active) {
+  .btn { border: 1px solid ButtonText; }
+}
+@media (prefers-contrast: more) {
+  :root { --fg-2: #a1a1a6; }
+  .theme-light { --fg-2: #424245; --fg-tone: #6e6e73; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html.js [data-reveal]:not(.is-in) { opacity: 1; transform: none; }
+}
+
+/* o manifesto ganha uma pista própria: a resposta acende inteira antes de a folha subir */
+@media (min-width: 1069px) and (min-height: 640px) and (prefers-reduced-motion: no-preference) {
+  .stack > .solucoes { margin-top: 65vh; margin-top: 65svh; }
+}

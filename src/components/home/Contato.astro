@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../Icon.astro';
+import mark from '../../assets/brand/novra-icon.png';
+
+const WHATSAPP = 'https://wa.me/5511998002960?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20NOVRA%20e%20quero%20conversar%20sobre%20um%20projeto.';
+// compromissos que o site já assumia, em linguagem leiga; o "sem compromisso" já está no título
+const promises = ['Resposta de um especialista sênior', 'Confidencialidade garantida, com acordo de sigilo se você quiser'];
+---
+<section class="section contato" id="contato" aria-labelledby="contato-t">
+  <div class="container container--text contato__inner">
+    <Image src={mark} alt="" width={56} densities={[1, 2, 3]} format="webp" class="contato__mark" data-reveal />
+    <h2 class="contato__title" id="contato-t" data-reveal style="--d: 80ms">
+      Comece por um diagnóstico. <span class="tone">Sem compromisso.</span>
+    </h2>
+    <p class="lead contato__lead" data-reveal style="--d: 160ms">
+      Conte o seu desafio. Em breve, um especialista da NOVRA retorna com um diagnóstico inicial e os próximos passos.
+    </p>
+    <div class="contato__actions" data-reveal style="--d: 240ms">
+      <a href="/formulario" class="btn btn-primary btn-lg">Solicitar diagnóstico</a>
+      <a href={WHATSAPP} class="btn btn-secondary btn-lg" target="_blank" rel="noopener" aria-label="Conversar no WhatsApp (abre em nova aba)">
+        <Icon name="whatsapp" /> Conversar no WhatsApp
+      </a>
+    </div>
+    <p class="caption contato__phone" data-reveal style="--d: 280ms">WhatsApp comercial: <span class="nowrap">(11) 99800-2960</span></p>
+    <ul class="contato__promises" data-reveal style="--d: 320ms">
+      {promises.map((p) => <li>{p}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contato { padding-block: clamp(6rem, 4rem + 8vw, 12rem); }
+  .contato__inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .contato__mark { width: 56px; height: auto; }
+  /* do tamanho dos títulos de seção: o título do hero continua sendo o maior da página */
+  .contato__title {
+    margin-top: 1.75rem;
+    font-size: clamp(2rem, 1.2rem + 2.4vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.012em;
+  }
+  .contato__lead { margin-top: 1.25rem; max-width: 30em; }
+  .contato__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 2.25rem; }
+  .contato__phone { margin-top: 1.1rem; }
+  /* separados por espaço, sem "·": quando a linha quebra, nenhuma começa com um ponto solto */
+  .contato__promises {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.75rem;
+    max-width: 40rem;
+    margin-top: 2.5rem;
+    font-size: 14px; color: var(--fg-2);
+  }
+
+  @media (max-width: 734px) {
+    .contato__mark { width: 44px; }
+    .contato__actions { flex-direction: column; align-self: stretch; }
+    .contato__promises { flex-direction: column; gap: 0.5rem; }
+  }
+</style>
