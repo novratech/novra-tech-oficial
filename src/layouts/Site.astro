@@ -42,6 +42,11 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : As
     <!-- com JS, os elementos que entram ao rolar começam escondidos; sem JS, tudo aparece -->
     <script is:inline>document.documentElement.classList.add('js');</script>
 
+    <!-- General Sans (títulos): servida pela Fontshare, como a licença da ITF permite para repositório público -->
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500&display=swap" />
+
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/brand/novra-icon-512.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
