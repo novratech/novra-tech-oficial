@@ -1,54 +1,50 @@
 ---
 import Icon from '../Icon.astro';
-import Shot from './Shot.astro';
-import agente from '../../assets/home/demo-agente.png';
-import agenteM from '../../assets/home/demo-agente-m.png';
-import atlas from '../../assets/home/demo-atlas.png';
-import atlasM from '../../assets/home/demo-atlas-m.png';
-import processflow from '../../assets/home/demo-processflow.png';
-import processflowM from '../../assets/home/demo-processflow-m.png';
-import insight from '../../assets/home/demo-insight.png';
-import insightM from '../../assets/home/demo-insight-m.png';
+import SceneIA from './scenes/SceneIA.astro';
+import SceneSoftware from './scenes/SceneSoftware.astro';
+import SceneAutomacoes from './scenes/SceneAutomacoes.astro';
+import SceneDados from './scenes/SceneDados.astro';
+import '../../styles/scenes.css';
 
-// As telas são das demos que a NOVRA construiu (dados fictícios). tools/capture-demos.mjs refaz as imagens.
+// Cada serviço tem uma cena animada (src/components/home/scenes), com dados fictícios.
 // "Na prática" cita projetos reais do portfólio (novratech/portfolio-novra), sem inventar resultado.
-// Legenda e texto alternativo valem para os dois recortes (desktop e celular).
+// Legenda e descrição valem para os dois formatos (16:10 no desktop e tablet, 4:5 no celular).
 const items = [
   {
     label: 'Inteligência artificial',
     title: 'IA que conhece a sua empresa.',
     text: 'Assistentes que atendem os seus clientes a qualquer hora, com as informações do seu negócio, e chamam alguém da equipe quando faz sentido.',
     real: 'agentes feitos para Seu Elias, Renato Cariani e Kaká Diniz.',
-    caption: 'Um agente remarca a consulta de um cliente pelo chat, do pedido à confirmação.',
-    alt: 'Demonstração do Agente NOVRA: um cliente pede para remarcar a consulta e o agente oferece horários e confirma o escolhido. Dados fictícios.',
-    img: agente, imgM: agenteM,
+    caption: 'A IA atende uma cliente às 23:47, olha a agenda e o cadastro e já reserva o horário.',
+    alt: 'Animação de um atendimento: uma cliente pergunta às 23:47 se há horário amanhã. A IA consulta a agenda e o cadastro da empresa, oferece 9h ou 10h30 e reserva o horário escolhido. Depois, outras conversas chegam a qualquer hora e uma delas é passada para alguém da equipe. Dados fictícios.',
+    scene: SceneIA,
   },
   {
     label: 'Desenvolvimento de software',
     title: 'Software feito sob medida.',
     text: 'Criamos sistemas do zero ou modernizamos o que a sua empresa já usa, do jeito que ela trabalha.',
     real: 'um sistema financeiro com emissão de notas e um call center que liga pelo navegador.',
-    caption: 'A gestão do dia numa tela só, com o que precisa da sua aprovação.',
-    alt: 'Demonstração do Atlas ERP: as pendências do dia que precisam de aprovação, como compras, notas fiscais, estoque e contas. Dados fictícios.',
-    img: atlas, imgM: atlasM,
+    caption: 'O sistema desenhado do jeito da sua empresa, que ganha módulos novos quando ela precisa.',
+    alt: 'Animação de um sistema sendo construído: uma linha de luz desenha a planta com vendas, financeiro, estoque e ligações, e uma faixa de luz a transforma em sistema pronto. Depois os pedidos entram, um pagamento cai, uma ligação acontece pelo navegador e um módulo novo, Comissões, se encaixa no menu. Dados fictícios.',
+    scene: SceneSoftware,
   },
   {
     label: 'Automações',
     title: 'O repetitivo, feito pelo sistema.',
     text: 'Tarefas que alguém faz na mão todo dia passam a ser feitas pelo sistema, com menos erro e menos retrabalho.',
     real: 'um editor de vídeo automático para as redes e um radar que acompanha os concorrentes.',
-    caption: 'As entregas do dia acompanhadas pelo sistema, que marca o que está no prazo e o que vai atrasar.',
-    alt: 'Demonstração do ProcessFlow: mapa ao vivo das rotas de entrega e a lista de entregas em andamento, com o status de cada uma. Dados fictícios.',
-    img: processflow, imgM: processflowM,
+    caption: 'O que era feito na mão passa a ser feito pelo sistema: pedidos, vídeos e o acompanhamento dos concorrentes.',
+    alt: 'Animação de uma automação: um caminho cinza chamado Feito na mão, com uma tarefa lenta, é ultrapassado por uma luz que acende cada etapa: chegou um pedido, gerar a cobrança, emitir a nota, avisar o cliente e atualizar o estoque, até Pronto. A etiqueta vira Feito pelo sistema e as tarefas passam a correr sozinhas enquanto o contador de tarefas feitas hoje sobe. As abas mostram também vídeos e concorrentes. Dados fictícios.',
+    scene: SceneAutomacoes,
   },
   {
     label: 'Dados e painéis',
     title: 'Seus números, em tempo real.',
     text: 'Painéis que reúnem as informações da empresa num só lugar, para decidir melhor. E uma IA para quem prefere perguntar.',
     real: 'um painel que substituiu uma planilha de mais de 34 mil linhas.',
-    caption: 'Um painel de vendas com receita, pedidos e a evolução do mês, sempre atualizado.',
-    alt: 'Demonstração do NOVRA Insight: receita, pedidos e o gráfico de receita do mês. Dados fictícios.',
-    img: insight, imgM: insightM,
+    caption: 'A planilha vira um painel ao vivo, e dá para perguntar como está a meta.',
+    alt: 'Animação de um painel de dados: uma planilha chamada vendas_final_v7.xlsx corre na tela, uma faixa de luz lê as linhas e elas sobem como pontos de luz até montar um painel com pedidos de hoje, meta do mês e o gráfico de vendas. Depois alguém pergunta ao painel como está a meta e a IA responde que 87% já foram batidos, faltando 8 dias. Dados fictícios.',
+    scene: SceneDados,
   },
 ];
 
@@ -77,34 +73,38 @@ const DEMO = 'Demonstração com dados fictícios.';
             <h3 class="tour__title"><span class="tour__label">{it.label}<span class="sr-only">:</span></span> {it.title}</h3>
             <p class="tour__text">{it.text}</p>
             <p class="tour__real"><strong>Na prática:</strong> {it.real}</p>
-            <!-- no desktop a imagem fica na tela presa ao lado; a descrição dela entra aqui, na ordem certa -->
+            <!-- no desktop a cena fica na tela presa ao lado; a descrição dela entra aqui, na ordem certa -->
             <p class="sr-only tour__sr">{DEMO} {it.alt}</p>
           </div>
-          <figure class="tour__figure" data-reveal>
+          <figure class="tour__figure tour__figure--scene">
             <div class="screen tour__screen">
-              <Shot src={it.img} mobile={it.imgM} alt={it.alt}
-                sizes="(min-width: 735px) calc(100vw - 96px), 100vw"
-                mobileSizes="calc(100vw - 48px)" />
+              <it.scene label={`${DEMO} ${it.alt}`} />
             </div>
+            <button class="sc-pause" type="button" aria-pressed="false" aria-label="Pausar as animações">
+              <svg class="i-pause" viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M2.5 1.5h2.2v9H2.5zM7.3 1.5h2.2v9H7.3z"/></svg>
+              <svg class="i-play" viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M3 1.3v9.4L10.4 6z"/></svg>
+            </button>
             <figcaption class="caption"><strong>{DEMO}</strong> {it.caption}</figcaption>
           </figure>
         </li>
       ))}
     </ol>
 
-    <!-- desktop: uma tela só, presa no meio, que troca conforme o serviço lido (decorativa para
-         o leitor de tela, que recebe cada descrição junto do seu serviço) -->
-    <div class="tour__aside" aria-hidden="true">
+    <!-- desktop: uma tela só, presa no meio, que troca conforme o serviço lido (as cenas ficam
+         escondidas do leitor de tela, que recebe cada descrição junto do seu serviço) -->
+    <div class="tour__aside">
       <div class="tour__stage">
-        <div class="screen tour__frame">
-          {items.map((it, i) => (
-            <Shot src={it.img} alt="" class={i === 0 ? 'tour__shot is-active' : 'tour__shot'}
-              sizes="(min-width: 1600px) 920px, (min-width: 1069px) min(58vw, 820px), 1px" />
-          ))}
+        <!-- as cenas entram aqui pelo script, na ordem dos serviços -->
+        <div class="screen tour__frame"></div>
+        <div class="tour__capRow">
+          <p class="caption tour__cap" aria-hidden="true">
+            <strong>{DEMO}</strong> <span data-tour-cap>{items[0].caption}</span>
+          </p>
+          <button class="sc-pause" type="button" aria-pressed="false" aria-label="Pausar as animações">
+            <svg class="i-pause" viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M2.5 1.5h2.2v9H2.5zM7.3 1.5h2.2v9H7.3z"/></svg>
+            <svg class="i-play" viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M3 1.3v9.4L10.4 6z"/></svg>
+          </button>
         </div>
-        <p class="caption tour__cap">
-          <strong>{DEMO}</strong> <span data-tour-cap>{items[0].caption}</span>
-        </p>
       </div>
     </div>
   </div>
@@ -129,6 +129,10 @@ const DEMO = 'Demonstração com dados fictícios.';
     </p>
   </div>
 </section>
+
+<script>
+  import '../../scripts/scenes/index.js';
+</script>
 
 <style>
   /* a folha clara entra e sai com cantos arredondados sobre o preto */
@@ -163,44 +167,48 @@ const DEMO = 'Demonstração com dados fictícios.';
   .tour__figure { margin-top: 2rem; }
   .tour__screen { aspect-ratio: 16 / 10; }
   .tour__figure .caption { margin-top: 0.9rem; }
+  /* figuras com cena: o botão de pausa fica fora da tela, à direita da legenda */
+  .tour__figure--scene { position: relative; }
+  .tour__figure--scene > .sc-pause { position: absolute; right: 0; margin-top: 0.75rem; }
+  .tour__figure--scene .caption { padding-right: 52px; }
   .caption strong { color: var(--fg); font-weight: 600; }
   .tour__aside { display: none; }
 
-  @media (max-width: 734px) {
+  @media (max-width: 734.98px) {
     .tour__screen { aspect-ratio: 4 / 5; border-radius: 14px; }
   }
 
-  /* ---------- desktop com JavaScript: texto rolando à esquerda, tela presa à direita ---------- */
+  /* ---------- desktop (o script das cenas marca .is-staged): texto rolando à esquerda, tela presa à direita ---------- */
   /* a tela fica com cerca de 0,8 da escala da captura: a interface continua legível */
   @media (min-width: 1069px) {
-    :global(html.js) .tour {
+    .tour.is-staged {
       display: grid;
       grid-template-columns: minmax(0, 3.6fr) minmax(0, 8.4fr);
       column-gap: clamp(2.5rem, 1rem + 2vw, 3.5rem);
     }
-    :global(html.js) .tour__list { gap: 0; }
-    :global(html.js) .tour__item {
+    .tour.is-staged .tour__list { gap: 0; }
+    .tour.is-staged .tour__item {
       min-height: 64vh; min-height: 64svh;
       display: flex; align-items: center;
     }
     /* o primeiro e o último ocupam uma tela inteira: a tela presa já está parada e inteira
        quando o texto deles passa pelo meio */
-    :global(html.js) .tour__item:first-child,
-    :global(html.js) .tour__item:last-child {
+    .tour.is-staged .tour__item:first-child,
+    .tour.is-staged .tour__item:last-child {
       min-height: calc(100vh - var(--header-h));
       min-height: calc(100svh - var(--header-h));
     }
-    :global(html.js) .tour__copy { max-width: 400px; }
-    :global(html.js) .tour__figure { display: none; }
-    :global(html.js) .tour__sr { display: block; }
+    .tour.is-staged .tour__copy { max-width: 400px; }
+    .tour.is-staged .tour__figure { display: none; }
+    .tour.is-staged .tour__sr { display: block; }
     /* o serviço fora de foco recua, sem perder o contraste de leitura */
-    :global(html.js) .tour__title { color: var(--fg-tone); transition: color 0.4s var(--ease-ui); }
-    :global(html.js) .tour__text { color: var(--fg-2); transition: color 0.4s var(--ease-ui); }
-    :global(html.js) .tour__item.is-active .tour__title { color: var(--fg); }
-    :global(html.js) .tour__item.is-active .tour__label { color: var(--fg); }
-    :global(html.js) .tour__item.is-active .tour__text { color: var(--fg-body); }
+    .tour.is-staged .tour__title { color: var(--fg-tone); transition: color 0.4s var(--ease-ui); }
+    .tour.is-staged .tour__text { color: var(--fg-2); transition: color 0.4s var(--ease-ui); }
+    .tour.is-staged .tour__item.is-active .tour__title { color: var(--fg); }
+    .tour.is-staged .tour__item.is-active .tour__label { color: var(--fg); }
+    .tour.is-staged .tour__item.is-active .tour__text { color: var(--fg-body); }
 
-    :global(html.js) .tour__aside { display: block; }
+    .tour.is-staged .tour__aside { display: block; }
     .tour__stage {
       position: sticky;
       top: var(--header-h);
@@ -215,7 +223,7 @@ const DEMO = 'Demonstração com dados fictícios.';
       aspect-ratio: 16 / 10;
       margin-left: auto;
     }
-    /* o <picture> nasce dentro do Shot.astro: o estilo precisa ser global para alcançá-lo */
+    /* as cenas entram pelo script: o estilo precisa ser global para alcançá-las */
     .tour__frame :global(.tour__shot) {
       position: absolute; inset: 0;
       opacity: 0; visibility: hidden;
@@ -226,17 +234,17 @@ const DEMO = 'Demonstração com dados fictícios.';
       opacity: 1; visibility: visible; transform: none;
       transition: opacity 0.6s var(--ease-ui), transform 0.9s var(--ease-out), visibility 0s;
     }
-    .tour__frame :global(.tour__shot img) { width: 100%; height: 100%; object-fit: cover; }
-    .tour__cap {
+    .tour__capRow {
+      display: flex; align-items: flex-start; gap: 1rem;
       width: min(100%, (100vh - var(--header-h) - 160px) * 1.6);
       width: min(100%, (100svh - var(--header-h) - 160px) * 1.6);
       margin: 1rem 0 0 auto;
-      min-height: 2.9em;
     }
+    .tour__cap { flex: 1; min-height: 2.9em; }
   }
   /* monitor grande: só a imagem rompe a coluna de texto */
   @media (min-width: 1600px) {
-    :global(html.js) .tour__aside { margin-right: -120px; }
+    .tour.is-staged .tour__aside { margin-right: -120px; }
   }
 
   /* ---------- secundários e chamada ---------- */
@@ -261,7 +269,7 @@ const DEMO = 'Demonstração com dados fictícios.';
   }
   .solucoes__cta .more { font-size: 21px; }
 
-  @media (max-width: 734px) {
+  @media (max-width: 734.98px) {
     .solucoes { border-radius: 24px; }
     .solucoes__cta, .solucoes__cta .more { font-size: 19px; }
     .also__list .more { min-height: 44px; }

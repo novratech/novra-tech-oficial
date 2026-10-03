@@ -1,0 +1,206 @@
+---
+// Cena 4 · Dados e painéis: "Da planilha ao painel".
+// A planilha de sempre corre na tela; uma faixa de luz lê tudo, as células sobem como luz e montam
+// um painel de vendas ao vivo. Depois a IA responde perguntas acendendo a resposta no próprio painel.
+// Nenhum valor em R$: só pedidos, porcentagens e dias. O HTML abaixo é o quadro parado.
+interface Props { label: string }
+const { label } = Astro.props;
+
+const pos = (w: number[] | null, t?: number[] | null) =>
+  (w ? `--xw:${w[0]};--yw:${w[1]};--ww:${w[2]};--hw:${w[3]}` : '') + (t ? `;--xt:${t[0]};--yt:${t[1]};--wt:${t[2]};--ht:${t[3]}` : '');
+
+// pedidos por dia (22 dias; o último é hoje e cresce junto com o número do cartão)
+const DATA = [180, 205, 196, 238, 262, 231, 214, 249, 281, 305, 274, 322, 358, 412, 341, 306, 333, 352, 318, 371, 389, 286];
+const MAX = 450;
+// gráfico: área útil em u, nos dois formatos
+const GW = { x: 72, y: 336, w: 920, h: 420 }; // dentro do quadro 16:10
+const GT = { x: 56, y: 404, w: 688, h: 330 }; // 4:5
+const line = (g: typeof GW) => DATA.map((v, i) => `${i ? 'L' : 'M'}${(g.x + (i / (DATA.length - 1)) * g.w).toFixed(1)} ${(g.y + g.h - (v / MAX) * g.h).toFixed(1)}`).join(' ');
+const area = (g: typeof GW) => `${line(g)} L${g.x + g.w} ${g.y + g.h} L${g.x} ${g.y + g.h} Z`;
+const pt = (g: typeof GW, i: number) => [g.x + (i / (DATA.length - 1)) * g.w, g.y + g.h - (DATA[i] / MAX) * g.h];
+const best = DATA.indexOf(Math.max(...DATA)); // dia 14
+const bw = pt(GW, best), bt = pt(GT, best);
+const lw = pt(GW, DATA.length - 1), lt = pt(GT, DATA.length - 1);
+const ticks = [0, 7, 14, 21];
+const top3 = [{ n: 'Mochila', v: 18 }, { n: 'Garrafa', v: 14 }, { n: 'Boné', v: 11 }];
+// anel da meta (87%)
+const RING_R = 46, RING_C = 2 * Math.PI * RING_R;
+---
+<div class="sc sc--da is-paused" data-scene="dados" role="img" aria-label={label}>
+  <div class="sc__pool" style="--px:620;--py:560;--pr:900"></div>
+
+  <!-- planilha (desenhada no canvas pelo script; aqui só a aba e o contador de linhas) -->
+  <div class="da-sheet" data-sheet aria-hidden="true">
+    <canvas class="da-sheet__cv" width="0" height="0" data-sheet-cv></canvas>
+    <p class="da-sheet__tab tx-label"><i></i><span>vendas_final_v7.xlsx</span></p>
+    <p class="da-sheet__row tx-label">Linha <b class="tnum" data-rowcount>21.730</b></p>
+    <i class="da-scan" data-scan></i>
+  </div>
+
+  <svg class="sc__svg sc__svg--w" viewBox="0 0 1600 1000" aria-hidden="true">
+    <defs>
+      <linearGradient id="da-area-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e6bff" stop-opacity="0.32" /><stop offset="1" stop-color="#2e6bff" stop-opacity="0" /></linearGradient>
+    </defs>
+    <g class="da-chart" data-chart>
+      {ticks.map((t) => <path class="da-grid" d={`M${GW.x} ${GW.y + GW.h * (1 - t / 21)} H${GW.x + GW.w}`} />)}
+      <path class="da-area" d={area(GW)} fill="url(#da-area-w)" data-area />
+      <path class="da-line" d={line(GW)} data-line />
+      <path class="da-beam" d={`M${bw[0]} ${GW.y + GW.h} V${bw[1]}`} data-beam />
+    </g>
+  </svg>
+  <svg class="sc__svg sc__svg--t" viewBox="0 0 800 1000" aria-hidden="true">
+    <defs>
+      <linearGradient id="da-area-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e6bff" stop-opacity="0.32" /><stop offset="1" stop-color="#2e6bff" stop-opacity="0" /></linearGradient>
+    </defs>
+    <g class="da-chart" data-chart>
+      {ticks.map((t) => <path class="da-grid" d={`M${GT.x} ${GT.y + GT.h * (1 - t / 21)} H${GT.x + GT.w}`} />)}
+      <path class="da-area" d={area(GT)} fill="url(#da-area-t)" data-area />
+      <path class="da-line" d={line(GT)} data-line />
+      <path class="da-beam" d={`M${bt[0]} ${GT.y + GT.h} V${bt[1]}`} data-beam />
+    </g>
+  </svg>
+
+  <div class="sc__ui" aria-hidden="true">
+    <div class="at bar" style={pos([48, 26, 1504, 56], [32, 24, 736, 56])}>
+      <p class="bar__crumb"><span class="tx-label only-w">Sua empresa</span><span class="tx-label sep only-w">›</span><span class="tx-title">Painel de vendas</span></p>
+      <div class="bar__end"><span class="tx-label only-w">atualizado agora</span><p class="live tx-label"><i></i>Ao vivo</p></div>
+    </div>
+
+    <div class="at glass da-card" style={pos([48, 104, 488, 150], [32, 100, 360, 160])} data-panel data-card="pedidos">
+      <span class="tx-label">Pedidos hoje</span>
+      <b class="tx-num" data-today>286</b>
+    </div>
+    <div class="at glass da-card da-card--meta" style={pos([560, 104, 488, 150], [408, 100, 360, 160])} data-panel data-card="meta">
+      <span class="tx-label">Meta do mês</span>
+      <b class="tx-num">87%</b>
+      <svg class="da-ring" viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r={RING_R} class="da-ring__bg" />
+        <circle cx="60" cy="60" r={RING_R} class="da-ring__fg" style={`stroke-dasharray:${RING_C.toFixed(1)};stroke-dashoffset:${(RING_C * 0.13).toFixed(1)}`} data-ring />
+      </svg>
+    </div>
+    <div class="at glass da-card only-w" style={pos([1072, 104, 480, 150])} data-panel data-card="novos">
+      <span class="tx-label">Clientes novos</span>
+      <b class="tx-num">46</b>
+    </div>
+
+    <div class="at glass da-panel" style={pos([48, 278, 976, 556], [32, 284, 736, 474])} data-panel data-chartpanel>
+      <p class="da-head"><span class="tx-title">Vendas do mês</span><span class="tx-label">pedidos por dia</span></p>
+      <span class="da-ticks tx-label">{ticks.map((t) => <i>{t + 1}</i>)}</span>
+    </div>
+
+    <div class="at glass da-panel only-w" style={pos([1048, 278, 504, 556])} data-panel data-top>
+      <p class="da-head"><span class="tx-title">Mais vendidos</span><span class="tx-label">este mês</span></p>
+      <ul class="da-top">
+        {top3.map((t) => (
+          <li>
+            <span class="tx-body">{t.n}</span>
+            <b class="tx-body tnum">{t.v}%</b>
+            <span class="da-track"><i style={`--v:${t.v * 4.5}`}></i></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- película que escurece o resto enquanto a resposta aparece (uma camada só) -->
+    <i class="da-film" data-film></i>
+    <p class="da-tip tx-label" style={`--tx:${bw[0]};--ty:${bw[1]};--tx2:${bt[0]};--ty2:${bt[1]}`} data-tip>Dia 14 · 412 pedidos</p>
+
+    <div class="at glass da-ask" style={pos([48, 858, 1504, 104], [32, 782, 736, 186])} data-ask>
+      <i class="lb-glow"></i><i class="lb"></i>
+      <span class="da-core" data-core>
+        <i class="core__disc"><i class="core__swirl"><i></i><i></i><i></i></i><i class="core__swirl core__swirl--fast"><i></i><i></i><i></i></i><i class="core__dot"></i></i>
+      </span>
+      <span class="da-ask__txt">
+        <span class="tx-label da-q" data-q>Como estamos em relação à meta?</span>
+        <span class="tx-anchor da-a" data-a>Já batemos 87% da meta do mês, e faltam 8 dias.</span>
+      </span>
+      <span class="da-send" data-send><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" /></svg></span>
+    </div>
+  </div>
+
+  <canvas class="sc__light" width="0" height="0" aria-hidden="true"></canvas>
+</div>
+
+<style is:global>
+  /* planilha */
+  .sc--da .da-sheet { position: absolute; inset: 0; z-index: 4; visibility: hidden; overflow: hidden; }
+  .sc--da .da-sheet__cv { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sc--da .da-sheet__tab {
+    position: absolute; left: 3%; bottom: 3.2%;
+    display: inline-flex; align-items: center; gap: 0.6em;
+    padding: 0.45em 1em; border-radius: 0.6em;
+    background: #161b26; color: #c9ccd3; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    font-size: max(11px, 1.45cqw);
+  }
+  .sc--da .da-sheet__tab i { width: 0.8em; height: 0.8em; border-radius: 2px; background: #2f7a4d; }
+  .sc--da .da-sheet__row { position: absolute; right: 3%; bottom: 3.6%; color: #8e93a0; font-size: max(11px, 1.45cqw); }
+  .sc--da .da-sheet__row b { color: #e8e9ec; font-weight: 600; }
+  /* faixa de leitura: linha branca fina com banda ciano larga */
+  .sc--da .da-scan {
+    position: absolute; left: 0; right: 0; top: 0; height: 12%;
+    translate: 0 -50%;
+    background: linear-gradient(180deg, rgba(0, 168, 255, 0) 0%, rgba(0, 168, 255, 0.18) 42%, rgba(217, 243, 255, 0.9) 49.6%, #fff 50%, rgba(217, 243, 255, 0.9) 50.4%, rgba(0, 168, 255, 0.18) 58%, rgba(0, 168, 255, 0) 100%);
+    opacity: 0;
+  }
+  @media (max-width: 734.98px) {
+    .sc--da .da-sheet__tab, .sc--da .da-sheet__row { font-size: max(11px, 3.2cqw); }
+  }
+
+  /* gráfico */
+  .sc--da .sc__svg { z-index: 2; }
+  .sc--da .sc__ui { z-index: 1; }
+  .sc--da .da-grid { stroke: rgba(255, 255, 255, 0.06); stroke-width: 1.4; }
+  .sc--da .da-line { fill: none; stroke: #00a8ff; stroke-width: 3.2; stroke-linejoin: round; stroke-linecap: round; filter: none; }
+  .sc--da .da-beam { stroke: rgba(127, 212, 255, 0.85); stroke-width: 2.4; stroke-dasharray: 4 6; opacity: 0; }
+
+  /* cartões */
+  .sc--da .da-card { display: flex; flex-direction: column; justify-content: space-between; padding: calc(24 * var(--u)) calc(28 * var(--u)); }
+  .sc--da .da-card--meta { padding-right: calc(150 * var(--u)); }
+  .sc--da .da-ring { position: absolute; right: calc(26 * var(--u)); top: 50%; translate: 0 -50%; width: calc(104 * var(--u)); height: calc(104 * var(--u)); transform: rotate(-90deg); }
+  .sc--da .da-ring__bg { fill: none; stroke: rgba(255, 255, 255, 0.08); stroke-width: 9; }
+  .sc--da .da-ring__fg { fill: none; stroke: #00a8ff; stroke-width: 9; stroke-linecap: round; }
+  .sc--da .da-card.is-bump, .sc--da .da-card.is-hl { box-shadow: inset 0 0 0 1px rgba(0, 168, 255, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.16); }
+  .sc--da .da-card { transition: box-shadow 1s var(--ease-out); }
+
+  .sc--da .da-panel { padding: calc(26 * var(--u)) calc(30 * var(--u)); }
+  .sc--da .da-head { display: flex; flex-direction: column; gap: calc(4 * var(--u)); }
+  .sc--da .da-ticks { position: absolute; left: calc(24 * var(--u)); right: calc(32 * var(--u)); bottom: calc(26 * var(--u)); display: flex; justify-content: space-between; color: var(--s-text-3); }
+  .sc--da .da-ticks i { font-style: normal; width: calc(40 * var(--u)); text-align: center; }
+  .sc--da .da-tip {
+    position: absolute; z-index: 3;
+    left: calc(var(--tx) * var(--u)); top: calc((var(--ty) - 64) * var(--u));
+    translate: -50% 0;
+    padding: calc(6 * var(--u)) calc(14 * var(--u)); border-radius: 999px;
+    background: rgba(0, 168, 255, 0.16); color: var(--s-hi);
+    white-space: nowrap; opacity: 0;
+  }
+  @media (max-width: 734.98px) {
+    .sc--da .da-tip { left: calc(var(--tx2) * var(--u)); top: calc((var(--ty2) - 70) * var(--u)); }
+    .sc--da .da-ticks { bottom: calc(22 * var(--u)); }
+  }
+
+  .sc--da .da-top { display: flex; flex-direction: column; gap: calc(34 * var(--u)); margin-top: calc(40 * var(--u)); }
+  .sc--da .da-top li { display: grid; grid-template-columns: 1fr auto; row-gap: calc(12 * var(--u)); }
+  .sc--da .da-top b { font-weight: 600; }
+  .sc--da .da-track { grid-column: 1 / -1; height: calc(10 * var(--u)); border-radius: 99px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
+  .sc--da .da-track i { display: block; height: 100%; width: calc(var(--v) * 1%); border-radius: inherit; background: linear-gradient(90deg, #2e6bff, #7fd4ff); transform-origin: 0 50%; }
+
+  .sc--da .da-film { position: absolute; inset: 0; z-index: 2; background: rgba(5, 7, 12, 0.6); opacity: 0; pointer-events: none; }
+
+  /* pergunta para a IA */
+  .sc--da .da-ask { display: flex; align-items: center; gap: calc(22 * var(--u)); padding: 0 calc(16 * var(--u)) 0 calc(22 * var(--u)); --r: 52; z-index: 3; }
+  .sc--da .da-core { position: relative; flex-shrink: 0; width: calc(60 * var(--u)); height: calc(60 * var(--u)); }
+  .sc--da .da-ask__txt { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: calc(6 * var(--u)); }
+  .sc--da .da-ask__txt > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sc--da .da-q { color: var(--s-text-2); transition: color 0.4s var(--ease-out); }
+  .sc--da .da-a:empty { display: none; }
+  .sc--da .da-ask.has-answer .da-q { font-size: max(11px, calc(var(--fs-label) * var(--u))); color: var(--s-text-3); }
+  .sc--da .da-send { width: calc(60 * var(--u)); height: calc(60 * var(--u)); flex-shrink: 0; display: grid; place-items: center; border-radius: 50%; background: var(--s-act); }
+  .sc--da .da-send svg { width: 46%; height: 46%; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .sc--da .da-ask { --lbw: 120%; }
+
+  @media (max-width: 734.98px) {
+    .sc--da .da-ask { padding: 0 calc(18 * var(--u)) 0 calc(20 * var(--u)); --r: 40; }
+    .sc--da .da-ask__txt > span { white-space: normal; }
+  }
+</style>

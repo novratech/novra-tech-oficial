@@ -1,0 +1,303 @@
+---
+// Cena 2 · Software sob medida: "Do traço ao sistema".
+// Uma caneta de luz desenha a planta do sistema da empresa; uma faixa de luz passa e a planta
+// vira vidro com conteúdo de verdade. Depois o sistema trabalha: pedidos, recebimentos, uma
+// ligação pelo navegador e, a cada ciclo, um módulo novo que encaixa (é o "sob medida").
+// O HTML abaixo é o quadro parado: o sistema pronto, sem a planta.
+interface Props { label: string }
+const { label } = Astro.props;
+
+const pos = (w: number[] | null, t?: number[] | null) =>
+  (w ? `--xw:${w[0]};--yw:${w[1]};--ww:${w[2]};--hw:${w[3]}` : '') + (t ? `;--xt:${t[0]};--yt:${t[1]};--wt:${t[2]};--ht:${t[3]}` : '');
+// contorno de retângulo arredondado como path (a caneta percorre o perímetro)
+const rr = (x: number, y: number, w: number, h: number, r = 22) =>
+  `M${x + r} ${y} H${x + w - r} A${r} ${r} 0 0 1 ${x + w} ${y + r} V${y + h - r} A${r} ${r} 0 0 1 ${x + w - r} ${y + h} H${x + r} A${r} ${r} 0 0 1 ${x} ${y + h - r} V${y + r} A${r} ${r} 0 0 1 ${x + r} ${y} Z`;
+
+// peças (16:10 | 4:5)
+const P = {
+  rail: { w: [48, 104, 248, 848] },
+  k1: { w: [328, 196, 394, 140], t: [32, 196, 360, 160] },
+  k2: { w: [746, 196, 394, 140], t: [408, 196, 360, 160] },
+  k3: { w: [1164, 196, 388, 140] },
+  fin: { w: [328, 360, 640, 280], t: [32, 380, 736, 320] },
+  est: { w: [992, 360, 560, 280] },
+  call: { w: [328, 664, 1224, 288], t: [32, 724, 736, 244] },
+  mods: { t: [32, 104, 736, 64] },
+};
+const plansW = ['rail', 'k1', 'k2', 'k3', 'fin', 'est', 'call'].map((k) => {
+  const [x, y, w, h] = (P as any)[k].w;
+  return { k, d: rr(x, y, w, h, k === 'rail' ? 22 : 20) };
+});
+const plansT = ['mods', 'k1', 'k2', 'fin', 'call'].map((k) => {
+  const [x, y, w, h] = (P as any)[k].t;
+  return { k, d: rr(x, y, w, h, k === 'mods' ? 32 : 24) };
+});
+const railItems = [
+  { n: 'Início', i: '<path d="M4 11 12 4l8 7v8.5a.5.5 0 0 1-.5.5H15v-6H9v6H4.5a.5.5 0 0 1-.5-.5z"/>' },
+  { n: 'Vendas', i: '<path d="M5 6h15l-1.6 8H6.6zM5 6 4.4 3.5H2.5M8 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM17 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>' },
+  { n: 'Estoque', i: '<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/>' },
+  { n: 'Financeiro', i: '<rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18M7 14.5h3"/>' },
+  { n: 'Ligações', i: '<path d="M5 4.5h3l1.5 4-2 1.5a10 10 0 0 0 6.5 6.5l1.5-2 4 1.5v3a1.5 1.5 0 0 1-1.6 1.5A16 16 0 0 1 3.5 6.1 1.5 1.5 0 0 1 5 4.5z"/>' },
+];
+const bars = [{ d: 'seg', v: 62 }, { d: 'ter', v: 78 }, { d: 'qua', v: 54 }, { d: 'qui', v: 88 }, { d: 'sex', v: 70 }];
+const stock = [{ n: 'Camiseta', v: 42 }, { n: 'Boné', v: 18 }, { n: 'Mochila', v: 7 }];
+const waveBars = Array.from({ length: 26 }, (_, i) => 0.25 + 0.75 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * 0.6)));
+const ck = '<svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>';
+---
+<div class="sc sc--sw is-paused" data-scene="software" role="img" aria-label={label}>
+  <div class="sc__pool" style="--px:900;--py:560;--pr:900"></div>
+
+  <div class="sc__ui" aria-hidden="true">
+    <div class="at bar" style={pos([48, 26, 1504, 56], [32, 24, 736, 56])}>
+      <p class="bar__crumb"><span class="tx-label only-w">Sua empresa</span><span class="tx-label sep only-w">›</span><span class="tx-title">Gestão</span></p>
+      <div class="bar__end"><p class="live tx-label"><i></i>Ao vivo</p></div>
+    </div>
+
+    <!-- planta: some quando a faixa de luz passa (o sistema de verdade aparece atrás dela) -->
+    <div class="sw-plan" data-plan>
+      <div class="sw-plan__in" data-plan-in>
+        <i class="sw-grid"></i>
+        <svg class="sc__svg sc__svg--w" viewBox="0 0 1600 1000">
+          {plansW.map((p) => <path class="sw-line" data-pen={p.k} d={p.d} />)}
+          <path class="sw-dim" d="M328 178 H1552 M328 170 V186 M1552 170 V186 M722 174 V182 M746 174 V182 M1140 174 V182 M1164 174 V182" />
+          <path class="sw-dim" d="M24 104 V952 M16 104 H32 M16 952 H32" />
+        </svg>
+        <svg class="sc__svg sc__svg--t" viewBox="0 0 800 1000">
+          {plansT.map((p) => <path class="sw-line" data-pen={p.k} d={p.d} />)}
+          <path class="sw-dim" d="M32 184 H768 M32 176 V192 M768 176 V192" />
+        </svg>
+        <span class="at sw-tag tx-label only-w" style={pos([80, 128, 200, 30])}>Menu</span>
+        <span class="at sw-tag tx-label" style={pos([352, 216, 300, 30], [56, 216, 300, 30])}>Pedidos</span>
+        <span class="at sw-tag tx-label" style={pos([770, 216, 300, 30], [432, 216, 300, 30])}>Pagamentos</span>
+        <span class="at sw-tag tx-label only-w" style={pos([1188, 216, 300, 30])}>Notas fiscais</span>
+        <span class="at sw-tag tx-label" style={pos([356, 388, 400, 30], [60, 408, 400, 30])}>Financeiro</span>
+        <span class="at sw-tag tx-label only-w" style={pos([1020, 388, 300, 30])}>Estoque</span>
+        <span class="at sw-tag tx-label" style={pos([356, 692, 300, 30], [60, 752, 300, 30])}>Ligações</span>
+        <span class="at sw-tag tx-label only-t" style={pos(null, [60, 122, 400, 30])}>Módulos</span>
+        <span class="at sw-cota tx-label only-w" style={pos([900, 140, 120, 30])}>1.224</span>
+      </div>
+    </div>
+
+    <!-- o sistema de verdade -->
+    <div class="sw-reveal" data-reveal-wrap>
+      <div class="sw-reveal__in" data-reveal-in>
+        <!-- menu lateral (16:10) -->
+        <nav class="at glass sw-rail only-w" style={pos(P.rail.w)} data-panel>
+          <ul class="sw-rail__list" data-rail>
+            {railItems.map((it, i) => (
+              <li class={i === 0 ? 'sw-item is-on' : 'sw-item'}>
+                <svg viewBox="0 0 24 24" aria-hidden="true" set:html={it.i} />
+                <span class="tx-body">{it.n}</span>
+              </li>
+            ))}
+            <li class="sw-item sw-item--new" data-newmod>
+              <i class="sw-joint"></i>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8l4 4v8l-4 4H8l-4-4V8z"/><path d="M12 8.5v7M8.5 12h7"/></svg>
+              <span class="sw-item__two">
+                <span class="tx-body" data-newmod-name>Comissões</span>
+                <b class="sw-badge">Módulo novo</b>
+              </span>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- módulos (4:5) -->
+        <div class="at sw-mods only-t" style={pos(null, P.mods.t)} data-panel>
+          <span class="sw-pill tx-label">Vendas</span>
+          <span class="sw-pill tx-label">Estoque</span>
+          <span class="sw-pill tx-label">Financeiro</span>
+          <span class="sw-pill sw-pill--new tx-label" data-newmod-t><i class="sw-joint"></i><span data-newmod-name-t>Comissões</span></span>
+        </div>
+
+        <p class="at sw-hello only-w" style={pos([328, 108, 700, 80])}>
+          <span class="tx-title">Bom dia, Ana</span>
+          <span class="tx-label">Resumo de hoje</span>
+        </p>
+
+        <div class="at glass sw-kpi" style={pos(P.k1.w, P.k1.t)} data-panel>
+          <span class="tx-label">Pedidos hoje</span><b class="tx-num" data-kpi="pedidos">86</b>
+        </div>
+        <div class="at glass sw-kpi" style={pos(P.k2.w, P.k2.t)} data-panel>
+          <span class="tx-label">Pagamentos hoje</span><b class="tx-num" data-kpi="pagamentos">32</b>
+        </div>
+        <div class="at glass sw-kpi only-w" style={pos(P.k3.w)} data-panel>
+          <span class="tx-label">Notas emitidas</span><b class="tx-num" data-kpi="notas">79</b>
+        </div>
+
+        <div class="at glass sw-fin" style={pos(P.fin.w, P.fin.t)} data-panel data-fin>
+          <p class="sw-head"><span class="tx-title">Do pedido ao dinheiro na conta</span><span class="tx-label">Recebimentos da semana</span></p>
+          <div class="sw-bars">
+            {bars.map((b, i) => (
+              <span class={i === bars.length - 1 ? 'sw-bar is-today' : 'sw-bar'}>
+                <i style={`--v:${b.v}`} data-bar={i}></i>
+                <em class="tx-label">{i === bars.length - 1 ? 'hoje' : b.d}</em>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div class="at glass sw-est only-w" style={pos(P.est.w)} data-panel>
+          <p class="sw-head"><span class="tx-title">Estoque</span><span class="sw-restock tx-label" data-restock>{'Reposição pedida'}</span></p>
+          <ul class="sw-stock">
+            {stock.map((s) => (
+              <li>
+                <span class="tx-body">{s.n}</span>
+                <span class="sw-track"><i style={`--v:${Math.min(100, s.v * 2)}`} data-stock={s.n}></i></span>
+                <b class="tx-body tnum" data-stock-n={s.n}>{s.v}</b>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="at glass sw-call" style={pos(P.call.w, P.call.t)} data-panel data-call>
+          <i class="lb-glow"></i>
+          <span class="sw-avatar" data-call-av>J</span>
+          <p class="sw-call__who">
+            <span class="tx-title" data-call-title>Em ligação com Juliana</span>
+            <span class="tx-label" data-call-sub>Direto do navegador</span>
+          </p>
+          <span class="sw-wave only-w" data-wave>{waveBars.map((v) => <i style={`--h:${v.toFixed(2)}`}></i>)}</span>
+          <b class="tx-title tnum sw-timer" data-timer>02:14</b>
+          <span class="sw-end tx-label only-w" data-end>Encerrar</span>
+        </div>
+      </div>
+      <i class="sw-band" data-band></i>
+    </div>
+  </div>
+
+  <canvas class="sc__light" width="0" height="0" aria-hidden="true"></canvas>
+</div>
+
+<style is:global>
+  .sc--sw .sw-wave i { animation: sw-wave 0.9s ease-in-out infinite alternate; }
+  .sc--sw .sw-wave i:nth-child(3n) { animation-duration: 0.7s; }
+  .sc--sw .sw-wave i:nth-child(3n+1) { animation-duration: 1.1s; animation-delay: -0.3s; }
+  .sc--sw .sw-wave i:nth-child(4n) { animation-delay: -0.5s; }
+  .sc--sw .sw-call.is-done .sw-wave i, .sc--sw .sw-call.is-ringing .sw-wave i { animation-play-state: paused; }
+  @keyframes sw-wave { from { transform: scaleY(0.35); } to { transform: scaleY(1); } }
+  /* planta */
+  .sc--sw .sw-plan, .sc--sw .sw-plan__in, .sc--sw .sw-reveal, .sc--sw .sw-reveal__in { position: absolute; inset: 0; }
+  .sc--sw .sw-plan, .sc--sw .sw-reveal { overflow: hidden; }
+  .sc--sw .sw-plan { visibility: hidden; } /* quadro parado: só o sistema pronto */
+  .sc--sw .sw-grid {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(127, 212, 255, 0.35) 1px, transparent 1.4px);
+    background-size: calc(32 * var(--u)) calc(32 * var(--u));
+    opacity: 0.12;
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 55% 50%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 70% 70% at 55% 50%, #000 40%, transparent 100%);
+  }
+  .sc--sw .sw-line { fill: none; stroke: rgba(127, 212, 255, 0.75); stroke-width: 2; }
+  .sc--sw .sw-dim { fill: none; stroke: rgba(127, 212, 255, 0.4); stroke-width: 1.4; }
+  .sc--sw .sw-tag { color: #8fdbff; letter-spacing: 0.01em; white-space: nowrap; }
+  .sc--sw .sw-cota { color: rgba(127, 212, 255, 0.6); text-align: center; }
+
+  /* faixa de luz que transforma a planta em sistema: miolo branco fino e queda ciano larga */
+  .sc--sw .sw-band {
+    position: absolute; top: 0; bottom: 0; right: 0;
+    width: calc(120 * var(--u));
+    translate: 50% 0;
+    background: linear-gradient(90deg, rgba(0, 168, 255, 0) 0%, rgba(0, 168, 255, 0.16) 38%, rgba(217, 243, 255, 0.85) 49.5%, #fff 50%, rgba(217, 243, 255, 0.85) 50.5%, rgba(0, 168, 255, 0.16) 62%, rgba(0, 168, 255, 0) 100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* menu lateral */
+  .sc--sw .sw-rail { padding: calc(28 * var(--u)) calc(18 * var(--u)); }
+  .sc--sw .sw-rail__list { display: flex; flex-direction: column; gap: calc(8 * var(--u)); }
+  .sc--sw .sw-item {
+    position: relative;
+    display: flex; align-items: center; gap: calc(16 * var(--u));
+    height: calc(64 * var(--u));
+    padding: 0 calc(16 * var(--u));
+    border-radius: calc(14 * var(--u));
+    color: var(--s-text-2);
+  }
+  .sc--sw .sw-item .tx-body { color: inherit; font-size: max(11px, calc(26 * var(--u))); white-space: nowrap; }
+  .sc--sw .sw-item svg { width: calc(36 * var(--u)); height: calc(36 * var(--u)); flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .sc--sw .sw-item.is-on { background: rgba(255, 255, 255, 0.07); color: var(--s-text); }
+  .sc--sw .sw-item--new { margin-top: calc(18 * var(--u)); color: var(--s-text); background: rgba(0, 168, 255, 0.08); box-shadow: inset 0 0 0 1px rgba(0, 168, 255, 0.35); }
+  .sc--sw .sw-item--new { height: calc(84 * var(--u)); }
+  .sc--sw .sw-item__two { display: flex; flex-direction: column; gap: calc(2 * var(--u)); min-width: 0; }
+  .sc--sw .sw-badge { font-weight: 500; color: var(--s-hi); font-size: max(10px, calc(20 * var(--u))); white-space: nowrap; }
+  .sc--sw .sw-joint {
+    position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    box-shadow: 0 0 0 1px rgba(127, 212, 255, 0.9), 0 0 calc(28 * var(--u)) rgba(0, 168, 255, 0.55);
+    opacity: 0;
+  }
+
+  /* módulos no 4:5 */
+  .sc--sw .sw-mods { display: flex; align-items: center; gap: calc(12 * var(--u)); }
+  .sc--sw .sw-pill {
+    position: relative;
+    padding: calc(12 * var(--u)) calc(20 * var(--u));
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+    white-space: nowrap;
+  }
+  .sc--sw .sw-pill--new { color: var(--s-hi); background: rgba(0, 168, 255, 0.1); box-shadow: inset 0 0 0 1px rgba(0, 168, 255, 0.4); }
+
+  .sc--sw .sw-hello { display: flex; flex-direction: column; gap: calc(4 * var(--u)); }
+  .sc--sw .sw-hello .tx-title { font-size: max(13px, calc(34 * var(--u))); }
+
+  /* números */
+  .sc--sw .sw-kpi { display: flex; flex-direction: column; justify-content: space-between; padding: calc(24 * var(--u)) calc(28 * var(--u)); }
+  .sc--sw .sw-kpi.is-bump { box-shadow: inset 0 0 0 1px rgba(0, 168, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.16); transition: box-shadow 0.15s; }
+  .sc--sw .sw-kpi { transition: box-shadow 1.2s var(--ease-out); }
+
+  /* financeiro */
+  .sc--sw .sw-fin, .sc--sw .sw-est { padding: calc(26 * var(--u)) calc(30 * var(--u)); display: flex; flex-direction: column; }
+  .sc--sw .sw-head { display: flex; flex-direction: column; gap: calc(4 * var(--u)); }
+  .sc--sw .sw-bars { flex: 1; display: flex; align-items: flex-end; gap: calc(26 * var(--u)); padding-top: calc(18 * var(--u)); }
+  .sc--sw .sw-bar { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: calc(10 * var(--u)); }
+  .sc--sw .sw-bar i {
+    width: 100%; height: calc(var(--v) * 1%); max-height: 100%;
+    border-radius: calc(8 * var(--u)) calc(8 * var(--u)) calc(3 * var(--u)) calc(3 * var(--u));
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.06));
+    transform-origin: 50% 100%;
+  }
+  .sc--sw .sw-bar.is-today i { background: linear-gradient(180deg, #7fd4ff, #2e6bff); box-shadow: 0 0 calc(24 * var(--u)) rgba(0, 168, 255, 0.35); }
+  .sc--sw .sw-bar em { font-style: normal; }
+  .sc--sw .sw-bar.is-today em { color: var(--s-hi); }
+
+  /* estoque */
+  .sc--sw .sw-est .sw-head { flex-direction: row; align-items: baseline; justify-content: space-between; }
+  .sc--sw .sw-restock {
+    padding: calc(4 * var(--u)) calc(14 * var(--u)); border-radius: 999px;
+    background: rgba(0, 168, 255, 0.12); color: var(--s-hi);
+    opacity: 0;
+  }
+  .sc--sw .sw-stock { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; }
+  .sc--sw .sw-stock li { display: grid; grid-template-columns: 30% 1fr calc(56 * var(--u)); align-items: center; gap: calc(18 * var(--u)); }
+  .sc--sw .sw-stock b { text-align: right; font-weight: 600; }
+  .sc--sw .sw-track { height: calc(10 * var(--u)); border-radius: 99px; background: rgba(255, 255, 255, 0.07); overflow: hidden; }
+  .sc--sw .sw-track i { display: block; height: 100%; width: calc(var(--v) * 1%); border-radius: inherit; background: rgba(255, 255, 255, 0.32); transform-origin: 0 50%; transition: width 0.6s var(--ease-out); }
+  .sc--sw .sw-track i.is-low { background: linear-gradient(90deg, #2e6bff, #7fd4ff); }
+
+  /* ligação pelo navegador */
+  .sc--sw .sw-call { display: flex; align-items: center; gap: calc(24 * var(--u)); padding: 0 calc(36 * var(--u)); }
+  .sc--sw .sw-avatar {
+    width: calc(76 * var(--u)); height: calc(76 * var(--u)); flex-shrink: 0;
+    display: grid; place-items: center; border-radius: 50%;
+    background: linear-gradient(160deg, #3a4150, #1d222c);
+    font-size: max(12px, calc(30 * var(--u))); font-weight: 600;
+    box-shadow: 0 0 0 calc(6 * var(--u)) rgba(0, 168, 255, 0.12);
+  }
+  .sc--sw .sw-call__who { display: flex; flex-direction: column; gap: calc(6 * var(--u)); min-width: 0; }
+  .sc--sw .sw-wave { flex: 1; height: calc(80 * var(--u)); display: flex; align-items: center; justify-content: center; gap: calc(7 * var(--u)); }
+  .sc--sw .sw-wave i { width: calc(7 * var(--u)); height: calc(var(--h) * 100%); border-radius: 99px; background: linear-gradient(180deg, #7fd4ff, #2e6bff); opacity: 0.85; transform-origin: 50% 50%; }
+  .sc--sw .sw-timer { font-variant-numeric: tabular-nums; }
+  .sc--sw .sw-end { padding: calc(10 * var(--u)) calc(22 * var(--u)); border-radius: 999px; background: rgba(255, 255, 255, 0.08); color: var(--s-text); }
+  .sc--sw .sw-call.is-done .sw-wave { opacity: 0.25; }
+  .sc--sw .sw-call.is-ringing .sw-avatar { animation: sw-ring 1s ease-in-out infinite; }
+  @keyframes sw-ring { 50% { box-shadow: 0 0 0 calc(16 * var(--u)) rgba(0, 168, 255, 0); } }
+
+  @media (max-width: 734.98px) {
+    .sc--sw .sw-kpi { padding: calc(22 * var(--u)) calc(26 * var(--u)); }
+    .sc--sw .sw-fin { padding: calc(24 * var(--u)) calc(28 * var(--u)); }
+    .sc--sw .sw-call { padding: 0 calc(28 * var(--u)); gap: calc(20 * var(--u)); }
+    .sc--sw .sw-timer { margin-left: auto; }
+    .sc--sw .sw-bars { gap: calc(20 * var(--u)); }
+  }
+</style>

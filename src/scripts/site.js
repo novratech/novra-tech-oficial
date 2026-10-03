@@ -227,15 +227,16 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => {
   const tour = document.querySelector('[data-tour]');
   if (!tour || !('IntersectionObserver' in window)) return;
   const items = [...tour.querySelectorAll('.tour__item')];
-  const shots = [...tour.querySelectorAll('.tour__shot')];
   const cap = tour.querySelector('[data-tour-cap]');
   let active = 0;
   const setActive = (i) => {
     if (i === active) return;
     active = i;
     items.forEach((el, k) => el.classList.toggle('is-active', k === i));
-    shots.forEach((el, k) => el.classList.toggle('is-active', k === i));
+    // as telas podem chegar depois (as cenas animadas entram na tela presa pelo próprio script)
+    tour.querySelectorAll('.tour__frame .tour__shot').forEach((el, k) => el.classList.toggle('is-active', k === i));
     if (cap) cap.textContent = items[i].dataset.cap || '';
+    tour.dispatchEvent(new CustomEvent('tour:change', { detail: { index: i } }));
   };
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => { if (e.isIntersecting) setActive(items.indexOf(e.target)); });

@@ -1,0 +1,360 @@
+/* ============================================================
+   Cenas de Soluções: telas escuras com luz azul e ciano.
+   Exceção consciente à regra "sem brilho" do site.css: a luz fica
+   só dentro das telas (o produto brilha, a página continua fosca).
+   Unidade única (u): o quadro mede 1600 x 1000 u no 16:10 e
+   800 x 1000 u no 4:5 (celular). HTML, SVG e canvas usam os mesmos números.
+   ============================================================ */
+
+.sc {
+  --s-bg: #05070c;
+  --s-pool: #0b1224;
+  --s-text: #f5f5f7;
+  --s-text-2: #a1a1a6;
+  --s-text-3: #86868b; /* 5,6:1 no palco e 4,9:1 no vidro */
+  --s-blue: #2e6bff;
+  --s-cyan: #00a8ff;
+  --s-hi: #7fd4ff;
+  --s-ice: #d9f3ff;
+  --s-act: #2a64f6;
+  --s-wire: rgba(255, 255, 255, 0.1);
+  --s-wire-on: rgba(46, 107, 255, 0.5);
+  /* tamanhos de texto em u (o 4:5 tem u menor em px, então os números sobem) */
+  --fs-label: 22;
+  --fs-body: 26;
+  --fs-title: 28;
+  --fs-anchor: 30;
+  --fs-num: 64;
+  --r: 20;
+
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  background: var(--s-bg);
+  color: var(--s-text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.sc *,
+.sc *::before,
+.sc *::after { box-sizing: border-box; }
+
+/* poça de luz parada atrás do protagonista (sem animação: não custa nada) */
+.sc__pool {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse calc(var(--pr, 640) / 16 * 1%) calc(var(--pr, 640) / 10 * 1%) at calc(var(--px, 800) / 16 * 1%) calc(var(--py, 500) / 10 * 1%),
+    var(--s-pool) 0%, rgba(11, 18, 36, 0.55) 45%, rgba(11, 18, 36, 0) 100%);
+  pointer-events: none;
+}
+
+.sc__svg,
+.sc__ui,
+.sc__light {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.sc__svg { overflow: visible; pointer-events: none; }
+.sc__light { pointer-events: none; z-index: 3; }
+.sc__ui { z-index: 2; --u: calc(100cqw / 1600); }
+.sc__svg--t { display: none; }
+
+/* posição de cada peça: --xw/--yw/--ww/--hw no 16:10 e --xt/--yt/--wt/--ht no 4:5 */
+.sc .at {
+  position: absolute;
+  left: calc(var(--xw, 0) * var(--u));
+  top: calc(var(--yw, 0) * var(--u));
+  width: calc(var(--ww, 0) * var(--u));
+  height: calc(var(--hw, 0) * var(--u));
+}
+@media (min-width: 735px) { .sc .only-t { display: none !important; } }
+
+@media (max-width: 734.98px) {
+  .sc {
+    --fs-label: 26;
+    --fs-body: 30;
+    --fs-title: 32;
+    --fs-anchor: 33;
+    --fs-num: 76;
+    --r: 24;
+  }
+  .sc__ui { --u: calc(100cqw / 800); }
+  .sc__svg--w { display: none; }
+  .sc__svg--t { display: block; }
+  .sc .at {
+    left: calc(var(--xt, 0) * var(--u));
+    top: calc(var(--yt, 0) * var(--u));
+    width: calc(var(--wt, 0) * var(--u));
+    height: calc(var(--ht, 0) * var(--u));
+  }
+  .sc .only-w { display: none !important; }
+}
+
+/* ---------- texto ---------- */
+.sc .tx-label { font-size: max(11px, calc(var(--fs-label) * var(--u))); font-weight: 500; color: var(--s-text-2); }
+.sc .tx-body { font-size: max(12px, calc(var(--fs-body) * var(--u))); font-weight: 400; color: var(--s-text); }
+.sc .tx-title { font-size: max(12px, calc(var(--fs-title) * var(--u))); font-weight: 600; color: var(--s-text); letter-spacing: -0.01em; }
+.sc .tx-anchor { font-size: max(13px, calc(var(--fs-anchor) * var(--u))); font-weight: 500; color: var(--s-text); }
+.sc .tx-num {
+  font-size: calc(var(--fs-num) * var(--u));
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--s-text);
+}
+.sc .tx-dim { color: var(--s-text-3); }
+.sc .tx-hi { color: var(--s-hi); }
+.sc .tnum { font-variant-numeric: tabular-nums; }
+
+/* ---------- vidro escuro (sem backdrop-filter: o fundo é parado) ---------- */
+.sc .glass {
+  border-radius: calc(var(--r) * var(--u));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.022));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+/* ---------- barra de cima: "Sua empresa › Tela" e "Ao vivo" ---------- */
+.sc .bar {
+  display: flex;
+  align-items: center;
+  gap: calc(14 * var(--u));
+  white-space: nowrap;
+}
+.sc .bar__crumb { display: flex; align-items: baseline; gap: calc(10 * var(--u)); min-width: 0; }
+.sc .bar__crumb .sep { color: var(--s-text-3); }
+.sc .bar__end { margin-left: auto; display: flex; align-items: center; gap: calc(22 * var(--u)); }
+.sc .live {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(10 * var(--u));
+  padding: calc(6 * var(--u)) calc(14 * var(--u));
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.sc .live i {
+  width: calc(10 * var(--u));
+  height: calc(10 * var(--u));
+  min-width: 5px;
+  min-height: 5px;
+  border-radius: 50%;
+  background: var(--s-cyan);
+  box-shadow: 0 0 calc(10 * var(--u)) rgba(0, 168, 255, 0.8);
+  animation: sc-breathe 1.8s ease-in-out infinite alternate;
+}
+
+/* ---------- borda viva: só onde a IA está trabalhando ---------- */
+.sc .lb {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: max(1.5px, calc(3.2 * var(--u)));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-out);
+  overflow: hidden;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.sc .lb::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--lbw, 180%);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: conic-gradient(from 0deg,
+    rgba(46, 107, 255, 0) 0deg, rgba(46, 107, 255, 0.9) 50deg, #00a8ff 78deg, #ffffff 90deg, #7fd4ff 104deg, rgba(46, 107, 255, 0) 150deg,
+    rgba(46, 107, 255, 0) 190deg, rgba(46, 107, 255, 0.75) 236deg, #7fd4ff 262deg, rgba(46, 107, 255, 0) 312deg, rgba(46, 107, 255, 0) 360deg);
+  animation: sc-spin 8s linear infinite;
+}
+.sc .lb-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-out);
+  box-shadow: inset 0 0 calc(56 * var(--u)) rgba(0, 168, 255, 0.24), inset 0 0 0 1px rgba(0, 168, 255, 0.35), 0 0 calc(44 * var(--u)) rgba(0, 140, 255, 0.2);
+}
+.sc .is-thinking > .lb,
+.sc .is-thinking > .lb-glow { opacity: 1; transition-duration: 0.3s; }
+.sc .is-thinking > .lb::before { animation-duration: 4.2s; }
+.sc .is-resting > .lb { opacity: 0.32; }
+.sc .is-resting > .lb-glow { opacity: 0.25; }
+
+/* ---------- núcleo da IA: um disco de vidro com luz que se move por dentro ---------- */
+.sc .core { pointer-events: none; }
+.sc .core__halo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 290%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 168, 255, 0.3) 0%, rgba(46, 107, 255, 0.12) 32%, rgba(46, 107, 255, 0) 68%);
+  animation: sc-breathe 3.6s ease-in-out infinite alternate;
+}
+.sc .core__disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, rgba(10, 26, 64, 0.95) 0%, rgba(6, 12, 28, 0.98) 70%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16), inset 0 0 calc(30 * var(--u)) rgba(0, 168, 255, 0.25);
+}
+/* manchas de luz girando dentro do disco (só transform: roda no compositor) */
+.sc .core__swirl {
+  position: absolute;
+  inset: -20%;
+  animation: sc-spin 9s linear infinite;
+}
+.sc .core__swirl i {
+  position: absolute;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.sc .core__swirl i:nth-child(1) { left: 6%; top: 10%; background: radial-gradient(circle, rgba(46, 107, 255, 0.85), rgba(46, 107, 255, 0) 68%); }
+.sc .core__swirl i:nth-child(2) { right: 4%; top: 30%; background: radial-gradient(circle, rgba(0, 168, 255, 0.75), rgba(0, 168, 255, 0) 66%); }
+.sc .core__swirl i:nth-child(3) { left: 28%; bottom: 2%; width: 48%; background: radial-gradient(circle, rgba(127, 212, 255, 0.6), rgba(127, 212, 255, 0) 66%); }
+.sc .core__swirl--b { animation-duration: 6.5s; animation-direction: reverse; opacity: 0.7; }
+.sc .core__swirl--fast { animation-duration: 2.4s; opacity: 0; transition: opacity 0.6s var(--ease-out); }
+.sc .core__dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, rgba(217, 243, 255, 0.9) 30%, rgba(0, 168, 255, 0) 72%);
+  animation: sc-breathe 3.6s ease-in-out infinite alternate;
+}
+.sc .core__ring {
+  position: absolute;
+  inset: -9%;
+  border-radius: 50%;
+  padding: max(1px, calc(2 * var(--u)));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.sc .core__ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(255, 255, 255, 0.08), rgba(127, 212, 255, 0.9) 60deg, rgba(255, 255, 255, 0.08) 140deg, rgba(255, 255, 255, 0.08) 220deg, rgba(46, 107, 255, 0.8) 290deg, rgba(255, 255, 255, 0.08));
+  animation: sc-spin 12s linear infinite;
+}
+.sc .core.is-thinking .core__swirl--fast { opacity: 1; transition-duration: 0.3s; }
+.sc .core.is-thinking .core__halo { animation-duration: 1.2s; }
+
+/* ---------- fios ---------- */
+.sc .wire {
+  fill: none;
+  stroke: var(--s-wire);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.9s var(--ease-out);
+}
+.sc .wire.is-lit { stroke: var(--s-wire-on); transition-duration: 0.25s; }
+
+/* ---------- contador rolante (odômetro) ---------- */
+.sc .odo { flex-shrink: 0; display: inline-flex; font-variant-numeric: tabular-nums; overflow: hidden; height: 1.15em; line-height: 1.15em; vertical-align: bottom; }
+.sc .odo__d { display: inline-block; height: 1.15em; overflow: hidden; }
+.sc .odo__s { display: flex; flex-direction: column; transition: transform 0.55s var(--ease-out); }
+.sc .odo__s span { height: 1.15em; text-align: center; }
+.sc .odo__c { display: inline-block; }
+
+/* ---------- reflexo que passa pelo vidro ---------- */
+.sc .sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+.sc .sheen::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 45%;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 45%, rgba(255, 255, 255, 0) 90%);
+  transform: translateX(var(--sheen-x, 0));
+}
+
+/* ---------- texto que "pensa" (brilho correndo, só CSS) ---------- */
+.sc .shimmer {
+  background: linear-gradient(90deg, var(--s-text-3) 0%, var(--s-text-3) 35%, var(--s-hi) 50%, var(--s-text-3) 65%, var(--s-text-3) 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: sc-shimmer 1.6s linear infinite;
+}
+
+/* palavras que nascem uma a uma (texto fantasma: o balão já nasce no tamanho final) */
+.sc .w { opacity: 0; display: inline-block; transform: translateY(0.25em); }
+.sc .w.on { opacity: 1; transform: none; transition: opacity 0.42s var(--ease-out), transform 0.42s var(--ease-out), color 0.7s ease; }
+.sc .w.fresh { color: var(--s-hi); }
+
+/* check desenhado */
+.sc .ck { width: 1em; height: 1em; flex-shrink: 0; }
+.sc .ck path { fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- pausa: o movimento de ambiente para junto com a cena ---------- */
+.sc.is-paused *,
+.sc.is-paused *::before,
+.sc.is-paused *::after { animation-play-state: paused !important; }
+
+@keyframes sc-spin { to { rotate: 360deg; } }
+@keyframes sc-breathe { from { opacity: 0.55; } to { opacity: 1; } }
+@keyframes sc-shimmer { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+
+/* menos movimento: o quadro parado já é o estado de base; aqui só se garante que nada gire */
+@media (prefers-reduced-motion: reduce) {
+  .sc *,
+  .sc *::before,
+  .sc *::after { animation: none !important; transition: none !important; }
+}
+
+/* botão de pausa das cenas (WCAG 2.2.2): fica na folha clara, ao lado da legenda */
+.sc-pause {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+  color: #1d1d1f;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: background 0.2s var(--ease-ui);
+}
+.sc-pause:hover { background: rgba(0, 0, 0, 0.09); }
+.sc-pause:focus-visible { outline: 2px solid #1f5bd8; outline-offset: 2px; }
+.sc-pause svg { width: 12px; height: 12px; }
+.sc-pause .i-play { display: none; }
+.sc-pause[aria-pressed="true"] .i-play { display: block; }
+.sc-pause[aria-pressed="true"] .i-pause { display: none; }
+html:not(.js) .sc-pause { display: none; }
+@media (prefers-reduced-motion: reduce) { .sc-pause { display: none; } }

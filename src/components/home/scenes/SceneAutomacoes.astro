@@ -1,0 +1,186 @@
+---
+// Cena 3 · Automações: "Feito na mão" vira "Feito pelo sistema".
+// O caminho cinza e tracejado do trabalho manual é ultrapassado por um risco de luz que acende
+// cada etapa; a partir daí as tarefas correm sozinhas, se dividem e se juntam em "Pronto",
+// e o contador não para. As abas mostram outras rotinas (vídeos, concorrentes).
+// O HTML abaixo é o quadro parado: o circuito aceso, com o fluxo de pedidos.
+interface Props { label: string }
+const { label } = Astro.props;
+
+const pos = (w: number[] | null, t?: number[] | null) =>
+  (w ? `--xw:${w[0]};--yw:${w[1]};--ww:${w[2]};--hw:${w[3]}` : '') + (t ? `;--xt:${t[0]};--yt:${t[1]};--wt:${t[2]};--ht:${t[3]}` : '');
+
+// estações: centro (x, y) no 16:10 e no 4:5, e onde fica o rótulo
+const R = 30;
+const st = [
+  { w: [210, 590], t: [400, 336], lw: 'below', lt: 'right' },
+  { w: [510, 590], t: [400, 452], lw: 'below', lt: 'right' },
+  { w: [810, 590], t: [400, 568], lw: 'below', lt: 'right' },
+  { w: [1140, 430], t: [322, 744], lw: 'above', lt: 'left' },
+  { w: [1140, 750], t: [478, 744], lw: 'below', lt: 'right' },
+  { w: [1440, 590], t: [400, 906], lw: 'below', lt: 'right' },
+];
+const names = ['Chegou um pedido', 'Gerar a cobrança', 'Emitir a nota', 'Avisar o cliente', 'Atualizar o estoque', 'Pronto'];
+// trilhos (mesmos números das estações)
+const W = {
+  s1: `M${210 + R} 590 H${510 - R}`,
+  s2: `M${510 + R} 590 H${810 - R}`,
+  s3: `M${810 + R} 590 H950`,
+  a: `M950 590 C1020 590 1040 430 1110 430 L${1140 - R} 430 M${1140 + R} 430 L1170 430 C1240 430 1260 590 1330 590 H${1440 - R}`,
+  b: `M950 590 C1020 590 1040 750 1110 750 L${1140 - R} 750 M${1140 + R} 750 L1170 750 C1240 750 1260 590 1330 590 H${1440 - R}`,
+};
+// trilhos contínuos para a luz andar (sem os buracos das estações)
+const WL = {
+  s1: `M${210 + R} 590 H${510 - R}`,
+  s2: `M${510 + R} 590 H${810 - R}`,
+  s3: `M${810 + R} 590 H950`,
+  a: `M950 590 C1020 590 1040 430 1110 430 L1170 430 C1240 430 1260 590 1330 590 H${1440 - R}`,
+  b: `M950 590 C1020 590 1040 750 1110 750 L1170 750 C1240 750 1260 590 1330 590 H${1440 - R}`,
+};
+const T = {
+  s1: `M400 ${336 + R} V${452 - R}`,
+  s2: `M400 ${452 + R} V${568 - R}`,
+  s3: `M400 ${568 + R} V630`,
+  a: `M400 630 C400 676 322 672 322 ${744 - R} M322 ${744 + R} C322 830 400 822 400 ${906 - R}`,
+  b: `M400 630 C400 676 478 672 478 ${744 - R} M478 ${744 + R} C478 830 400 822 400 ${906 - R}`,
+};
+const TL = {
+  s1: `M400 ${336 + R} V${452 - R}`,
+  s2: `M400 ${452 + R} V${568 - R}`,
+  s3: `M400 ${568 + R} V630`,
+  a: `M400 630 C400 676 322 672 322 744 C322 830 400 822 400 ${906 - R}`,
+  b: `M400 630 C400 676 478 672 478 744 C478 830 400 822 400 ${906 - R}`,
+};
+const tabs = ['Pedidos', 'Vídeos', 'Concorrentes'];
+const labelBox = (s: (typeof st)[number], i: number) => {
+  const [x, y] = s.w, [tx, ty] = s.t;
+  const w = s.lw === 'above' ? [x - 160, y - R - 64, 320, 40] : [x - 160, y + R + 20, 320, 40];
+  const t = s.lt === 'right' ? [tx + R + (i === 4 ? 14 : 26), ty - 20, i === 4 ? 800 - (tx + R + 14) : 330, 40]
+    : s.lt === 'left' ? [tx - R - 14 - 260, ty - 20, 260, 40]
+    : [tx - 150, ty + R + 14, 300, 40];
+  return pos(w, t);
+};
+const ck = '<svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>';
+---
+<div class="sc sc--au is-paused" data-scene="automacoes" role="img" aria-label={label}>
+  <div class="sc__pool" style="--px:820;--py:600;--pr:980"></div>
+
+  <svg class="sc__svg sc__svg--w" viewBox="0 0 1600 1000" aria-hidden="true">
+    {Object.entries(W).map(([k, d]) => <path class="au-dash" d={d} />)}
+    {Object.entries(W).map(([k, d]) => <path class="au-on" data-on={k} d={d} />)}
+    {Object.entries(WL).map(([k, d]) => <path class="au-rail" data-rail={k} d={d} />)}
+  </svg>
+  <svg class="sc__svg sc__svg--t" viewBox="0 0 800 1000" aria-hidden="true">
+    {Object.entries(T).map(([k, d]) => <path class="au-dash" d={d} />)}
+    {Object.entries(T).map(([k, d]) => <path class="au-on" data-on={k} d={d} />)}
+    {Object.entries(TL).map(([k, d]) => <path class="au-rail" data-rail={k} d={d} />)}
+  </svg>
+
+  <div class="sc__ui" aria-hidden="true">
+    <div class="at bar" style={pos([48, 26, 1504, 56], [32, 24, 736, 56])}>
+      <p class="bar__crumb"><span class="tx-label only-w">Sua empresa</span><span class="tx-label sep only-w">›</span><span class="tx-title">Automações</span></p>
+      <div class="bar__end">
+        <div class="au-tabs only-w" data-tabs>
+          <i class="au-tabs__hi" data-tabhi></i>
+          {tabs.map((t, i) => <span class={i === 0 ? 'au-tab tx-label is-on' : 'au-tab tx-label'}>{t}</span>)}
+        </div>
+        <p class="live tx-label"><i></i>Ao vivo</p>
+      </div>
+    </div>
+    <div class="at au-tabs au-tabs--t only-t" style={pos(null, [32, 92, 736, 58])} data-tabs-t>
+      <i class="au-tabs__hi" data-tabhi-t></i>
+      {tabs.map((t, i) => <span class={i === 0 ? 'au-tab tx-label is-on' : 'au-tab tx-label'}>{t}</span>)}
+    </div>
+
+    <!-- etiqueta grande: da mão para o sistema -->
+    <p class="at au-mode" style={pos([64, 116, 760, 70], [32, 176, 500, 60])} data-mode>
+      <span class="au-mode__a"><i></i>Feito na mão</span>
+      <span class="au-mode__b"><i></i>Feito pelo sistema</span>
+    </p>
+    <div class="at au-count" style={pos([1080, 104, 456, 120], [480, 164, 288, 128])}>
+      <span class="tx-label">Tarefas feitas hoje</span>
+      <b class="tx-num" data-count>1.247</b>
+    </div>
+
+    <!-- pedido que chega pelo WhatsApp (primeira tarefa de cada aba) -->
+    <p class="at glass au-bubble" style={pos([64, 386, 330, 92], [40, 296, 300, 112])} data-bubble>
+      <svg class="au-bubble__ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2a9.9 9.9 0 0 0-8.5 15l-1.4 5 5.1-1.3A9.9 9.9 0 1 0 12.04 2Zm0 18.1c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-3-.2-.3a8.2 8.2 0 1 1 7 3.9Z"/></svg>
+      <span class="tx-body" data-bubble-text>Quero 2 caixas de café para amanhã</span>
+    </p>
+
+    {st.map((s, i) => (
+      <div class="at au-st is-done" style={pos([s.w[0] - R, s.w[1] - R, R * 2, R * 2], [s.t[0] - R, s.t[1] - R, R * 2, R * 2])} data-st={i}>
+        <i class="au-st__ring"></i>
+        <span class="au-st__ck" set:html={ck} />
+      </div>
+    ))}
+    {st.map((s, i) => (
+      <p class={`at au-lbl tx-body au-lbl--${s.lw} au-lbl-t--${s.lt}`} style={labelBox(s, i)} data-lbl={i}>{names[i]}</p>
+    ))}
+    <i class="at au-manual" style={pos([210 - 11, 590 - 11, 22, 22], [400 - 11, 336 - 11, 22, 22])} data-manual></i>
+  </div>
+
+  <canvas class="sc__light" width="0" height="0" aria-hidden="true"></canvas>
+</div>
+
+<style is:global>
+  .sc--au .au-dash { fill: none; stroke: rgba(255, 255, 255, 0.16); stroke-width: 2.4; stroke-dasharray: 3 9; stroke-linecap: round; }
+  .sc--au .au-on { fill: none; stroke: rgba(46, 107, 255, 0.6); stroke-width: 2.6; stroke-linecap: round; transition: stroke 1.2s var(--ease-out), stroke-width 1.2s var(--ease-out); }
+  .sc--au.is-rush .au-on { stroke: rgba(0, 168, 255, 0.95); stroke-width: 3.4; transition-duration: 0.8s; }
+  .sc--au.is-rush .au-count .tx-num { color: #fff; text-shadow: 0 0 calc(30 * var(--u)) rgba(0, 168, 255, 0.55); }
+  .sc--au .au-count .tx-num { transition: text-shadow 1s var(--ease-out); }
+  .sc--au .au-rail { fill: none; stroke: none; }
+
+  /* abas */
+  .sc--au .au-tabs { position: relative; display: flex; gap: calc(6 * var(--u)); padding: calc(5 * var(--u)); border-radius: 999px; background: rgba(255, 255, 255, 0.05); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07); }
+  .sc--au .au-tab { position: relative; z-index: 1; padding: calc(6 * var(--u)) calc(18 * var(--u)); border-radius: 999px; transition: color 0.4s var(--ease-out); }
+  .sc--au .au-tab.is-on { color: var(--s-text); }
+  .sc--au .au-tabs__hi { position: absolute; z-index: 0; top: calc(5 * var(--u)); bottom: calc(5 * var(--u)); left: 0; width: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.1); transition: transform 0.5s var(--ease-out), width 0.5s var(--ease-out); }
+  .sc--au .au-tabs--t { justify-content: space-between; padding: calc(6 * var(--u)); }
+  .sc--au .au-tabs--t .au-tab { flex: 1; text-align: center; padding: calc(10 * var(--u)) 0; }
+
+  /* etiqueta */
+  .sc--au .au-mode { position: absolute; display: grid; font-size: max(16px, calc(48 * var(--u))); font-weight: 600; letter-spacing: -0.02em; }
+  .sc--au .au-mode > span { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: calc(16 * var(--u)); white-space: nowrap; transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out); }
+  .sc--au .au-mode i { width: calc(16 * var(--u)); height: calc(16 * var(--u)); min-width: 7px; min-height: 7px; border-radius: 50%; }
+  .sc--au .au-mode__a { color: var(--s-text-3); opacity: 0; transform: translateY(-0.4em); }
+  .sc--au .au-mode__a i { background: var(--s-text-3); }
+  .sc--au .au-mode__b { color: var(--s-text); }
+  .sc--au .au-mode__b i { background: var(--s-cyan); box-shadow: 0 0 calc(14 * var(--u)) rgba(0, 168, 255, 0.9); }
+  .sc--au .au-mode.is-manual .au-mode__a { opacity: 1; transform: none; }
+  .sc--au .au-mode.is-manual .au-mode__b { opacity: 0; transform: translateY(0.4em); }
+
+  .sc--au .au-count { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: calc(6 * var(--u)); text-align: right; }
+  .sc--au .au-count .tx-num { font-size: calc(72 * var(--u)); }
+
+  /* balão do pedido */
+  .sc--au .au-bubble { display: flex; align-items: center; gap: calc(14 * var(--u)); padding: 0 calc(22 * var(--u)); border-radius: calc(26 * var(--u)) calc(26 * var(--u)) calc(26 * var(--u)) calc(8 * var(--u)); opacity: 0; visibility: hidden; }
+  .sc--au .au-bubble__ic { width: calc(34 * var(--u)); height: calc(34 * var(--u)); flex-shrink: 0; color: var(--s-text-2); }
+  .sc--au .au-bubble .tx-body { line-height: 1.25; }
+
+  /* estações */
+  .sc--au .au-st { border-radius: 50%; }
+  .sc--au .au-st__ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+    box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.22);
+    transition: box-shadow 0.5s var(--ease-out), background 0.5s var(--ease-out);
+  }
+  .sc--au .au-st__ck { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: calc(30 * var(--u)); opacity: 0; transition: opacity 0.3s var(--ease-out); }
+  .sc--au .au-st.is-done .au-st__ring { background: radial-gradient(circle, rgba(0, 168, 255, 0.28), rgba(46, 107, 255, 0.08)); box-shadow: inset 0 0 0 1.5px rgba(0, 168, 255, 0.85), 0 0 calc(26 * var(--u)) rgba(0, 168, 255, 0.35); }
+  .sc--au .au-st.is-done .au-st__ck { opacity: 1; }
+  .sc--au .au-st.is-hit .au-st__ring { box-shadow: inset 0 0 0 2px #7fd4ff, 0 0 calc(40 * var(--u)) rgba(0, 168, 255, 0.7); transition-duration: 0.12s; }
+
+  .sc--au .au-lbl { text-align: center; white-space: nowrap; transition: color 0.5s var(--ease-out); }
+  .sc--au .au-lbl.is-gray { color: var(--s-text-3); }
+  .sc--au .au-manual { border-radius: 50%; background: #5a5f6b; box-shadow: 0 0 0 calc(4 * var(--u)) rgba(90, 95, 107, 0.25); opacity: 0; }
+
+  @media (max-width: 734.98px) {
+    .sc--au .au-lbl-t--right { text-align: left; }
+    .sc--au .au-lbl-t--left { text-align: right; }
+    /* nomes dos ramos ficam do lado de fora, onde não passa linha */
+    .sc--au .au-lbl[data-lbl="3"], .sc--au .au-lbl[data-lbl="4"] { font-size: max(11px, calc(26 * var(--u))); }
+    .sc--au .au-count .tx-num { font-size: calc(80 * var(--u)); }
+    .sc--au .au-mode { font-size: max(15px, calc(40 * var(--u))); }
+  }
+</style>

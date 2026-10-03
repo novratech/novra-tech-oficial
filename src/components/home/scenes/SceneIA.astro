@@ -1,0 +1,226 @@
+---
+// Cena 1 · Inteligência artificial: "Atendimento a qualquer hora".
+// Uma cliente manda mensagem às 23:47; a borda do chat acende enquanto a IA pensa, a luz vai
+// buscar a resposta na agenda e no cadastro, e a resposta nasce palavra por palavra.
+// O HTML abaixo já é o quadro parado (sem JavaScript ou com menos movimento): a conversa completa.
+// Posições em u: 16:10 = 1600 x 1000 (w), 4:5 = 800 x 1000 (t).
+interface Props { label: string }
+const { label } = Astro.props;
+
+const pos = (w: number[], t?: number[]) =>
+  `--xw:${w[0]};--yw:${w[1]};--ww:${w[2]};--hw:${w[3]}` + (t ? `;--xt:${t[0]};--yt:${t[1]};--wt:${t[2]};--ht:${t[3]}` : '');
+
+const sources = [
+  { k: 'agenda', name: 'Agenda', rest: 'Horários e reservas', done: 'Reservado: amanhã, 9h', w: [1062, 118, 450, 150], node: [112, 900],
+    icon: '<rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16M9 3v4M15 3v4"/>' },
+  { k: 'clientes', name: 'Clientes', rest: 'Histórico de cada cliente', done: 'Carla, cliente há 2 anos', w: [1110, 320, 450, 150], node: [296, 900],
+    icon: '<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/>' },
+  { k: 'produtos', name: 'Produtos', rest: 'Estoque e preços', done: 'Estoque e preços', w: [1110, 522, 450, 150], node: [504, 900],
+    icon: '<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/>' },
+  { k: 'equipe', name: 'Equipe', rest: 'Quem está disponível', done: 'Quem está disponível', w: [1062, 724, 450, 150], node: [688, 900],
+    icon: '<circle cx="9" cy="9" r="3"/><circle cx="16.5" cy="10" r="2.4"/><path d="M3.5 19c.6-3 2.8-4.6 5.5-4.6s4.9 1.6 5.5 4.6M14.5 14.6c2.6-.3 4.8 1 5.4 3.9"/>' },
+];
+// fios do 16:10: chat → núcleo e núcleo → cada sistema (mesmos números das peças)
+const CX = 884, CY = 528, CR = 66;
+const wiresW = {
+  chat: `M708 ${CY} L${CX - CR - 4} ${CY}`,
+  agenda: `M${CX + CR + 4} ${CY} C1000 ${CY} 1004 193 1062 193`,
+  clientes: `M${CX + CR + 4} ${CY} C1024 ${CY} 1044 395 1110 395`,
+  produtos: `M${CX + CR + 4} ${CY} C1024 ${CY} 1044 597 1110 597`,
+  equipe: `M${CX + CR + 4} ${CY} C1000 ${CY} 1004 799 1062 799`,
+};
+// 4:5: chat em cima, núcleo no meio, sistemas numa fileira embaixo
+const TX = 400, TY = 742, TR = 54;
+const wiresT = {
+  chat: `M400 650 L400 ${TY - TR - 4}`,
+  agenda: `M${TX} ${TY + TR + 4} C${TX} 836 112 826 112 864`,
+  clientes: `M${TX} ${TY + TR + 4} C${TX} 832 296 830 296 864`,
+  produtos: `M${TX} ${TY + TR + 4} C${TX} 832 504 830 504 864`,
+  equipe: `M${TX} ${TY + TR + 4} C${TX} 836 688 826 688 864`,
+};
+const ck = '<svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>';
+---
+<div class="sc sc--ia is-paused" data-scene="ia" role="img" aria-label={label}>
+  <div class="sc__pool" style={`--px:${CX};--py:${CY};--pr:760`}></div>
+
+  <svg class="sc__svg sc__svg--w" viewBox="0 0 1600 1000" aria-hidden="true">
+    {Object.entries(wiresW).map(([k, d]) => (
+      <path class={k === 'agenda' || k === 'clientes' || k === 'chat' ? 'wire is-lit' : 'wire'} data-wire={k} d={d} />
+    ))}
+  </svg>
+  <svg class="sc__svg sc__svg--t" viewBox="0 0 800 1000" aria-hidden="true">
+    {Object.entries(wiresT).map(([k, d]) => (
+      <path class={k === 'agenda' || k === 'clientes' || k === 'chat' ? 'wire is-lit' : 'wire'} data-wire={k} d={d} />
+    ))}
+  </svg>
+
+  <div class="sc__ui" aria-hidden="true">
+    <div class="at bar" style={pos([48, 26, 1504, 56], [32, 24, 736, 56])}>
+      <p class="bar__crumb"><span class="tx-label only-w">Sua empresa</span><span class="tx-label sep only-w">›</span><span class="tx-title">Atendimento</span></p>
+      <div class="bar__end">
+        <p class="tx-label ia-count only-w"><b class="tnum" data-count>128</b> atendimentos hoje</p>
+        <p class="live tx-label"><i></i>Ao vivo</p>
+      </div>
+    </div>
+
+    <!-- chat -->
+    <div class="at glass chat is-resting" style={pos([48, 104, 660, 848], [32, 96, 736, 556])} data-chat>
+      <i class="lb-glow"></i><i class="lb"></i>
+      <header class="chat__head">
+        <span class="chat__avatar" data-avatar>C</span>
+        <span class="chat__who">
+          <b class="tx-title" data-name>Carla</b>
+          <span class="tx-label"><span data-channel>WhatsApp</span> · <span class="tnum" data-time>23:47</span></span>
+        </span>
+      </header>
+      <div class="chat__log" data-log>
+        <p class="msg msg--in tx-anchor">Oi! Tem horário amanhã de manhã?</p>
+        <p class="msg msg--out tx-body">Oi, Carla! Amanhã tenho 9h ou 10h30. Quer que eu reserve às 9h?</p>
+        <p class="msg msg--in tx-anchor">Pode ser às 9h.</p>
+        <p class="msg msg--out tx-body only-w">Pronto, reservado! Você recebe um lembrete 2 horas antes.</p>
+        <p class="msg msg--sys tx-label only-t"><Fragment set:html={ck} /> Reservado: amanhã, 9h</p>
+      </div>
+      <p class="chat__status tx-label" data-status></p>
+      <div class="chat__input only-w"><span class="tx-label tx-dim">Mensagem</span></div>
+    </div>
+
+    <!-- núcleo -->
+    <div class="at core" style={pos([CX - CR, CY - CR, CR * 2, CR * 2], [TX - TR, TY - TR, TR * 2, TR * 2])} data-core>
+      <i class="core__halo"></i>
+      <i class="core__disc">
+        <i class="core__swirl"><i></i><i></i><i></i></i>
+        <i class="core__swirl core__swirl--b"><i></i><i></i><i></i></i>
+        <i class="core__swirl core__swirl--fast"><i></i><i></i><i></i></i>
+        <i class="core__dot"></i>
+      </i>
+      <i class="core__ring"></i>
+    </div>
+
+    <!-- sistemas da empresa (16:10: cartões; 4:5: fileira de ícones) -->
+    {sources.map((s) => (
+      <div class={`at glass src only-w${s.k === 'agenda' || s.k === 'clientes' ? ' is-lit' : ''}`} style={pos(s.w)} data-src={s.k}>
+        <i class="lb-glow src__glow"></i><i class="sheen"></i>
+        <svg class="src__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={s.icon} />
+        <span class="src__txt">
+          <b class="tx-title">{s.name}</b>
+          <span class="src__status tx-label">
+            <span class="src__rest">{s.rest}</span>
+            <span class="src__done tx-hi">{s.done}</span>
+          </span>
+        </span>
+      </div>
+    ))}
+    {sources.map((s) => (
+      <div class={`at node only-t${s.k === 'agenda' || s.k === 'clientes' ? ' is-lit' : ''}`} style={`--xt:${s.node[0] - 40};--yt:${s.node[1] - 36};--wt:80;--ht:80`} data-node={s.k}>
+        <i class="node__glow"></i>
+        <svg class="node__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={s.icon} />
+        <span class="node__name tx-label">{s.name}</span>
+      </div>
+    ))}
+  </div>
+
+  <canvas class="sc__light" width="0" height="0" aria-hidden="true"></canvas>
+</div>
+
+<style is:global>
+  /* ---------- chat ---------- */
+  .sc--ia .chat { display: flex; flex-direction: column; overflow: hidden; }
+  .sc--ia .chat__head {
+    display: flex; align-items: center; gap: calc(18 * var(--u));
+    padding: calc(26 * var(--u)) calc(30 * var(--u));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .sc--ia .chat__avatar {
+    width: calc(58 * var(--u)); height: calc(58 * var(--u)); flex-shrink: 0;
+    display: grid; place-items: center; border-radius: 50%;
+    background: linear-gradient(160deg, #3a4150, #1d222c);
+    font-size: max(12px, calc(26 * var(--u))); font-weight: 600; color: #f5f5f7;
+  }
+  .sc--ia .chat__who { display: flex; flex-direction: column; gap: calc(4 * var(--u)); min-width: 0; }
+  .sc--ia .chat__log {
+    position: relative;
+    flex: 1;
+    display: flex; flex-direction: column; justify-content: flex-start;
+    gap: calc(16 * var(--u));
+    padding: calc(24 * var(--u)) calc(30 * var(--u)) calc(10 * var(--u));
+    overflow: hidden;
+  }
+  .sc--ia .msg {
+    max-width: 82%;
+    padding: calc(16 * var(--u)) calc(22 * var(--u));
+    border-radius: calc(26 * var(--u));
+    line-height: 1.32;
+  }
+  .sc--ia .msg--in { align-self: flex-start; background: rgba(255, 255, 255, 0.09); border-bottom-left-radius: calc(8 * var(--u)); }
+  .sc--ia .msg--out { align-self: flex-end; background: var(--s-act); color: #fff; border-bottom-right-radius: calc(8 * var(--u)); }
+  .sc--ia .msg--sys {
+    align-self: center;
+    display: inline-flex; align-items: center; gap: calc(10 * var(--u));
+    padding: calc(8 * var(--u)) calc(18 * var(--u));
+    border-radius: 999px;
+    background: rgba(0, 168, 255, 0.1);
+    color: var(--s-hi);
+  }
+  .sc--ia .chat__status {
+    min-height: 1.3em;
+    margin: 0 calc(30 * var(--u)) calc(14 * var(--u));
+  }
+  .sc--ia .chat__input {
+    margin: 0 calc(24 * var(--u)) calc(24 * var(--u));
+    padding: calc(16 * var(--u)) calc(24 * var(--u));
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+  }
+  .sc--ia .chat { --lbw: 175%; }
+
+  /* ---------- sistemas ---------- */
+  .sc--ia .src {
+    display: flex; align-items: center; gap: calc(24 * var(--u));
+    padding: 0 calc(30 * var(--u));
+    --r: 22;
+  }
+  .sc--ia .src__icon {
+    width: calc(44 * var(--u)); height: calc(44 * var(--u)); flex-shrink: 0;
+    fill: none; stroke: var(--s-text-2); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+    transition: stroke 0.6s var(--ease-out);
+  }
+  .sc--ia .src__txt { display: flex; flex-direction: column; gap: calc(6 * var(--u)); min-width: 0; }
+  .sc--ia .src__status { position: relative; display: grid; }
+  .sc--ia .src__status > span { grid-area: 1 / 1; white-space: nowrap; transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out); }
+  .sc--ia .src__done { opacity: 0; transform: translateY(0.4em); }
+  .sc--ia .src.is-lit .src__rest { opacity: 0; transform: translateY(-0.4em); }
+  .sc--ia .src.is-lit .src__done { opacity: 1; transform: none; }
+  .sc--ia .src.is-lit .src__icon { stroke: #fff; }
+  .sc--ia .src.is-lit > .src__glow { opacity: 0.85; }
+  .sc--ia .src.is-lit { box-shadow: inset 0 0 0 1px rgba(0, 168, 255, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.16); transition: box-shadow 0.3s; }
+  .sc--ia .src { transition: box-shadow 1.2s var(--ease-out); }
+
+  /* 4:5: fileira de sistemas */
+  .sc--ia .node { display: flex; flex-direction: column; align-items: center; }
+  .sc--ia .node__glow {
+    position: absolute; left: 50%; top: 0; width: calc(80 * var(--u)); height: calc(80 * var(--u)); translate: -50% 0;
+    border-radius: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    transition: box-shadow 1s var(--ease-out);
+  }
+  .sc--ia .node__icon {
+    position: relative; margin-top: calc(20 * var(--u));
+    width: calc(40 * var(--u)); height: calc(40 * var(--u));
+    fill: none; stroke: var(--s-text-2); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .sc--ia .node__name { position: absolute; top: calc(92 * var(--u)); white-space: nowrap; }
+  .sc--ia .node.is-lit .node__glow { box-shadow: inset 0 0 0 1px rgba(0, 168, 255, 0.6), 0 0 calc(30 * var(--u)) rgba(0, 168, 255, 0.35); transition-duration: 0.3s; }
+  .sc--ia .node.is-lit .node__icon { stroke: #fff; }
+  .sc--ia .node.is-lit .node__name { color: var(--s-text); }
+
+  .sc--ia .ia-count b { color: var(--s-text); font-weight: 600; }
+
+  @media (max-width: 734.98px) {
+    .sc--ia .chat__head { padding: calc(22 * var(--u)) calc(28 * var(--u)); }
+    .sc--ia .chat__log { gap: calc(14 * var(--u)); padding: calc(18 * var(--u)) calc(26 * var(--u)) calc(8 * var(--u)); }
+    .sc--ia .msg { max-width: 86%; padding: calc(14 * var(--u)) calc(22 * var(--u)); }
+    .sc--ia .chat__status { margin: 0 calc(28 * var(--u)) calc(16 * var(--u)); }
+  }
+</style>
