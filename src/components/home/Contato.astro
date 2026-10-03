@@ -1,7 +1,5 @@
 ---
-import { Image } from 'astro:assets';
 import Icon from '../Icon.astro';
-import mark from '../../assets/brand/novra-icon.png';
 
 const WHATSAPP = 'https://wa.me/5511998002960?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20NOVRA%20e%20quero%20conversar%20sobre%20um%20projeto.';
 // compromissos que o site já assumia, em linguagem leiga; o "sem compromisso" já está no título
@@ -9,7 +7,7 @@ const promises = ['Resposta de um especialista sênior', 'Confidencialidade gara
 ---
 <section class="section contato" id="contato" aria-labelledby="contato-t">
   <div class="container container--text contato__inner">
-    <Image src={mark} alt="" width={56} densities={[1, 2, 3]} format="webp" class="contato__mark" data-reveal />
+    <img src="/brand/novra-monograma-prata.svg" alt="" width="48" height="60" class="contato__mark" data-reveal />
     <h2 class="contato__title" id="contato-t" data-reveal style="--d: 80ms">
       Comece por um diagnóstico. <span class="tone">Sem compromisso.</span>
     </h2>
@@ -32,7 +30,7 @@ const promises = ['Resposta de um especialista sênior', 'Confidencialidade gara
 <style>
   .contato { padding-block: clamp(6rem, 4rem + 8vw, 12rem); }
   .contato__inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
-  .contato__mark { width: 56px; height: auto; }
+  .contato__mark { width: 48px; height: auto; }
   /* do tamanho dos títulos de seção: o título do hero continua sendo o maior da página */
   .contato__title {
     margin-top: 1.75rem;
@@ -54,7 +52,7 @@ const promises = ['Resposta de um especialista sênior', 'Confidencialidade gara
   }
 
   @media (max-width: 734px) {
-    .contato__mark { width: 44px; }
+    .contato__mark { width: 40px; }
     .contato__actions { flex-direction: column; align-self: stretch; }
     .contato__promises { flex-direction: column; gap: 0.5rem; }
   }

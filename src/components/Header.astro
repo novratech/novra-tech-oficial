@@ -1,7 +1,5 @@
 ---
-import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
-import logo from '../assets/brand/novra-logo.png';
 
 // no desktop, "Fale conosco" já leva ao Contato; no menu do celular o Contato entra na lista
 const nav = [
@@ -15,7 +13,7 @@ const WHATSAPP = 'https://wa.me/5511998002960?text=Ol%C3%A1!%20Vim%20pelo%20site
 <header class="nav" id="site-header" data-state="top">
   <div class="nav__inner">
     <a href="#topo" class="nav__brand" aria-label="NOVRA, ir para o início">
-      <Image src={logo} alt="" height={30} densities={[1, 2, 3]} format="webp" loading="eager" />
+      <img src="/brand/novra-logo-branco.svg" alt="" width="115" height="30" />
     </a>
 
     <nav class="nav__links" aria-label="Principal">

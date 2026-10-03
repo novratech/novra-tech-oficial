@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/brand/novra-logo.png';
 
 const year = new Date().getFullYear();
 const WHATSAPP = 'https://wa.me/5511998002960?text=Ol%C3%A1!%20Vim%20pelo%20site%20da%20NOVRA%20e%20quero%20conversar%20sobre%20um%20projeto.';
@@ -16,7 +14,7 @@ const navegue = [
   <div class="container">
     <div class="footer__top">
       <div class="footer__brand">
-        <Image src={logo} alt="NOVRA" height={26} densities={[1, 2, 3]} format="webp" />
+        <img src="/brand/novra-logo-branco.svg" alt="NOVRA" width="100" height="26" />
         <p>Sistemas inteligentes para a próxima era.</p>
       </div>
       <nav class="footer__col" aria-label="Rodapé">
