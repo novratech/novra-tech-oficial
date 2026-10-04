@@ -21,8 +21,7 @@ const html = document.documentElement;
   if (reduce || saveData) return;
   let list = [];
   try { list = JSON.parse(v.dataset.sources || '[]'); } catch (e) {}
-  const btn = document.querySelector('.hero__pause');
-  let armed = false, userPaused = false, visible = true;
+  let armed = false, visible = true;
   // baixou tudo? então pode ficar; senão, sair do hero cancela o download
   const full = () => v.buffered.length && v.duration && v.buffered.end(v.buffered.length - 1) >= v.duration - 0.5;
   const arm = () => {
@@ -44,17 +43,8 @@ const html = document.documentElement;
     v.load(); // sem fontes, o navegador abandona a requisição
     v.classList.remove('is-ready');
   };
-  const play = () => { if (!userPaused) v.play().catch(() => {}); }; // pouca energia bloqueia: fica o pôster
-  v.addEventListener('playing', () => {
-    v.classList.add('is-ready');
-    if (btn) btn.hidden = false;
-  });
-  btn?.addEventListener('click', () => {
-    userPaused = !userPaused;
-    if (userPaused) v.pause(); else play();
-    btn.classList.toggle('is-paused', userPaused);
-    btn.setAttribute('aria-label', userPaused ? 'Continuar a animação de fundo' : 'Pausar a animação de fundo');
-  });
+  const play = () => { v.play().catch(() => {}); }; // pouca energia bloqueia: fica o pôster
+  v.addEventListener('playing', () => v.classList.add('is-ready'));
   const start = () => {
     if (!('IntersectionObserver' in window)) { arm(); play(); return; }
     new IntersectionObserver(([e]) => {
