@@ -35,7 +35,7 @@ export function createSoftware(root, light, env) {
   const timer = $('[data-timer]'), endBtn = $('[data-end]');
   const newmod = $('[data-newmod]'), newmodName = $('[data-newmod-name]');
   const newmodT = $('[data-newmod-t]'), newmodNameT = $('[data-newmod-name-t]');
-  let mochila = 7, modIdx = 0, callIdx = 0, seconds = 134;
+  let mochila = 7, modIdx = 0, callIdx = 0, seconds = 0;
 
   const pens = () => $$(`.sc__svg--${fmt()} [data-pen]`);
   // percorrer o perímetro das peças custa caro num celular lento: calcula no ócio e guarda
@@ -108,7 +108,7 @@ export function createSoftware(root, light, env) {
     tl.call(() => { kpi.pedidos.set(86); kpi.pagamentos.set(32); kpi.notas.set(79); }, null, C);
     tl.to(barEls, { scaleY: 1, duration: 0.7, ease: 'expo.out', stagger: 0.06 }, C);
     tl.to($$('[data-stock]'), { scaleX: 1, duration: 0.8, ease: 'expo.out', stagger: 0.08 }, C + 0.1);
-    tl.call(() => startCall(0, true), null, C + 0.5);
+    tl.call(() => startCall(0), null, C + 0.5);
     return tl;
   }
 
@@ -156,15 +156,21 @@ export function createSoftware(root, light, env) {
       kpi.pagamentos.set(kpi.pagamentos.value + 1);
       bump('pagamentos');
     }, null, at + 0.47);
+    // pagamento conferido, nota emitida: do pedido ao dinheiro na conta
+    tl.call(() => {
+      kpi.notas.set(kpi.notas.value + 1);
+      bump('notas');
+    }, null, at + 0.8);
   }
-  function startCall(i, first) {
+  function startCall(i) {
     const c = LIGACOES[i % LIGACOES.length];
     call.classList.remove('is-done');
     callAv.textContent = c.initial;
     callTitle.textContent = `Em ligação com ${c.name}`;
     callSub.textContent = 'Direto do navegador';
     call.classList.remove('is-ringing');
-    seconds = first ? 134 : 0;
+    // toda ligação começa do zero, logo depois do "Ligando para"
+    seconds = 0;
     timer.textContent = mmss(seconds);
     if (endBtn) endBtn.style.visibility = 'visible';
   }
@@ -192,7 +198,7 @@ export function createSoftware(root, light, env) {
       callTitle.textContent = `Ligando para ${c.name}`;
       callSub.textContent = 'Direto do navegador';
     }, null, at + 2.4);
-    tl.call(() => { callIdx++; startCall(callIdx, false); }, null, at + 3.6);
+    tl.call(() => { callIdx++; startCall(callIdx); }, null, at + 3.6);
   }
   // módulo novo encaixa com luz na junta: o sistema cresce com a empresa
   function dock(tl, at) {
