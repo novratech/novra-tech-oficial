@@ -1,5 +1,5 @@
 ---
-import Base from '../layouts/Base.astro';
+import Site from '../layouts/Site.astro';
 import Icon from '../components/Icon.astro';
 
 // Supabase — credenciais vêm do .env (veja .env.example).
@@ -93,7 +93,7 @@ const steps = [
   {
     type: 'single', key: 'faturamento', eyebrow: 'Etapa 06',
     q: 'Qual o faturamento atual da sua empresa?',
-    help: 'Ajuda a dimensionar a solução certa. Fica entre nós. 🔒',
+    help: 'Ajuda a dimensionar a solução certa. Fica só entre nós.',
     options: [
       'Até R$ 50 mil / mês',
       'R$ 50 mil a R$ 200 mil / mês',
@@ -176,238 +176,258 @@ const DDIS = [
   ['+57', 'CO'], ['+52', 'MX'], ['+595', 'PY'], ['+598', 'UY'], ['+244', 'AO'],
 ];
 ---
-<Base title="NOVRA · Diagnóstico da sua operação" description="Responda algumas perguntas e receba um diagnóstico inicial da NOVRA para o seu desafio de tecnologia, IA e automação.">
+<Site title="NOVRA · Diagnóstico da sua operação" socialTitle="NOVRA · Diagnóstico da sua operação" description="Responda algumas perguntas e receba um diagnóstico inicial da NOVRA para o seu desafio de tecnologia, IA e automação.">
   <div class="fpage">
-    <!-- barra de progresso -->
+    <!-- progresso: um fio azul no topo -->
     <div class="fprogress" aria-hidden="true"><span id="fbar"></span></div>
 
-    <!-- topo minimalista -->
+    <!-- topo enxuto -->
     <header class="ftop">
-      <a href="/" class="fbrand" aria-label="NOVRA — início">
-        <img src="/brand/novra-logo-branco.svg" alt="NOVRA" width="874" height="227" />
+      <a href="/" class="fbrand" aria-label="NOVRA, página inicial">
+        <img src="/brand/novra-logo-branco.svg" alt="NOVRA" width="115" height="30" />
       </a>
-      <a href="/" class="fback-site link-arrow"><Icon name="arrow-right" size={16} /> Voltar ao site</a>
+      <a href="/" class="fback-site"><Icon name="chevron-right" size={14} strokeWidth={2} class="flip" /> Voltar ao site</a>
     </header>
 
-    <main class="fmain" id="fmain">
-      <!-- INTRO -->
-      <section class="fstep is-active" data-type="intro">
-        <span class="eyebrow is-centered">Diagnóstico executivo</span>
-        <span class="signature-line head-sig" aria-hidden="true" style="margin-inline:auto"></span>
-        <h1 class="fstep__q balance">Vamos entender o seu <span class="text-gradient">desafio.</span></h1>
-        <p class="fstep__help">Responda algumas perguntas rápidas, leva menos de 2 minutos. Com base nelas, um
-          especialista da NOVRA prepara o diagnóstico e os próximos passos, sem compromisso.</p>
-        <div class="frascunho" id="frascunho" hidden>
-          <p><strong>Você já tinha começado.</strong> Quer continuar de onde parou?</p>
-          <div class="frascunho__btns">
-            <button class="btn btn-primary" data-action="retomar" type="button">Continuar de onde parei</button>
-            <button class="btn btn-ghost" data-action="zerar" type="button">Começar do zero</button>
-          </div>
-        </div>
-        <div class="fstep__nav fstep__nav--center" id="fintroNav">
-          <button class="btn btn-primary btn-lg" data-action="start" data-magnetic>Começar <Icon name="arrow-right" /></button>
-        </div>
-        <p class="fmeta"><Icon name="clock" size={14} /> ~2 min · <Icon name="security" size={14} /> dados confidenciais</p>
-      </section>
-
-      <!-- PERGUNTAS -->
-      {steps.map((s, i) => (
-        <section class="fstep" data-type={s.type} data-key={s.key} data-index={i + 1}>
-          <div class="fstep__head">
-            <span class="eyebrow">{s.eyebrow} · <span class="fstep__count">{i + 1}/{totalQ}</span></span>
-            <h2 class="fstep__q balance">{s.q}</h2>
-            {s.help && <p class="fstep__help">{s.help}</p>}
-          </div>
-
-          {(s.type === 'single' || s.type === 'multi') && (
-            <div class="fopts" role={s.type === 'single' ? 'radiogroup' : 'group'} aria-label={s.q}>
-              {s.options.map((opt) => (
-                <button type="button" class="fopt" data-value={opt} data-other={opt === 'Outro' ? 'true' : null} role={s.type === 'single' ? 'radio' : 'checkbox'} aria-checked="false">
-                  <span class="fopt__label">{opt === 'Outro' ? 'Outro (escrever)' : opt}</span>
-                  <span class="fopt__mark" aria-hidden="true"></span>
-                </button>
-              ))}
+    <main id="main" class="fwrap">
+      <div class="fmain" id="fmain">
+        <!-- INTRO -->
+        <section class="fstep is-active" data-type="intro">
+          <p class="eyebrow">Diagnóstico executivo</p>
+          <h1 class="fstep__q balance">Vamos entender <span class="tone">o seu desafio.</span></h1>
+          <p class="fstep__help">Responda algumas perguntas rápidas, leva menos de 2 minutos. Com base nelas, um
+            especialista da NOVRA prepara o diagnóstico e os próximos passos, sem compromisso.</p>
+          <div class="frascunho" id="frascunho" hidden>
+            <p><strong>Você já tinha começado.</strong> Quer continuar de onde parou?</p>
+            <div class="frascunho__btns">
+              <button class="btn btn-primary" data-action="retomar" type="button">Continuar de onde parei</button>
+              <button class="btn btn-secondary" data-action="zerar" type="button">Começar do zero</button>
             </div>
-          )}
-          {(s.type === 'single' || s.type === 'multi') && s.options.includes('Outro') && (
-            <div class="fother" hidden>
-              <input type="text" class="fother__input" placeholder="Escreva aqui a sua resposta…" aria-label="Sua resposta" maxlength="160" />
-            </div>
-          )}
-
-          {(s.type === 'fields' || s.type === 'contact') && (
-            <div class="ffields">
-              {s.fields.map((f) => (
-                <div class={`ffield ${f.type === 'select' ? 'ffield--full' : ''}`}>
-                  <label for={`f-${f.name}`}>{f.label}{f.required && <i> *</i>}</label>
-                  {f.type === 'select' ? (
-                    <div class="fselect">
-                      <select id={`f-${f.name}`} name={f.name} data-required={f.required ? 'true' : 'false'}>
-                        <option value="">Selecione</option>
-                        {f.opts.map((o) => <option>{o}</option>)}
-                      </select>
-                      <Icon name="arrow-down" size={16} />
-                    </div>
-                  ) : f.ddi ? (
-                    <div class="fphone">
-                      <div class="fselect fphone__ddi">
-                        <select id={`f-${f.name}-ddi`} name={`${f.name}_ddi`} aria-label="Código do país (DDI)">
-                          {DDIS.map(([code, pais]) => <option value={code} selected={code === '+55'}>{pais} {code}</option>)}
-                        </select>
-                        <Icon name="arrow-down" size={16} />
-                      </div>
-                      <input id={`f-${f.name}`} name={f.name} type="tel" inputmode="tel" autocomplete={f.ac} placeholder={f.ph} maxlength={f.max} data-required={f.required ? 'true' : 'false'} data-phone />
-                    </div>
-                  ) : (
-                    <input id={`f-${f.name}`} name={f.name} type={f.type} autocomplete={f.ac} placeholder={f.ph} maxlength={f.max} autocapitalize={f.type === 'email' ? 'none' : null} spellcheck={f.type === 'email' ? 'false' : null} data-required={f.required ? 'true' : 'false'} />
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div class="fstep__nav">
-            <button class="btn btn-ghost" data-action="back" data-magnetic><Icon name="arrow-right" class="flip" /> Voltar</button>
-            {s.type === 'contact' ? (
-              <button class="btn btn-primary btn-lg" data-action="submit" data-magnetic>
-                <span class="fsubmit-label">Receber meu diagnóstico</span> <Icon name="arrow-right" />
-              </button>
-            ) : (
-              <button class="btn btn-primary" data-action="next" data-magnetic>Continuar <Icon name="arrow-right" /></button>
-            )}
           </div>
-          {s.type === 'contact' && (
-            <p class="fconsent" id="fstatus" role="status" aria-live="polite">Ao enviar, você concorda em ser contatado pela NOVRA sobre o seu projeto.</p>
-          )}
+          <div class="fstep__nav fstep__nav--center" id="fintroNav">
+            <button class="btn btn-primary btn-lg" data-action="start" type="button">Começar <Icon name="arrow-right" strokeWidth={2} /></button>
+          </div>
+          <p class="fmeta"><span><Icon name="clock" size={16} /> Cerca de 2 minutos</span><span><Icon name="security" size={16} /> Dados confidenciais</span></p>
         </section>
-      ))}
 
-      <!-- SUCESSO -->
-      <section class="fstep fstep--success" data-type="success">
-        <span class="fsuccess__icon"><Icon name="check" size={40} /></span>
-        <h2 class="fstep__q balance">Recebemos tudo. <span class="text-gradient">Obrigado!</span></h2>
-        <p class="fstep__help"><strong>Em breve</strong> um especialista da NOVRA entra em contato com o seu
-          diagnóstico inicial e os próximos passos.</p>
-        <div class="fstep__nav fstep__nav--center">
-          <a href="/" class="btn btn-ghost btn-lg" data-magnetic>Voltar ao site</a>
-        </div>
-      </section>
+        <!-- PERGUNTAS -->
+        {steps.map((s, i) => (
+          <section class="fstep" data-type={s.type} data-key={s.key} data-index={i + 1}>
+            <div class="fstep__head">
+              <p class="eyebrow" id={`c-${s.key}`}>{s.type === 'contact' ? `${s.eyebrow} · ` : 'Etapa '}<span class="fstep__count">{i + 1} de {totalQ}</span></p>
+              <h2 class="fstep__q balance" id={`q-${s.key}`}>{s.q}</h2>
+              {(s.help || s.type === 'single') && (
+                <p class="fstep__help" id={`h-${s.key}`}>{s.help}{s.type === 'single' && <span class="sr-only"> Ao escolher, seguimos para a próxima pergunta.</span>}</p>
+              )}
+            </div>
 
+            {(s.type === 'single' || s.type === 'multi') && (
+              <div class="fopts" role={s.type === 'single' ? 'radiogroup' : 'group'} aria-labelledby={`c-${s.key} q-${s.key}`} aria-describedby={s.help || s.type === 'single' ? `h-${s.key}` : null}>
+                {s.options.map((opt) => (
+                  <button type="button" class="fopt" data-value={opt} data-other={opt === 'Outro' ? 'true' : null} role={s.type === 'single' ? 'radio' : 'checkbox'} aria-checked="false">
+                    <span class="fopt__label">{opt === 'Outro' ? 'Outro (escrever)' : opt}</span>
+                    <span class="fopt__mark" aria-hidden="true"></span>
+                  </button>
+                ))}
+              </div>
+            )}
+            {(s.type === 'single' || s.type === 'multi') && s.options.includes('Outro') && (
+              <div class="fother" hidden>
+                <input type="text" class="fother__input" placeholder="Escreva aqui a sua resposta" aria-label="Sua resposta" maxlength="160" />
+              </div>
+            )}
+
+            {(s.type === 'fields' || s.type === 'contact') && (
+              <div class="ffields">
+                {s.fields.map((f) => (
+                  <div class={`ffield ${f.type === 'select' ? 'ffield--full' : ''}`}>
+                    <label for={`f-${f.name}`}>{f.label}{f.required && <i> *</i>}</label>
+                    {f.type === 'select' ? (
+                      <div class="fselect">
+                        <select id={`f-${f.name}`} name={f.name} data-required={f.required ? 'true' : 'false'} aria-required={f.required ? 'true' : null}>
+                          <option value="">Selecione</option>
+                          {f.opts.map((o) => <option>{o}</option>)}
+                        </select>
+                        <Icon name="chevron-right" size={16} strokeWidth={2} />
+                      </div>
+                    ) : f.ddi ? (
+                      <div class="fphone">
+                        <div class="fselect fphone__ddi">
+                          <select id={`f-${f.name}-ddi`} name={`${f.name}_ddi`} aria-label="Código do país (DDI)">
+                            {DDIS.map(([code, pais]) => <option value={code} selected={code === '+55'}>{pais} {code}</option>)}
+                          </select>
+                          <Icon name="chevron-right" size={16} strokeWidth={2} />
+                        </div>
+                        <input id={`f-${f.name}`} name={f.name} type="tel" inputmode="tel" autocomplete={f.ac} placeholder={f.ph} maxlength={f.max} data-required={f.required ? 'true' : 'false'} aria-required={f.required ? 'true' : null} data-phone />
+                      </div>
+                    ) : (
+                      <input id={`f-${f.name}`} name={f.name} type={f.type} autocomplete={f.ac} placeholder={f.ph} maxlength={f.max} autocapitalize={f.type === 'email' ? 'none' : null} spellcheck={f.type === 'email' ? 'false' : null} data-required={f.required ? 'true' : 'false'} aria-required={f.required ? 'true' : null} />
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div class="fstep__nav">
+              <button class="btn btn-secondary" data-action="back" type="button"><Icon name="arrow-right" strokeWidth={2} class="flip" /> Voltar</button>
+              {s.type === 'contact' ? (
+                <button class="btn btn-primary btn-lg" data-action="submit" type="button">
+                  <span class="fsubmit-label">Receber meu diagnóstico</span> <Icon name="arrow-right" strokeWidth={2} />
+                </button>
+              ) : (
+                <button class="btn btn-primary" data-action="next" type="button">Continuar <Icon name="arrow-right" strokeWidth={2} /></button>
+              )}
+            </div>
+            {s.type === 'contact' && (
+              <p class="fconsent" id="fstatus" role="status" aria-live="polite">Ao enviar, você concorda em ser contatado pela NOVRA sobre o seu projeto.</p>
+            )}
+          </section>
+        ))}
+
+        <!-- SUCESSO -->
+        <section class="fstep fstep--success" data-type="success">
+          <span class="fsuccess__icon"><Icon name="check" size={34} strokeWidth={2} /></span>
+          <h2 class="fstep__q balance" id="fsucesso" tabindex="-1">Recebemos tudo. <span class="tone">Obrigado!</span></h2>
+          <p class="fstep__help"><strong>Em breve</strong> um especialista da NOVRA entra em contato com o seu
+            diagnóstico inicial e os próximos passos.</p>
+          <div class="fstep__nav fstep__nav--center">
+            <a href="/" class="btn btn-secondary btn-lg">Voltar ao site</a>
+          </div>
+        </section>
+      </div>
     </main>
   </div>
 
   <style>
-    .fpage { position: relative; z-index: 2; min-height: 100svh; display: flex; flex-direction: column; }
-    .fprogress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 120; background: rgba(255,255,255,0.05); }
-    #fbar { display: block; height: 100%; width: 0%; background: var(--grad-signature); box-shadow: 0 0 14px rgba(46,107,255,0.5); transition: width 0.5s var(--ease-out); }
+    /* visual novo (estilo Apple): fundo preto, títulos leves, um azul só; as classes e os ids
+       que o script usa (fstep, fopt, fother, fbar, frascunho, fstatus…) continuam os mesmos */
+    .fpage { position: relative; display: flex; flex-direction: column; min-height: 100svh; background: var(--bg); }
+    .fpage [hidden] { display: none !important; }
 
-    .ftop { display: flex; align-items: center; justify-content: space-between; padding: clamp(1.2rem, 3vw, 2rem) var(--gutter); }
-    .fbrand img { height: clamp(30px, 3.6vw, 40px); width: auto; }
-    .fback-site { font-size: 0.9rem; color: var(--text-2); }
-    .fback-site :global(svg) { transform: rotate(180deg); }
+    /* progresso: um fio azul no topo */
+    .fprogress { position: fixed; inset: 0 0 auto 0; z-index: 120; height: 2px; background: rgba(255, 255, 255, 0.08); }
+    #fbar { display: block; width: 0%; height: 100%; background: var(--accent); transition: width 0.5s var(--ease-out); }
 
-    .fmain { flex: 1; display: grid; place-items: center; padding: clamp(1rem, 3vw, 2rem) var(--gutter) clamp(3rem, 8vh, 6rem); position: relative; }
-
-    .fstep {
-      display: none; width: 100%; max-width: 680px;
-      flex-direction: column; align-items: stretch; text-align: left;
+    .ftop {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      width: 100%; max-width: calc(var(--container) + 2 * var(--gutter));
+      margin-inline: auto; padding: 1rem var(--gutter);
     }
+    .fbrand { display: inline-flex; align-items: center; height: 44px; }
+    .fbrand img { height: 28px; width: auto; }
+    .fback-site { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px; font-size: 14px; color: var(--fg-2); transition: color 0.2s var(--ease-ui); }
+    .fback-site:hover { color: var(--fg); }
+    .flip, .fpage :global(.flip) { transform: rotate(180deg); }
+
+    .fwrap { display: flex; flex: 1; }
+    .fmain { display: grid; flex: 1; place-items: start center; padding: clamp(2rem, 7vh, 4.5rem) var(--gutter) clamp(4rem, 10vh, 7rem); }
+    .fmain:has(> .fstep[data-type="intro"].is-active, > .fstep--success.is-active) { place-items: center; padding-top: clamp(1.5rem, 4vh, 3rem); }
+
+    /* etapas */
+    .fstep { display: none; flex-direction: column; align-items: stretch; width: 100%; max-width: 680px; text-align: left; }
     .fstep.is-active { display: flex; }
     .fstep[data-type="intro"].is-active, .fstep--success.is-active { align-items: center; text-align: center; }
-    .anim-in { animation: fstepIn 0.55s var(--ease-out) both; }
-    @keyframes fstepIn { from { opacity: 0; transform: translateY(22px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+    .anim-in { animation: fstepIn 0.5s var(--ease-out) both; }
+    @keyframes fstepIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
-    .fstep__head { margin-bottom: 1.8rem; }
-    .fstep__q { font-size: clamp(1.7rem, 1.2rem + 2.2vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; margin-top: 0.9rem; }
-    .fstep[data-type="intro"] .fstep__q { font-size: clamp(2.2rem, 1.4rem + 3vw, 4rem); }
-    .fstep__help { color: var(--text-2); font-size: 1.02rem; line-height: 1.6; margin-top: 1rem; max-width: 60ch; }
-    .fstep[data-type="intro"] .fstep__help, .fstep--success .fstep__help { margin-inline: auto; }
-    .fstep__help strong { color: var(--text-1); }
+    .fstep__head { margin-bottom: 2rem; }
+    .fstep__count { font-variant-numeric: tabular-nums; }
+    .fstep__q {
+      margin-top: 0.85rem;
+      font-family: var(--font-display); font-weight: 300;
+      font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem); line-height: 1.08; letter-spacing: -0.015em; color: var(--fg);
+    }
+    .fstep[data-type="intro"] .fstep__q { font-size: clamp(2.6rem, 1.5rem + 3.8vw, 4.5rem); line-height: 1.03; letter-spacing: -0.02em; }
+    .fstep__help { max-width: 36em; margin-top: 1rem; font-size: 17px; line-height: 1.47; color: var(--fg-2); }
+    .fstep[data-type="intro"] .fstep__help, .fstep--success .fstep__help { margin-inline: auto; margin-top: 1.25rem; font-size: clamp(1.1rem, 1rem + 0.3vw, 1.25rem); line-height: 1.4; }
+    .fstep__help strong { color: var(--fg); font-weight: 600; }
 
-    /* opções */
-    .fopts { display: flex; flex-direction: column; gap: 0.7rem; }
+    /* opções: linhas largas com a marca à direita (círculo para uma escolha, quadrado para várias) */
+    .fopts { display: flex; flex-direction: column; gap: 0.6rem; }
     .fopt {
       display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-      width: 100%; text-align: left;
-      padding: 1.1rem 1.3rem;
-      border: 1px solid var(--border-strong); border-radius: var(--r-md);
-      background: linear-gradient(180deg, var(--surface-2), var(--surface));
-      color: var(--text-1); font-family: var(--font-display); font-weight: 500; font-size: 1.05rem;
-      transition: border-color 0.3s var(--ease-out), background 0.3s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.3s var(--ease-out);
+      width: 100%; min-height: 56px; padding: 0.95rem 1.15rem;
+      border-radius: 14px; background: rgba(255, 255, 255, 0.05); box-shadow: inset 0 0 0 1px var(--line);
+      color: var(--fg); font: inherit; font-size: 17px; font-weight: 500; letter-spacing: -0.01em; text-align: left;
+      cursor: pointer; transition: background-color 0.2s var(--ease-ui), box-shadow 0.2s var(--ease-ui);
     }
-    .fopt:hover { border-color: var(--border-brand); transform: translateY(-2px); background: var(--surface-hover); }
-    .fopt__mark { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border-strong); position: relative; transition: border-color 0.3s, background 0.3s; }
-    .fopt[aria-checked="true"] { border-color: var(--blue); background: rgba(46,107,255,0.12); box-shadow: 0 0 0 1px var(--blue), var(--glow-blue); }
-    .fopt[aria-checked="true"] .fopt__mark { border-color: var(--blue); background: var(--blue); }
-    .fopt[aria-checked="true"] .fopt__mark::after { content: ""; position: absolute; inset: 0; margin: auto; width: 8px; height: 8px; border-radius: 50%; background: #fff; }
+    .fopt:hover { background: rgba(255, 255, 255, 0.08); }
+    .fopt__mark { position: relative; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.34); transition: background-color 0.2s var(--ease-ui), box-shadow 0.2s var(--ease-ui); }
+    .fopt[role="checkbox"] .fopt__mark { border-radius: 7px; }
+    .fopt[aria-checked="true"] { background: rgba(42, 100, 246, 0.16); box-shadow: inset 0 0 0 1.5px var(--accent); }
+    .fopt[aria-checked="true"] .fopt__mark { background: var(--accent); box-shadow: none; }
+    .fopt[role="radio"][aria-checked="true"] .fopt__mark::after { content: ""; position: absolute; inset: 0; width: 8px; height: 8px; margin: auto; border-radius: 50%; background: #fff; }
+    .fopt[role="checkbox"][aria-checked="true"] .fopt__mark::after { content: ""; position: absolute; left: 8px; top: 4px; width: 6px; height: 11px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
 
-    /* campo "Outro" digitável */
-    .fother { margin-top: 0.7rem; animation: fstepIn 0.4s var(--ease-out) both; }
-    .fother[hidden] { display: none; }
-    .fother__input {
-      width: 100%; padding: 1rem 1.2rem;
-      background: var(--bg-0); border: 1px solid var(--blue); border-radius: var(--r-md);
-      color: var(--text-1); font-size: 1.02rem;
-      box-shadow: 0 0 0 3px rgba(46,107,255,0.16);
-      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+    /* "Outro" digitável e campos */
+    .fother { margin-top: 0.6rem; animation: fstepIn 0.35s var(--ease-out) both; }
+    .ffields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1rem; }
+    .ffield { display: flex; flex-direction: column; gap: 0.45rem; }
+    .ffield--full, .ffield:only-child, .ffield:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .ffield label { font-size: 14px; font-weight: 500; color: var(--fg-2); }
+    .ffield label i { font-style: normal; }
+    .fother__input, .ffield input, .fselect select {
+      width: 100%; min-height: 52px; padding: 0.85rem 1rem;
+      border: 0; border-radius: 12px; background: #1c1c1e; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+      color: var(--fg); font: inherit; font-size: 17px; letter-spacing: -0.01em;
+      transition: box-shadow 0.2s var(--ease-ui), background-color 0.2s var(--ease-ui);
     }
-    .fother__input::placeholder { color: var(--text-3); }
-    .fother__input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(46,107,255,0.28); background: var(--bg-1); }
-    .fother__input.invalid { border-color: #f06565; box-shadow: 0 0 0 3px rgba(240,101,101,0.18); }
-
-    /* campos */
-    .ffields { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
-    .ffield { display: flex; flex-direction: column; gap: 0.5rem; }
-    .ffield--full, .ffield:only-child { grid-column: 1 / -1; }
-    .ffield label { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); }
-    .ffield label i { color: var(--blue-energy); font-style: normal; }
-    .ffield input, .fselect select {
-      width: 100%; padding: 0.95rem 1.1rem;
-      background: var(--bg-0); border: 1px solid var(--border-strong); border-radius: var(--r-sm);
-      color: var(--text-1); font-size: 1rem;
-      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
-    }
-    .ffield input::placeholder { color: var(--text-3); }
-    .ffield input:focus, .fselect select:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(46,107,255,0.2); background: var(--bg-1); }
-    .ffield input.invalid, .fselect select.invalid { border-color: #f06565; }
+    .fother__input::placeholder, .ffield input::placeholder { color: var(--fg-2); opacity: 1; }
+    .fother__input:focus, .ffield input:focus, .fselect select:focus { outline: 2px solid transparent; outline-offset: 2px; box-shadow: inset 0 0 0 1.5px var(--accent), 0 0 0 4px rgba(42, 100, 246, 0.28); }
+    .fother__input.invalid, .ffield input.invalid, .fselect select.invalid { box-shadow: inset 0 0 0 1.5px #ff453a, 0 0 0 4px rgba(255, 69, 58, 0.18); }
+    .fother__input.invalid:focus, .ffield input.invalid:focus, .fselect select.invalid:focus { outline: 2px solid var(--link-c); outline-offset: 3px; box-shadow: inset 0 0 0 1.5px #ff453a, 0 0 0 4px rgba(255, 69, 58, 0.4); }
+    /* o erro também em texto, não só na cor */
+    .fpage :global(.ferr), .fpage :global(.fopts__err) { margin-top: 0.5rem; font-size: 14px; line-height: 1.43; color: #ff6961; }
+    .fpage :global(.fopts__err) { margin-top: 0.75rem; }
     .fselect { position: relative; }
-    .fselect :global(svg) { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
-    .fselect select { appearance: none; cursor: pointer; padding-right: 2.4rem; }
-    .fselect select option { background: var(--bg-2); color: var(--text-1); }
+    .fselect :global(svg) { position: absolute; right: 0.95rem; top: 50%; transform: translateY(-50%) rotate(90deg); color: var(--fg-2); pointer-events: none; }
+    .fselect select { appearance: none; padding-right: 2.6rem; cursor: pointer; }
+    .fselect select option { background: #1c1c1e; color: var(--fg); }
 
     /* WhatsApp: DDI + número */
     .fphone { display: flex; gap: 0.6rem; }
     .fphone__ddi { flex: 0 0 auto; }
-    .fphone__ddi select { width: auto; min-width: 6.4rem; padding-right: 2.2rem; font-variant-numeric: tabular-nums; }
-    .fphone__ddi :global(svg) { right: 0.7rem; }
+    .fphone__ddi select { width: auto; min-width: 6.6rem; font-variant-numeric: tabular-nums; }
+    .fphone__ddi :global(svg) { right: 0.75rem; }
     .fphone input { flex: 1; min-width: 0; }
 
     /* navegação */
-    .fstep__nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 2rem; }
+    .fstep__nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 2.25rem; }
     .fstep__nav--center { justify-content: center; }
-    .btn :global(.flip) { transform: rotate(180deg); }
-    .frascunho {
-      max-width: 460px; margin: 0 auto 1.4rem; padding: 1rem 1.2rem;
-      border: 1px solid var(--border-brand); border-radius: 14px;
-      background: rgba(46, 107, 255, 0.07); text-align: center;
-    }
-    .frascunho p { font-size: 0.88rem; color: var(--text-2); margin-bottom: 0.8rem; }
-    .frascunho strong { color: var(--text-1); }
-    .frascunho__btns { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
-    .frascunho__btns .btn { font-size: 0.85rem; }
-    .fmeta { display: inline-flex; align-items: center; gap: 0.5em; justify-content: center; margin: 1.6rem auto 0; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-3); }
-    .fmeta :global(svg) { color: var(--cyan-400); }
-    .fconsent { margin-top: 1.1rem; font-size: 0.8rem; color: var(--text-3); text-align: center; }
-    .fconsent.is-error { color: #f06565; }
-    .fconsent.is-success { color: #4ade80; }
 
-    .fstep--success { align-items: center; text-align: center; }
-    .fsuccess__icon { display: grid; place-items: center; width: 84px; height: 84px; margin: 0 auto 1.4rem; border-radius: 50%; background: rgba(46,107,255,0.14); border: 1px solid var(--border-brand); color: var(--cyan-300); box-shadow: var(--glow-blue); }
+    /* rascunho e rodapé da abertura */
+    .frascunho { width: 100%; max-width: 30rem; margin: 2rem auto 0; padding: 1.25rem 1.25rem 1.35rem; border-radius: 18px; background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px var(--line); text-align: center; }
+    .frascunho p { font-size: 15px; line-height: 1.47; color: var(--fg-2); }
+    .frascunho strong { color: var(--fg); font-weight: 600; }
+    .frascunho__btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-top: 1rem; }
+    .fmeta { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.5rem; margin-top: 1.75rem; font-size: 14px; color: var(--fg-2); }
+    .fmeta span { display: inline-flex; align-items: center; gap: 0.4rem; }
+    .fconsent { margin-top: 1.25rem; font-size: 14px; line-height: 1.43; text-align: center; color: var(--fg-2); }
+    .fconsent.is-error { color: #ff6961; }
+    .fconsent.is-success { color: #30d158; }
 
-    @media (max-width: 560px) {
+    /* sucesso */
+    .fsuccess__icon { display: grid; place-items: center; width: 72px; height: 72px; margin: 0 auto 1.75rem; border-radius: 50%; background: var(--accent); color: #fff; }
+    .fpage :global(.fdemo-note) { margin-top: 1rem; font-size: 13px; color: #ff9f0a; }
+
+    @media (max-width: 734px) {
+      .ftop { padding-block: 0.5rem; }
+      .fbrand img { height: 24px; }
       .ffields { grid-template-columns: 1fr; }
-      .fback-site span { display: none; }
-      .fstep__nav { flex-direction: row; }
+      .fstep__nav [data-action="next"], .fstep__nav [data-action="submit"] { flex: 1; }
+      .fstep__nav:has([data-action="submit"]) { flex-wrap: wrap; }
+      .fstep__nav [data-action="submit"] { order: -1; flex: 1 0 100%; white-space: nowrap; }
+      .fstep__nav:has([data-action="submit"]) [data-action="back"] { margin-inline: auto; }
+      .fstep__nav--center .btn, .frascunho__btns .btn { width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .anim-in, .fother { animation: none; }
+    }
+    @media (forced-colors: active) {
+      .fopt, .fother__input, .ffield input, .fselect select { border: 1px solid CanvasText; }
+      .fopt[aria-checked="true"] { outline: 3px solid Highlight; }
+      .fopt__mark { border: 1.5px solid CanvasText; }
+      .fopt[aria-checked="true"] .fopt__mark, .fopt[role="radio"][aria-checked="true"] .fopt__mark::after { forced-color-adjust: none; background: Highlight; }
     }
   </style>
 
@@ -802,4 +822,72 @@ const DDIS = [
       show(0);
     })();
   </script>
-</Base>
+
+  <script is:inline>
+    // apoio ao formulário (o script acima, que grava os leads, não muda):
+    // erro também em texto, vermelho que some ao corrigir, Enter que respeita botões,
+    // aviso ao continuar sem escolher e foco no título da tela de sucesso
+    (() => {
+      const main = document.getElementById('fmain');
+      if (!main) return;
+      let n = 0;
+      const msg = (el) => {
+        if (!el.value || !el.value.trim()) return el.tagName === 'SELECT' ? 'Escolha uma opção.' : 'Preencha este campo.';
+        if (el.type === 'email') return 'Confira o e-mail.';
+        if (el.hasAttribute('data-phone')) return 'Confira o número, com DDD.';
+        return 'Confira este campo.';
+      };
+      const caixa = (el) => {
+        if (!el.id) el.id = 'fx-' + ++n;
+        let p = document.getElementById('e-' + el.id);
+        if (!p) {
+          p = document.createElement('p');
+          p.className = 'ferr'; p.id = 'e-' + el.id; p.hidden = true;
+          (el.closest('.fphone, .fselect') || el).insertAdjacentElement('afterend', p);
+        }
+        return p;
+      };
+      new MutationObserver((ms) => ms.forEach(({ target: el }) => {
+        if (!el.matches || !el.matches('input, select')) return;
+        const on = el.classList.contains('invalid');
+        el.setAttribute('aria-invalid', on ? 'true' : 'false');
+        const p = caixa(el);
+        p.hidden = !on;
+        if (on) { p.textContent = msg(el); el.setAttribute('aria-describedby', p.id); }
+      })).observe(main, { subtree: true, attributes: true, attributeFilter: ['class'] });
+
+      // ao corrigir, o vermelho some na hora; a validação completa continua no "Continuar"
+      const limpa = (el) => el && el.classList && el.classList.remove('invalid');
+      main.addEventListener('input', (e) => limpa(e.target));
+      main.addEventListener('change', (e) => {
+        limpa(e.target);
+        if (e.target.id === 'f-whatsapp-ddi') limpa(document.getElementById('f-whatsapp')); // trocar o DDI reescreve o número
+      });
+
+      // Enter num botão ou link faz a ação dele (Voltar volta, opção marca), e não "Continuar"
+      main.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.closest && e.target.closest('button, a')) e.stopPropagation();
+      }, true);
+
+      // Continuar sem escolher nada: avisa em vez de parecer travado
+      main.addEventListener('click', (e) => {
+        const etapa = main.querySelector('.fstep.is-active');
+        const opts = etapa && etapa.querySelector('.fopts');
+        if (!opts) return;
+        let aviso = etapa.querySelector('.fopts__err');
+        if (!aviso) {
+          aviso = document.createElement('p');
+          aviso.className = 'fopts__err'; aviso.setAttribute('role', 'alert'); aviso.hidden = true;
+          aviso.textContent = opts.getAttribute('role') === 'radiogroup' ? 'Escolha uma opção para continuar.' : 'Escolha pelo menos uma opção para continuar.';
+          (etapa.querySelector('.fother') || opts).insertAdjacentElement('afterend', aviso);
+        }
+        if (e.target.closest('.fopt')) aviso.hidden = true;
+        else if (e.target.closest('[data-action="next"]') && !opts.querySelector('[aria-checked="true"]')) aviso.hidden = false;
+      }, true);
+
+      // sucesso: o foco vai para o título, e o leitor de tela anuncia
+      const ok = main.querySelector('.fstep--success'), okT = document.getElementById('fsucesso');
+      if (ok && okT) new MutationObserver(() => { if (ok.classList.contains('is-active')) setTimeout(() => okT.focus(), 80); }).observe(ok, { attributes: true, attributeFilter: ['class'] });
+    })();
+  </script>
+</Site>
